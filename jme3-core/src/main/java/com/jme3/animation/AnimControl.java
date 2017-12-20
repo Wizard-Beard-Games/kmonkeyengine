@@ -34,18 +34,15 @@ package com.jme3.animation;
 import com.jme3.export.*;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
+import com.jme3.util.TempVars;
 import com.jme3.util.clone.Cloner;
 import com.jme3.util.clone.JmeCloneable;
-import com.jme3.util.TempVars;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
@@ -67,7 +64,9 @@ import java.util.Map.Entry;
  * 1) Morph/Pose animation
  *
  * @author Kirill Vainer
+ * @deprecated use {@link com.jme3.anim.AnimComposer}
  */
+@Deprecated
 public final class AnimControl extends AbstractControl implements Cloneable, JmeCloneable {
 
     /**

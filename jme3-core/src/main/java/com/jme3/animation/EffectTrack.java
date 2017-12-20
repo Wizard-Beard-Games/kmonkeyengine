@@ -32,10 +32,7 @@
 package com.jme3.animation;
 
 import com.jme3.effect.ParticleEmitter;
-import com.jme3.export.InputCapsule;
-import com.jme3.export.JmeExporter;
-import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
+import com.jme3.export.*;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
@@ -45,7 +42,7 @@ import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.control.Control;
 import com.jme3.util.TempVars;
 import com.jme3.util.clone.Cloner;
-import com.jme3.util.clone.JmeCloneable;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,6 +66,7 @@ import java.util.logging.Logger;
  *
  * @author Nehon
  */
+@Deprecated
 public class EffectTrack implements ClonableTrack {
 
     private static final Logger logger = Logger.getLogger(EffectTrack.class.getName());
