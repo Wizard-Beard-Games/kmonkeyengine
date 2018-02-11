@@ -22,6 +22,7 @@ if (!hasProperty('mainClass')) {
 
 dependencies {
     compile project(':jme3-bullet')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 // Java source sets for IDE acces and source jar bundling / mavenization
@@ -146,7 +147,29 @@ if (ndkExists && buildNativeProjects == "true") {
 }
 
 jar.into("lib") { from ndkOutputPath }
-
+buildscript {
+    ext.kotlin_version = '1.2.21'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+apply plugin: 'kotlin'
+repositories {
+    mavenCentral()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 // Helper class to wrap ant dowload task
 class MyDownload extends DefaultTask {
