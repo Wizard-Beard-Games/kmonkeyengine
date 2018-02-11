@@ -42,7 +42,8 @@ import com.jme3.util.clone.JmeCloneable
  * This Spatial is assumed to be a child of the spatial holding the AnimControl.
  *
  *
- * @author Nehon
+ * @author (kme) Ray Long
+ * @author (jme) Nehon
  */
 interface ClonableTrack : Track, JmeCloneable {
 
