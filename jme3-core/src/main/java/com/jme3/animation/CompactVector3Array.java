@@ -33,6 +33,8 @@ package com.jme3.animation;
 
 import com.jme3.export.*;
 import com.jme3.math.Vector3f;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 
 /**
@@ -90,7 +92,7 @@ public class CompactVector3Array extends CompactArray<Vector3f> implements Savab
     }
 
     @Override
-    protected Vector3f deserialize(int i, Vector3f store) {
+    protected Vector3f deserialize(int i, @Nullable Object store) {
         int j = i*getTupleSize();
         store.set(array[j], array[j+1], array[j+2]);
         return store;
