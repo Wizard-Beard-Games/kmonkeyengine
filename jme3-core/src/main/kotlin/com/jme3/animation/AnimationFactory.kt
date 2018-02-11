@@ -50,7 +50,8 @@ import com.jme3.math.Vector3f
  * Note that the first keyFrame (index 0) is defaulted with the identity transforms.
  * If you want to change that you have to replace this keyFrame with any transform you want.
  *
- * @author Nehon
+ * @author (kme) Ray Long
+ * @author (jme) Nehon
  */
 class AnimationFactory
 /**
