@@ -154,15 +154,15 @@ class AnimationFactory
 //        translations = arrayOfNulls(totalFrames)
         translations = Array(size = totalFrames, init = { Vector3f() })
         rotations = Array(size = totalFrames, init = { Quaternion() })
-        scales = arrayOfNulls(totalFrames)
-        keyFramesTranslation = arrayOfNulls(totalFrames)
+        scales = Array(size = totalFrames, init = { Vector3f() })
+        keyFramesTranslation = Array(size = totalFrames, init = { Vector3f() })
         keyFramesTranslation[0] = Vector3f()
-        keyFramesScale = arrayOfNulls(totalFrames)
+        keyFramesScale = Array(size = totalFrames, init = { Vector3f() })
         keyFramesScale[0] = Vector3f(1f, 1f, 1f)
-        keyFramesRotation = arrayOfNulls(totalFrames)
+        keyFramesRotation = Array(size = totalFrames, init = { Rotation() })
         keyFramesRotation[0] = Rotation()
-
     }
+
 
     /**
      * Adds a key frame for the given Transform at the given time
@@ -260,7 +260,7 @@ class AnimationFactory
 
         // if the delta of euler angles is higher than PI, we create intermediate keyframes
         // since we are using quaternions and slerp for rotation interpolation, we cannot interpolate over an angle higher than PI
-        val prev = getPreviousKeyFrame(keyFrameIndex, keyFramesRotation)
+        val prev = getPreviousKeyFrame(keyFrameIndex, keyFramesRotation as Array<Any>)
         if (prev != -1) {
             //previous rotation keyframe
             val prevRot = keyFramesRotation[prev]
@@ -380,7 +380,7 @@ class AnimationFactory
 
         //creating the animation
         val spatialAnimation = Animation(name, duration)
-        spatialAnimation.setTracks(arrayOf<SpatialTrack>(spatialTrack))
+        spatialAnimation.setTracks(arrayOf(spatialTrack))
 
         return spatialAnimation
     }
@@ -399,11 +399,11 @@ class AnimationFactory
      * @param keyFrames the keyFrames array
      * @param type the type of transforms
      */
-    private fun interpolate(keyFrames: Array<Any>, type: Type) {
+    private fun interpolate(keyFrames: Array<*>, type: Type) {
         var i = 0
         while (i < totalFrames) {
             //fetching the next keyFrame index transform in the array
-            val key = getNextKeyFrame(i, keyFrames)
+            val key = getNextKeyFrame(i, keyFrames as Array<Any>)
             if (key != -1) {
                 //computing the frame span to interpolate over
                 val span = key - i
@@ -461,12 +461,8 @@ class AnimationFactory
      * @return the index of the previous keyFrame
      */
     private fun getPreviousKeyFrame(index: Int, keyFrames: Array<Any>): Int {
-        for (i in index - 1 downTo 0) {
-            if (keyFrames[i] != null) {
-                return i
-            }
-        }
-        return -1
+        return (index - 1 downTo 0).firstOrNull { true }
+                ?: -1
     }
 
     companion object {
