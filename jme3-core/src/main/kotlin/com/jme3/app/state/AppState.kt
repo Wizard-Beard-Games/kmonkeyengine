@@ -74,7 +74,8 @@ interface AppState {
      * @return True if `initialize()` was called on the state,
      * false otherwise.
      */
-    val isInitialized: Boolean
+//    val isInitialized: Boolean
+    fun isInitialized(): Boolean
 
     /**
      * @return True if the `AppState` is enabled, false otherwise.
@@ -91,7 +92,9 @@ interface AppState {
      *
      * @param active activate the AppState or not.
      */
-    var isEnabled: Boolean
+//    var isEnabled: Boolean
+    fun isEnabled(): Boolean
+    fun setEnabled(enabled: Boolean)
 
     /**
      * Called by [AppStateManager] when transitioning this `AppState`

@@ -41,7 +41,7 @@ import com.jme3.renderer.RenderManager
  * @author (jme) Kirill Vainer
  * @see com.jme3.app.state.BaseAppState
  */
-class AbstractAppState : AppState {
+open class AbstractAppState : AppState {
 
     /**
      * `initialized` is set to true when the method
