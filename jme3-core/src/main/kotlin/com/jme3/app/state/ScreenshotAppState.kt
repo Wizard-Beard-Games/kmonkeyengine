@@ -165,17 +165,19 @@ class ScreenshotAppState : AbstractAppState, ActionListener, SceneProcessor {
     }
 
     override fun initialize(stateManager: AppStateManager, app: Application) {
-        if (!super.isInitialized()) {
-            val inputManager = app.inputManager
-            inputManager.addMapping("ScreenShot", KeyTrigger(KeyInput.KEY_SYSRQ))
-            inputManager.addListener(this, "ScreenShot")
+        when {
+            !super.isInitialized() -> {
+                val inputManager = app.inputManager
+                inputManager.addMapping("ScreenShot", KeyTrigger(KeyInput.KEY_SYSRQ))
+                inputManager.addListener(this, "ScreenShot")
 
-            val vps = app.renderManager.postViews
-            val last = vps[vps.size - 1]
-            last.addProcessor(this)
+                val vps = app.renderManager.postViews
+                val last = vps[vps.size - 1]
+                last.addProcessor(this)
 
-            if (shotName == null) {
-                shotName = app.javaClass.simpleName
+                when (shotName) {
+                    null -> shotName = app.javaClass.simpleName
+                }
             }
         }
 
@@ -183,8 +185,8 @@ class ScreenshotAppState : AbstractAppState, ActionListener, SceneProcessor {
     }
 
     override fun onAction(name: String, value: Boolean, tpf: Float) {
-        if (value) {
-            capture = true
+        when {
+            value -> capture = true
         }
     }
 
@@ -227,17 +229,17 @@ class ScreenshotAppState : AbstractAppState, ActionListener, SceneProcessor {
             renderer!!.setViewPort(viewX, viewY, viewWidth, viewHeight)
 
             val file: File
-            val filename: String? = if (numbered) {
-                shotIndex++
-                shotName!! + shotIndex
-            } else {
-                shotName
+            val filename: String? = when {
+                numbered -> {
+                    shotIndex++
+                    shotName!! + shotIndex
+                }
+                else -> shotName
             }
 
-            file = if (filePath == null) {
-                File(JmeSystem.getStorageFolder().toString() + File.separator + filename + ".png").absoluteFile
-            } else {
-                File(filePath + filename + ".png").absoluteFile
+            file = when (filePath) {
+                null -> File(JmeSystem.getStorageFolder().toString() + File.separator + filename + ".png").absoluteFile
+                else -> File(filePath + filename + ".png").absoluteFile
             }
             logger.log(Level.FINE, "Saving ScreenShot to: {0}", file.absolutePath)
 

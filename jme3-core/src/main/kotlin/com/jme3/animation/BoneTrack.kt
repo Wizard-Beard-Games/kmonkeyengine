@@ -141,22 +141,24 @@ class BoneTrack : Track {
      * length as times)
      */
     fun setKeyframes(times: FloatArray, translations: Array<Vector3f>?, rotations: Array<Quaternion>?) {
-        if (times.size == 0) {
-            throw RuntimeException("BoneTrack with no keyframes!")
+        when {
+            times.isEmpty() -> throw RuntimeException("BoneTrack with no keyframes!")
+            else -> {
+                assert(translations != null)
+                assert(times.size == translations!!.size)
+                assert(rotations != null)
+                assert(times.size == rotations!!.size)
+
+                this.times = times
+                this.translations = CompactVector3Array()
+                this.translations!!.add(*translations)
+                this.translations!!.freeze()
+                this.rotations = CompactQuaternionArray()
+                this.rotations!!.add(*rotations)
+                this.rotations!!.freeze()
+            }
         }
 
-        assert(translations != null)
-        assert(times.size == translations!!.size)
-        assert(rotations != null)
-        assert(times.size == rotations!!.size)
-
-        this.times = times
-        this.translations = CompactVector3Array()
-        this.translations!!.add(*translations)
-        this.translations!!.freeze()
-        this.rotations = CompactQuaternionArray()
-        this.rotations!!.add(*rotations)
-        this.rotations!!.freeze()
     }
 
     /**
@@ -172,11 +174,13 @@ class BoneTrack : Track {
      */
     fun setKeyframes(times: FloatArray, translations: Array<Vector3f>, rotations: Array<Quaternion>, scales: Array<Vector3f>?) {
         this.setKeyframes(times, translations, rotations)
-        if (scales != null) {
-            assert(times.size == scales.size)
-            this.scales = CompactVector3Array()
-            this.scales!!.add(*scales)
-            this.scales!!.freeze()
+        when {
+            scales != null -> {
+                assert(times.size == scales.size)
+                this.scales = CompactVector3Array()
+                this.scales!!.add(*scales)
+                this.scales!!.freeze()
+            }
         }
     }
 
@@ -194,66 +198,77 @@ class BoneTrack : Track {
      */
     override fun setTime(time: Float, weight: Float, control: AnimControl, channel: AnimChannel, vars: TempVars) {
         val affectedBones = channel.affectedBones
-        if (affectedBones != null && !affectedBones!!.get(targetBoneIndex)) {
-            return
-        }
-
-        val target = control.skeleton!!.getBone(targetBoneIndex)
-
-        val tempV = vars.vect1
-        val tempS = vars.vect2
-        val tempQ = vars.quat1
-        val tempV2 = vars.vect3
-        val tempS2 = vars.vect4
-        val tempQ2 = vars.quat2
-
-        val lastFrame = times!!.size - 1
-        if (time < 0 || lastFrame == 0) {
-            rotations!!.get(0, tempQ)
-            translations!!.get(0, tempV)
-            if (scales != null) {
-                scales!!.get(0, tempS)
-            }
-        } else if (time >= times!![lastFrame]) {
-            rotations!!.get(lastFrame, tempQ)
-            translations!!.get(lastFrame, tempV)
-            if (scales != null) {
-                scales!!.get(lastFrame, tempS)
-            }
-        } else {
-            var startFrame = 0
-            var endFrame = 1
-            // use lastFrame so we never overflow the array
-            var i: Int
-            i = 0
-            while (i < lastFrame && times!![i] < time) {
-                startFrame = i
-                endFrame = i + 1
-                i++
-            }
-
-            val blend = (time - times!![startFrame]) / (times!![endFrame] - times!![startFrame])
-
-            rotations!!.get(startFrame, tempQ)
-            translations!!.get(startFrame, tempV)
-            if (scales != null) {
-                scales!!.get(startFrame, tempS)
-            }
-            rotations!!.get(endFrame, tempQ2)
-            translations!!.get(endFrame, tempV2)
-            if (scales != null) {
-                scales!!.get(endFrame, tempS2)
-            }
-            tempQ.nlerp(tempQ2, blend)
-            tempV.interpolateLocal(tempV2, blend)
-            tempS.interpolateLocal(tempS2, blend)
-        }
+        // use lastFrame so we never overflow the array
 
         //        if (weight != 1f) {
-        target.blendAnimTransforms(tempV, tempQ, if (scales != null) tempS else null, weight)
         //        } else {
         //            target.setAnimTransforms(tempV, tempQ, scales != null ? tempS : null);
         //        }
+        when {
+            affectedBones != null && !affectedBones.get(targetBoneIndex) -> return
+            else -> {
+                val target = control.skeleton!!.getBone(targetBoneIndex)
+
+                val tempV = vars.vect1
+                val tempS = vars.vect2
+                val tempQ = vars.quat1
+                val tempV2 = vars.vect3
+                val tempS2 = vars.vect4
+                val tempQ2 = vars.quat2
+
+                val lastFrame = times!!.size - 1
+                when {
+                    time < 0 || lastFrame == 0 -> {
+                        rotations!!.get(0, tempQ)
+                        translations!!.get(0, tempV)
+                        if (scales != null) {
+                            scales!!.get(0, tempS)
+                        }
+                    }
+                    time >= times!![lastFrame] -> {
+                        rotations!!.get(lastFrame, tempQ)
+                        translations!!.get(lastFrame, tempV)
+                        if (scales != null) {
+                            scales!!.get(lastFrame, tempS)
+                        }
+                    }
+                    else -> {
+                        var startFrame = 0
+                        var endFrame = 1
+                        // use lastFrame so we never overflow the array
+                        var i: Int = 0
+                        while (i < lastFrame && times!![i] < time) {
+                            startFrame = i
+                            endFrame = i + 1
+                            i++
+                        }
+
+                        val blend = (time - times!![startFrame]) / (times!![endFrame] - times!![startFrame])
+
+                        rotations!!.get(startFrame, tempQ)
+                        translations!!.get(startFrame, tempV)
+                        when {
+                            scales != null -> scales!!.get(startFrame, tempS)
+                        }
+                        rotations!!.get(endFrame, tempQ2)
+                        translations!!.get(endFrame, tempV2)
+                        when {
+                            scales != null -> scales!!.get(endFrame, tempS2)
+                        }
+                        tempQ.nlerp(tempQ2, blend)
+                        tempV.interpolateLocal(tempV2, blend)
+                        tempS.interpolateLocal(tempS2, blend)
+                    }
+                }
+
+                //        if (weight != 1f) {
+                target.blendAnimTransforms(tempV, tempQ, if (scales != null) tempS else null, weight)
+                //        } else {
+                //            target.setAnimTransforms(tempV, tempQ, scales != null ? tempS : null);
+                //        }
+            }
+        }
+
     }
 
     /**
@@ -282,7 +297,7 @@ class BoneTrack : Track {
         val translations = arrayOfNulls<Vector3f>(tablesLength)
         val rotations = arrayOfNulls<Quaternion>(tablesLength)
         val scales = arrayOfNulls<Vector3f>(tablesLength)
-        for (i in 0 until tablesLength) {
+        (0 until tablesLength).forEach { i ->
             translations[i] = sourceTranslations!![i].clone()
             rotations[i] = sourceRotations!![i].clone()
             scales[i] = if (sourceScales != null) sourceScales[i].clone() else Vector3f(1.0f, 1.0f, 1.0f)
@@ -314,24 +329,32 @@ class BoneTrack : Track {
 
         //Backward compatibility for old j3o files generated before revision 6807
         if (im.formatVersion == 0) {
-            if (translations == null) {
-                val sav = ic.readSavableArray("translations", null)
-                if (sav != null) {
-                    translations = CompactVector3Array()
-                    val transCopy = arrayOfNulls<Vector3f>(sav.size)
-                    System.arraycopy(sav, 0, transCopy, 0, sav.size)
-                    translations!!.add(*transCopy)
-                    translations!!.freeze()
+            when (translations) {
+                null -> {
+                    val sav = ic.readSavableArray("translations", null)
+                    when {
+                        sav != null -> {
+                            translations = CompactVector3Array()
+                            val transCopy = Array(sav.size, init = { Vector3f() })
+                            System.arraycopy(sav, 0, transCopy, 0, sav.size)
+                            translations!!.add(*transCopy)
+                            translations!!.freeze()
+                        }
+                    }
                 }
             }
-            if (rotations == null) {
-                val sav = ic.readSavableArray("rotations", null)
-                if (sav != null) {
-                    rotations = CompactQuaternionArray()
-                    val rotCopy = arrayOfNulls<Quaternion>(sav.size)
-                    System.arraycopy(sav, 0, rotCopy, 0, sav.size)
-                    rotations!!.add(*rotCopy)
-                    rotations!!.freeze()
+            when (rotations) {
+                null -> {
+                    val sav = ic.readSavableArray("rotations", null)
+                    when {
+                        sav != null -> {
+                            rotations = CompactQuaternionArray()
+                            val rotCopy = Array(sav.size, init = { Quaternion() })
+                            System.arraycopy(sav, 0, rotCopy, 0, sav.size)
+                            rotations!!.add(*rotCopy)
+                            rotations!!.freeze()
+                        }
+                    }
                 }
             }
         }

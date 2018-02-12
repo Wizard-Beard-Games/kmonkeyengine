@@ -262,33 +262,37 @@ class AnimationFactory
         // if the delta of euler angles is higher than PI, we create intermediate keyframes
         // since we are using quaternions and slerp for rotation interpolation, we cannot interpolate over an angle higher than PI
         val prev = getPreviousKeyFrame(keyFrameIndex, keyFramesRotation as Array<Any>)
-        if (prev != -1) {
-            //previous rotation keyframe
-            val prevRot = keyFramesRotation[prev]
-            //the maximum delta angle (x,y or z)
-            var delta = Math.max(Math.abs(x - prevRot.eulerAngles.x), Math.abs(y - prevRot.eulerAngles.y))
-            delta = Math.max(delta, Math.abs(z - prevRot.eulerAngles.z))
-            //if delta > PI we have to create intermediates key frames
-            if (delta >= FastMath.PI) {
-                //frames delta
-                val dF = keyFrameIndex - prev
-                //angle per frame for x,y ,z
-                val dXAngle = (x - prevRot.eulerAngles.x) / dF.toFloat()
-                val dYAngle = (y - prevRot.eulerAngles.y) / dF.toFloat()
-                val dZAngle = (z - prevRot.eulerAngles.z) / dF.toFloat()
+        when {
+            prev != -1 -> {
+                //previous rotation keyframe
+                val prevRot = keyFramesRotation[prev]
+                //the maximum delta angle (x,y or z)
+                var delta = Math.max(Math.abs(x - prevRot.eulerAngles.x), Math.abs(y - prevRot.eulerAngles.y))
+                delta = Math.max(delta, Math.abs(z - prevRot.eulerAngles.z))
+                //if delta > PI we have to create intermediates key frames
+                when {
+                    delta >= FastMath.PI -> {
+                        //frames delta
+                        val dF = keyFrameIndex - prev
+                        //angle per frame for x,y ,z
+                        val dXAngle = (x - prevRot.eulerAngles.x) / dF.toFloat()
+                        val dYAngle = (y - prevRot.eulerAngles.y) / dF.toFloat()
+                        val dZAngle = (z - prevRot.eulerAngles.z) / dF.toFloat()
 
-                // the keyFrame step
-                val keyStep = (dF.toFloat() / delta * EULER_STEP).toInt()
-                // the current keyFrame
-                var cursor = prev + keyStep
-                while (cursor < keyFrameIndex) {
-                    //for each step we create a new rotation by interpolating the angles
-                    val dr = getRotationForFrame(cursor)
-                    dr.masterKeyFrame = keyFrameIndex
-                    dr[prevRot.eulerAngles.x + cursor * dXAngle, prevRot.eulerAngles.y + cursor * dYAngle] = prevRot.eulerAngles.z + cursor * dZAngle
-                    cursor += keyStep
+                        // the keyFrame step
+                        val keyStep = (dF.toFloat() / delta * EULER_STEP).toInt()
+                        // the current keyFrame
+                        var cursor = prev + keyStep
+                        while (cursor < keyFrameIndex) {
+                            //for each step we create a new rotation by interpolating the angles
+                            val dr = getRotationForFrame(cursor)
+                            dr.masterKeyFrame = keyFrameIndex
+                            dr[prevRot.eulerAngles.x + cursor * dXAngle, prevRot.eulerAngles.y + cursor * dYAngle] = prevRot.eulerAngles.z + cursor * dZAngle
+                            cursor += keyStep
+                        }
+
+                    }
                 }
-
             }
         }
 
@@ -405,37 +409,39 @@ class AnimationFactory
         while (i < totalFrames) {
             //fetching the next keyFrame index transform in the array
             val key = getNextKeyFrame(i, keyFrames as Array<Any>)
-            if (key != -1) {
-                //computing the frame span to interpolate over
-                val span = key - i
-                //interating over the frames
-                for (j in i..key) {
-                    // computing interpolation value
-                    val `val` = (j - i).toFloat() / span.toFloat()
-                    //interpolationg depending on the transform type
-                    when (type) {
-                        AnimationFactory.Type.Translation -> translations[j] = FastMath.interpolateLinear(`val`, keyFrames[i] as Vector3f, keyFrames[key] as Vector3f)
-                        AnimationFactory.Type.Rotation -> {
-                            val rot = Quaternion()
-                            rotations[j] = rot.slerp((keyFrames[i] as Rotation).rotation, (keyFrames[key] as Rotation).rotation, `val`)
+            when {
+                key != -1 -> {
+                    //computing the frame span to interpolate over
+                    val span = key - i
+                    //interating over the frames
+                    (i..key).forEach { j ->
+                        // computing interpolation value
+                        val `val` = (j - i).toFloat() / span.toFloat()
+                        //interpolationg depending on the transform type
+                        when (type) {
+                            AnimationFactory.Type.Translation -> translations[j] = FastMath.interpolateLinear(`val`, keyFrames[i] as Vector3f, keyFrames[key] as Vector3f)
+                            AnimationFactory.Type.Rotation -> {
+                                val rot = Quaternion()
+                                rotations[j] = rot.slerp((keyFrames[i] as Rotation).rotation, (keyFrames[key] as Rotation).rotation, `val`)
+                            }
+                            AnimationFactory.Type.Scale -> scales[j] = FastMath.interpolateLinear(`val`, keyFrames[i] as Vector3f, keyFrames[key] as Vector3f)
                         }
-                        AnimationFactory.Type.Scale -> scales[j] = FastMath.interpolateLinear(`val`, keyFrames[i] as Vector3f, keyFrames[key] as Vector3f)
                     }
+                    //jumping to the next keyFrame
+                    i = key
                 }
-                //jumping to the next keyFrame
-                i = key
-            } else {
-                //No more key frame, filling the array witht he last transform computed.
-                for (j in i until totalFrames) {
-
-                    when (type) {
-                        AnimationFactory.Type.Translation -> translations[j] = (keyFrames[i] as Vector3f).clone()
-                        AnimationFactory.Type.Rotation -> rotations[j] = (keyFrames[i] as Rotation).rotation.clone()
-                        AnimationFactory.Type.Scale -> scales[j] = (keyFrames[i] as Vector3f).clone()
+                else -> {
+                    //No more key frame, filling the array witht he last transform computed.
+                    (i until totalFrames).forEach { j ->
+                        when (type) {
+                            AnimationFactory.Type.Translation -> translations[j] = (keyFrames[i] as Vector3f).clone()
+                            AnimationFactory.Type.Rotation -> rotations[j] = (keyFrames[i] as Rotation).rotation.clone()
+                            AnimationFactory.Type.Scale -> scales[j] = (keyFrames[i] as Vector3f).clone()
+                        }
                     }
+                    //we're done
+                    i = totalFrames
                 }
-                //we're done
-                i = totalFrames
             }
         }
     }
@@ -446,14 +452,9 @@ class AnimationFactory
      * @param keyFrames the keyFrames array
      * @return the index of the next keyFrame
      */
-    private fun getNextKeyFrame(index: Int, keyFrames: Array<Any>): Int {
-        for (i in index + 1 until totalFrames) {
-            if (keyFrames[i] != null) {
-                return i
-            }
-        }
-        return -1
-    }
+    private fun getNextKeyFrame(index: Int, keyFrames: Array<Any>): Int =
+            (index + 1 until totalFrames).firstOrNull { true }
+                    ?: -1
 
     /**
      * Get the index of the previous keyFrame that as a transform

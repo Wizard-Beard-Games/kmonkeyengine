@@ -151,41 +151,41 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
         val numBones = (skeleton!!.boneCount / 10 + 1) * 10
         numberOfBonesParam!!.value = numBones
 
-        for (geometry in targets) {
-            val mesh = geometry.mesh
-            if (mesh != null && mesh.isAnimated) {
-                mesh.prepareForAnim(false)
-            }
-        }
+        targets
+                .asSequence()
+                .map { it.mesh }
+                .filter { it != null && it.isAnimated }
+                .forEach { it.prepareForAnim(false) }
     }
 
     private fun switchToSoftware() {
         numberOfBonesParam!!.isEnabled = false
         boneMatricesParam!!.isEnabled = false
 
-        for (geometry in targets) {
-            val mesh = geometry.mesh
-            if (mesh != null && mesh.isAnimated) {
-                mesh.prepareForAnim(true)
-            }
-        }
+        targets
+                .asSequence()
+                .map { it.mesh }
+                .filter { it != null && it.isAnimated }
+                .forEach { it.prepareForAnim(true) }
     }
 
     private fun testHardwareSupported(rm: RenderManager): Boolean {
 
         //Only 255 bones max supported with hardware skinning
-        if (skeleton!!.boneCount > 255) {
-            return false
-        }
+        return when {
+            skeleton!!.boneCount > 255 -> false
+            else -> {
+                switchToHardware()
 
-        switchToHardware()
+                try {
+                    rm.preloadScene(spatial)
+                    true
+                } catch (e: RendererException) {
+                    Logger.getLogger(SkeletonControl::class.java.name).log(Level.WARNING, "Could not enable HW skinning due to shader compile error:", e)
+                    false
+                }
 
-        try {
-            rm.preloadScene(spatial)
-            return true
-        } catch (e: RendererException) {
-            Logger.getLogger(SkeletonControl::class.java.name).log(Level.WARNING, "Could not enable HW skinning due to shader compile error:", e)
-            return false
+            }
         }
 
     }
@@ -197,12 +197,14 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
      * @param skeleton the skeleton
      */
     constructor(skeleton: Skeleton?) {
-        if (skeleton == null) {
-            throw IllegalArgumentException("skeleton cannot be null")
+        when (skeleton) {
+            null -> throw IllegalArgumentException("skeleton cannot be null")
+            else -> {
+                this.skeleton = skeleton
+                this.numberOfBonesParam = MatParamOverride(VarType.Int, "NumberOfBones", null)
+                this.boneMatricesParam = MatParamOverride(VarType.Matrix4Array, "BoneMatrices", null)
+            }
         }
-        this.skeleton = skeleton
-        this.numberOfBonesParam = MatParamOverride(VarType.Int, "NumberOfBones", null)
-        this.boneMatricesParam = MatParamOverride(VarType.Matrix4Array, "BoneMatrices", null)
     }
 
     /**
@@ -211,18 +213,17 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
      */
     private fun findTargets(geometry: Geometry) {
         val mesh = geometry.mesh
-        if (mesh != null && mesh.isAnimated) {
-            targets.add(geometry)
+        when {
+            mesh != null && mesh.isAnimated -> targets.add(geometry)
         }
 
     }
 
     private fun findTargets(node: Node) {
-        for (child in node.children) {
-            if (child is Geometry) {
-                findTargets(child)
-            } else if (child is Node) {
-                findTargets(child)
+        node.children.forEach { child ->
+            when (child) {
+                is Geometry -> findTargets(child)
+                is Node -> findTargets(child)
             }
         }
     }
@@ -232,16 +233,20 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
         super.setSpatial(spatial)
         updateTargetsAndMaterials(spatial)
 
-        if (oldSpatial != null) {
-            oldSpatial.removeMatParamOverride(numberOfBonesParam)
-            oldSpatial.removeMatParamOverride(boneMatricesParam)
+        when {
+            oldSpatial != null -> {
+                oldSpatial.removeMatParamOverride(numberOfBonesParam)
+                oldSpatial.removeMatParamOverride(boneMatricesParam)
+            }
         }
 
-        if (spatial != null) {
-            spatial.removeMatParamOverride(numberOfBonesParam)
-            spatial.removeMatParamOverride(boneMatricesParam)
-            spatial.addMatParamOverride(numberOfBonesParam)
-            spatial.addMatParamOverride(boneMatricesParam)
+        when {
+            spatial != null -> {
+                spatial.removeMatParamOverride(numberOfBonesParam)
+                spatial.removeMatParamOverride(boneMatricesParam)
+                spatial.addMatParamOverride(numberOfBonesParam)
+                spatial.addMatParamOverride(boneMatricesParam)
+            }
         }
     }
 
@@ -250,13 +255,15 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
 
         offsetMatrices = skeleton!!.computeSkinningMatrices()
 
-        for (geometry in targets) {
-            val mesh = geometry.mesh
-            // NOTE: This assumes code higher up has
-            // already ensured this mesh is animated.
-            // Otherwise a crash will happen in skin update.
-            softwareSkinUpdate(mesh, offsetMatrices!!)
-        }
+        targets
+                .asSequence()
+                .map {
+                    it.mesh
+                    // NOTE: This assumes code higher up has
+                    // already ensured this mesh is animated.
+                    // Otherwise a crash will happen in skin update.
+                }
+                .forEach { softwareSkinUpdate(it, offsetMatrices!!) }
     }
 
     private fun controlRenderHardware() {
@@ -265,39 +272,45 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
     }
 
     override fun controlRender(rm: RenderManager, vp: ViewPort) {
-        if (!wasMeshUpdated) {
-            updateTargetsAndMaterials(spatial)
+        when {
+            !wasMeshUpdated -> {
+                updateTargetsAndMaterials(spatial)
 
-            // Prevent illegal cases. These should never happen.
-            assert(hwSkinningTested || !hwSkinningTested && !hwSkinningSupported && !isHardwareSkinningUsed)
-            assert(!isHardwareSkinningUsed || isHardwareSkinningUsed && hwSkinningTested && hwSkinningSupported)
+                // Prevent illegal cases. These should never happen.
+                assert(hwSkinningTested || !hwSkinningTested && !hwSkinningSupported && !isHardwareSkinningUsed)
+                assert(!isHardwareSkinningUsed || isHardwareSkinningUsed && hwSkinningTested && hwSkinningSupported)
 
-            if (isHardwareSkinningPreferred && !hwSkinningTested) {
-                hwSkinningTested = true
-                hwSkinningSupported = testHardwareSupported(rm)
+                when {
+                    isHardwareSkinningPreferred && !hwSkinningTested -> {
+                        hwSkinningTested = true
+                        hwSkinningSupported = testHardwareSupported(rm)
 
-                if (hwSkinningSupported) {
-                    isHardwareSkinningUsed = true
+                        when {
+                            hwSkinningSupported -> {
+                                isHardwareSkinningUsed = true
 
-                    Logger.getLogger(SkeletonControl::class.java.name).log(Level.INFO, "Hardware skinning engaged for {0}", spatial)
-                } else {
-                    switchToSoftware()
+                                Logger.getLogger(SkeletonControl::class.java.name).log(Level.INFO, "Hardware skinning engaged for {0}", spatial)
+                            }
+                            else -> switchToSoftware()
+                        }
+                    }
+                    isHardwareSkinningPreferred && hwSkinningSupported && !isHardwareSkinningUsed -> {
+                        switchToHardware()
+                        isHardwareSkinningUsed = true
+                    }
+                    !isHardwareSkinningPreferred && isHardwareSkinningUsed -> {
+                        switchToSoftware()
+                        isHardwareSkinningUsed = false
+                    }
                 }
-            } else if (isHardwareSkinningPreferred && hwSkinningSupported && !isHardwareSkinningUsed) {
-                switchToHardware()
-                isHardwareSkinningUsed = true
-            } else if (!isHardwareSkinningPreferred && isHardwareSkinningUsed) {
-                switchToSoftware()
-                isHardwareSkinningUsed = false
-            }
 
-            if (isHardwareSkinningUsed) {
-                controlRenderHardware()
-            } else {
-                controlRenderSoftware()
-            }
+                when {
+                    isHardwareSkinningUsed -> controlRenderHardware()
+                    else -> controlRenderSoftware()
+                }
 
-            wasMeshUpdated = true
+                wasMeshUpdated = true
+            }
         }
     }
 
@@ -307,43 +320,51 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
 
     //only do this for software updates
     internal fun resetToBind() {
-        for (geometry in targets) {
-            val mesh = geometry.mesh
-            if (mesh != null && mesh.isAnimated) {
-                val bwBuff = mesh.getBuffer(Type.BoneWeight).data
-                val biBuff = mesh.getBuffer(Type.BoneIndex).data
-                if (!biBuff.hasArray() || !bwBuff.hasArray()) {
-                    mesh.prepareForAnim(true) // prepare for software animation
+        targets
+                .asSequence()
+                .map { it.mesh }
+                .forEach {
+                    when {
+                        it != null && it.isAnimated -> {
+                            val bwBuff = it.getBuffer(Type.BoneWeight).data
+                            val biBuff = it.getBuffer(Type.BoneIndex).data
+                            when {
+                                !biBuff.hasArray() || !bwBuff.hasArray() -> it.prepareForAnim(true) // prepare for software animation
+                            }
+                            val bindPos = it.getBuffer(Type.BindPosePosition)
+                            val bindNorm = it.getBuffer(Type.BindPoseNormal)
+                            val pos = it.getBuffer(Type.Position)
+                            val norm = it.getBuffer(Type.Normal)
+                            val pb = pos.data as FloatBuffer
+                            val nb = norm.data as FloatBuffer
+                            val bpb = bindPos.data as FloatBuffer
+                            val bnb = bindNorm.data as FloatBuffer
+                            pb.clear()
+                            nb.clear()
+                            bpb.clear()
+                            bnb.clear()
+
+                            //reset bind tangents if there is a bind tangent buffer
+
+                            //reset bind tangents if there is a bind tangent buffer
+                            val bindTangents = it.getBuffer(Type.BindPoseTangent)
+                            when {
+                                bindTangents != null -> {
+                                    val tangents = it.getBuffer(Type.Tangent)
+                                    val tb = tangents.data as FloatBuffer
+                                    val btb = bindTangents.data as FloatBuffer
+                                    tb.clear()
+                                    btb.clear()
+                                    tb.put(btb).clear()
+                                }
+                            }
+
+
+                            pb.put(bpb).clear()
+                            nb.put(bnb).clear()
+                        }
+                    }
                 }
-                val bindPos = mesh.getBuffer(Type.BindPosePosition)
-                val bindNorm = mesh.getBuffer(Type.BindPoseNormal)
-                val pos = mesh.getBuffer(Type.Position)
-                val norm = mesh.getBuffer(Type.Normal)
-                val pb = pos.data as FloatBuffer
-                val nb = norm.data as FloatBuffer
-                val bpb = bindPos.data as FloatBuffer
-                val bnb = bindNorm.data as FloatBuffer
-                pb.clear()
-                nb.clear()
-                bpb.clear()
-                bnb.clear()
-
-                //reset bind tangents if there is a bind tangent buffer
-                val bindTangents = mesh.getBuffer(Type.BindPoseTangent)
-                if (bindTangents != null) {
-                    val tangents = mesh.getBuffer(Type.Tangent)
-                    val tb = tangents.data as FloatBuffer
-                    val btb = bindTangents.data as FloatBuffer
-                    tb.clear()
-                    btb.clear()
-                    tb.put(btb).clear()
-                }
-
-
-                pb.put(bpb).clear()
-                nb.put(bnb).clear()
-            }
-        }
     }
 
     override fun cloneForSpatial(spatial: Spatial): Control {
@@ -351,13 +372,12 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
         val clone = SkeletonControl()
 
         val ctrl = spatial.getControl(AnimControl::class.java)
-        if (ctrl != null) {
-            // AnimControl is responsible for cloning the skeleton, not
-            // SkeletonControl.
-            clone.skeleton = ctrl.skeleton
-        } else {
-            // If there's no AnimControl, create the clone ourselves.
-            clone.skeleton = Skeleton(skeleton!!)
+        when {
+            ctrl != null -> // AnimControl is responsible for cloning the skeleton, not
+                // SkeletonControl.
+                clone.skeleton = ctrl.skeleton
+            else -> // If there's no AnimControl, create the clone ourselves.
+                clone.skeleton = Skeleton(skeleton!!)
         }
         clone.isHardwareSkinningPreferred = this.isHardwareSkinningPreferred
         clone.isHardwareSkinningUsed = this.isHardwareSkinningUsed
@@ -367,20 +387,23 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
         clone.setSpatial(clonedNode)
 
         // Fix attachments for the cloned node
-        for (i in 0 until clonedNode.quantity) {
-            // go through attachment nodes, apply them to correct bone
-            val child = clonedNode.getChild(i)
-            if (child is Node) {
-                val originalBone = child.getUserData<Any>("AttachedBone") as Bone
-
-                if (originalBone != null) {
-                    val clonedBone = clone.skeleton!!.getBone(originalBone.name)
-
-                    child.setUserData("AttachedBone", clonedBone)
-                    clonedBone!!.setAttachmentsNode(child)
+        (0 until clonedNode.quantity)
+                .asSequence()
+                .map { // go through attachment nodes, apply them to correct bone
+                    clonedNode.getChild(it)
                 }
-            }
-        }
+                .forEach {
+                    when (it) {
+                        is Node -> {
+                            val originalBone = it.getUserData<Any>("AttachedBone") as Bone
+
+                            val clonedBone = clone.skeleton!!.getBone(originalBone.name)
+
+                            it.setUserData("AttachedBone", clonedBone)
+                            clonedBone!!.setAttachmentsNode(it)
+                        }
+                    }
+                }
 
         return clone
     }
@@ -421,11 +444,9 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
         /*
          * Select a node to parent the attachments node.
          */
-        val parent: Node
-        if (spatial is Node) {
-            parent = spatial as Node // the usual case
-        } else {
-            parent = spatial.parent
+        val parent: Node = when (spatial) {
+            is Node -> spatial as Node // the usual case
+            else -> spatial.parent
         }
         parent.attachChild(n)
 
@@ -587,146 +608,163 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
      * @param tb the tangent vertexBuffer
      */
     private fun applySkinningTangents(mesh: Mesh, offsetMatrices: Array<Matrix4f>, tb: VertexBuffer) {
-        val maxWeightsPerVert = mesh.maxNumWeights
+        val maxWeightsPerVert = mesh.maxNumWeights// Skip this vertex if the first weight is zero.
 
-        if (maxWeightsPerVert <= 0) {
-            throw IllegalStateException("Max weights per vert is incorrectly set!")
-        }
+        // skipping the 4th component of the tangent since it doesn't have to be transformed
 
-        val fourMinusMaxWeights = 4 - maxWeightsPerVert
+        //once again skipping the 4th component of the tangent
+
+        // read next set of positions and normals from native buffer
+        //tangents has their own index because of the 4 components
+
+        // iterate vertices and apply skinning transform for each effecting bone
+        when {
+            maxWeightsPerVert <= 0 -> throw IllegalStateException("Max weights per vert is incorrectly set!")
 
         // NOTE: This code assumes the vertex buffer is in bind pose
         // resetToBind() has been called this frame
-        val vb = mesh.getBuffer(Type.Position)
-        val fvb = vb.data as FloatBuffer
-        fvb.rewind()
-
-        val nb = mesh.getBuffer(Type.Normal)
-
-        val fnb = nb.data as FloatBuffer
-        fnb.rewind()
-
-
-        val ftb = tb.data as FloatBuffer
-        ftb.rewind()
 
 
         // get boneIndexes and weights for mesh
-        val ib = IndexBuffer.wrapIndexBuffer(mesh.getBuffer(Type.BoneIndex).data)
-        val wb = mesh.getBuffer(Type.BoneWeight).data as FloatBuffer
+            else -> {
+                val fourMinusMaxWeights = 4 - maxWeightsPerVert
 
-        wb.rewind()
+                // NOTE: This code assumes the vertex buffer is in bind pose
+                // resetToBind() has been called this frame
+                val vb = mesh.getBuffer(Type.Position)
+                val fvb = vb.data as FloatBuffer
+                fvb.rewind()
 
-        val weights = wb.array()
-        var idxWeights = 0
+                val nb = mesh.getBuffer(Type.Normal)
 
-        val vars = TempVars.get()
+                val fnb = nb.data as FloatBuffer
+                fnb.rewind()
 
 
-        val posBuf = vars.skinPositions
-        val normBuf = vars.skinNormals
-        val tanBuf = vars.skinTangents
+                val ftb = tb.data as FloatBuffer
+                ftb.rewind()
 
-        val iterations = FastMath.ceil(fvb.limit() / posBuf.size.toFloat()).toInt()
-        var bufLength = 0
-        var tanLength = 0
-        for (i in iterations - 1 downTo 0) {
-            // read next set of positions and normals from native buffer
-            bufLength = Math.min(posBuf.size, fvb.remaining())
-            tanLength = Math.min(tanBuf.size, ftb.remaining())
-            fvb.get(posBuf, 0, bufLength)
-            fnb.get(normBuf, 0, bufLength)
-            ftb.get(tanBuf, 0, tanLength)
-            val verts = bufLength / 3
-            var idxPositions = 0
-            //tangents has their own index because of the 4 components
-            var idxTangents = 0
 
-            // iterate vertices and apply skinning transform for each effecting bone
-            for (vert in verts - 1 downTo 0) {
-                // Skip this vertex if the first weight is zero.
-                if (weights[idxWeights] == 0f) {
-                    idxTangents += 4
-                    idxPositions += 3
-                    idxWeights += 4
-                    continue
+                // get boneIndexes and weights for mesh
+                val ib = IndexBuffer.wrapIndexBuffer(mesh.getBuffer(Type.BoneIndex).data)
+                val wb = mesh.getBuffer(Type.BoneWeight).data as FloatBuffer
+
+                wb.rewind()
+
+                val weights = wb.array()
+                var idxWeights = 0
+
+                val vars = TempVars.get()
+
+
+                val posBuf = vars.skinPositions
+                val normBuf = vars.skinNormals
+                val tanBuf = vars.skinTangents
+
+                val iterations = FastMath.ceil(fvb.limit() / posBuf.size.toFloat()).toInt()
+                var bufLength = 0
+                var tanLength = 0
+                for (i in iterations - 1 downTo 0) {
+                    // read next set of positions and normals from native buffer
+                    bufLength = Math.min(posBuf.size, fvb.remaining())
+                    tanLength = Math.min(tanBuf.size, ftb.remaining())
+                    fvb.get(posBuf, 0, bufLength)
+                    fnb.get(normBuf, 0, bufLength)
+                    ftb.get(tanBuf, 0, tanLength)
+                    val verts = bufLength / 3
+                    var idxPositions = 0
+                    //tangents has their own index because of the 4 components
+                    var idxTangents = 0
+
+                    // iterate vertices and apply skinning transform for each effecting bone
+                    for (vert in verts - 1 downTo 0) {
+                        // Skip this vertex if the first weight is zero.
+                        if (weights[idxWeights] == 0f) {
+                            idxTangents += 4
+                            idxPositions += 3
+                            idxWeights += 4
+                            continue
+                        }
+
+                        val nmx = normBuf[idxPositions]
+                        val vtx = posBuf[idxPositions++]
+                        val nmy = normBuf[idxPositions]
+                        val vty = posBuf[idxPositions++]
+                        val nmz = normBuf[idxPositions]
+                        val vtz = posBuf[idxPositions++]
+
+                        val tnx = tanBuf[idxTangents++]
+                        val tny = tanBuf[idxTangents++]
+                        val tnz = tanBuf[idxTangents++]
+
+                        // skipping the 4th component of the tangent since it doesn't have to be transformed
+                        idxTangents++
+
+                        var rx = 0f
+                        var ry = 0f
+                        var rz = 0f
+                        var rnx = 0f
+                        var rny = 0f
+                        var rnz = 0f
+                        var rtx = 0f
+                        var rty = 0f
+                        var rtz = 0f
+
+                        (maxWeightsPerVert - 1 downTo 0).forEach { w ->
+                            val weight = weights[idxWeights]
+                            val mat = offsetMatrices[ib.get(idxWeights++)]
+
+                            rx += (mat.m00 * vtx + mat.m01 * vty + mat.m02 * vtz + mat.m03) * weight
+                            ry += (mat.m10 * vtx + mat.m11 * vty + mat.m12 * vtz + mat.m13) * weight
+                            rz += (mat.m20 * vtx + mat.m21 * vty + mat.m22 * vtz + mat.m23) * weight
+
+                            rnx += (nmx * mat.m00 + nmy * mat.m01 + nmz * mat.m02) * weight
+                            rny += (nmx * mat.m10 + nmy * mat.m11 + nmz * mat.m12) * weight
+                            rnz += (nmx * mat.m20 + nmy * mat.m21 + nmz * mat.m22) * weight
+
+                            rtx += (tnx * mat.m00 + tny * mat.m01 + tnz * mat.m02) * weight
+                            rty += (tnx * mat.m10 + tny * mat.m11 + tnz * mat.m12) * weight
+                            rtz += (tnx * mat.m20 + tny * mat.m21 + tnz * mat.m22) * weight
+                        }
+
+                        idxWeights += fourMinusMaxWeights
+
+                        idxPositions -= 3
+
+                        normBuf[idxPositions] = rnx
+                        posBuf[idxPositions++] = rx
+                        normBuf[idxPositions] = rny
+                        posBuf[idxPositions++] = ry
+                        normBuf[idxPositions] = rnz
+                        posBuf[idxPositions++] = rz
+
+                        idxTangents -= 4
+
+                        tanBuf[idxTangents++] = rtx
+                        tanBuf[idxTangents++] = rty
+                        tanBuf[idxTangents++] = rtz
+
+                        //once again skipping the 4th component of the tangent
+                        idxTangents++
+                    }
+
+                    fvb.position(fvb.position() - bufLength)
+                    fvb.put(posBuf, 0, bufLength)
+                    fnb.position(fnb.position() - bufLength)
+                    fnb.put(normBuf, 0, bufLength)
+                    ftb.position(ftb.position() - tanLength)
+                    ftb.put(tanBuf, 0, tanLength)
                 }
 
-                val nmx = normBuf[idxPositions]
-                val vtx = posBuf[idxPositions++]
-                val nmy = normBuf[idxPositions]
-                val vty = posBuf[idxPositions++]
-                val nmz = normBuf[idxPositions]
-                val vtz = posBuf[idxPositions++]
+                vars.release()
 
-                val tnx = tanBuf[idxTangents++]
-                val tny = tanBuf[idxTangents++]
-                val tnz = tanBuf[idxTangents++]
+                vb.updateData(fvb)
+                nb.updateData(fnb)
+                tb.updateData(ftb)
 
-                // skipping the 4th component of the tangent since it doesn't have to be transformed
-                idxTangents++
 
-                var rx = 0f
-                var ry = 0f
-                var rz = 0f
-                var rnx = 0f
-                var rny = 0f
-                var rnz = 0f
-                var rtx = 0f
-                var rty = 0f
-                var rtz = 0f
-
-                for (w in maxWeightsPerVert - 1 downTo 0) {
-                    val weight = weights[idxWeights]
-                    val mat = offsetMatrices[ib.get(idxWeights++)]
-
-                    rx += (mat.m00 * vtx + mat.m01 * vty + mat.m02 * vtz + mat.m03) * weight
-                    ry += (mat.m10 * vtx + mat.m11 * vty + mat.m12 * vtz + mat.m13) * weight
-                    rz += (mat.m20 * vtx + mat.m21 * vty + mat.m22 * vtz + mat.m23) * weight
-
-                    rnx += (nmx * mat.m00 + nmy * mat.m01 + nmz * mat.m02) * weight
-                    rny += (nmx * mat.m10 + nmy * mat.m11 + nmz * mat.m12) * weight
-                    rnz += (nmx * mat.m20 + nmy * mat.m21 + nmz * mat.m22) * weight
-
-                    rtx += (tnx * mat.m00 + tny * mat.m01 + tnz * mat.m02) * weight
-                    rty += (tnx * mat.m10 + tny * mat.m11 + tnz * mat.m12) * weight
-                    rtz += (tnx * mat.m20 + tny * mat.m21 + tnz * mat.m22) * weight
-                }
-
-                idxWeights += fourMinusMaxWeights
-
-                idxPositions -= 3
-
-                normBuf[idxPositions] = rnx
-                posBuf[idxPositions++] = rx
-                normBuf[idxPositions] = rny
-                posBuf[idxPositions++] = ry
-                normBuf[idxPositions] = rnz
-                posBuf[idxPositions++] = rz
-
-                idxTangents -= 4
-
-                tanBuf[idxTangents++] = rtx
-                tanBuf[idxTangents++] = rty
-                tanBuf[idxTangents++] = rtz
-
-                //once again skipping the 4th component of the tangent
-                idxTangents++
             }
-
-            fvb.position(fvb.position() - bufLength)
-            fvb.put(posBuf, 0, bufLength)
-            fnb.position(fnb.position() - bufLength)
-            fnb.put(normBuf, 0, bufLength)
-            ftb.position(ftb.position() - tanLength)
-            ftb.put(tanBuf, 0, tanLength)
         }
-
-        vars.release()
-
-        vb.updateData(fvb)
-        nb.updateData(fnb)
-        tb.updateData(ftb)
 
 
     }
@@ -750,11 +788,13 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
         numberOfBonesParam = `in`.readSavable("numberOfBonesParam", null) as MatParamOverride
         boneMatricesParam = `in`.readSavable("boneMatricesParam", null) as MatParamOverride
 
-        if (numberOfBonesParam == null) {
-            numberOfBonesParam = MatParamOverride(VarType.Int, "NumberOfBones", null)
-            boneMatricesParam = MatParamOverride(VarType.Matrix4Array, "BoneMatrices", null)
-            getSpatial().addMatParamOverride(numberOfBonesParam)
-            getSpatial().addMatParamOverride(boneMatricesParam)
+        when (numberOfBonesParam) {
+            null -> {
+                numberOfBonesParam = MatParamOverride(VarType.Int, "NumberOfBones", null)
+                boneMatricesParam = MatParamOverride(VarType.Matrix4Array, "BoneMatrices", null)
+                getSpatial().addMatParamOverride(numberOfBonesParam)
+                getSpatial().addMatParamOverride(boneMatricesParam)
+            }
         }
     }
 
@@ -766,12 +806,11 @@ class SkeletonControl : AbstractControl, Cloneable, JmeCloneable {
     private fun updateTargetsAndMaterials(spatial: Spatial?) {
         targets.clear()
 
-        if (spatial is Node) {
-//            findTargets(spatial as Node?)
-            findTargets(spatial as Node)
-        } else if (spatial is Geometry) {
-//            findTargets(spatial as Geometry?)
-            findTargets(spatial as Geometry)
+        when (spatial) {
+            is Node -> //            findTargets(spatial as Node?)
+                findTargets(spatial as Node)
+            is Geometry -> //            findTargets(spatial as Geometry?)
+                findTargets(spatial as Geometry)
         }
     }
 }

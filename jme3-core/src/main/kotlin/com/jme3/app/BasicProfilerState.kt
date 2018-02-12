@@ -66,12 +66,14 @@ class BasicProfilerState @JvmOverloads constructor(enabled: Boolean = false) : B
      */
     var graphScale = 2f
         set(scale) {
-            if (this.graphScale == scale) {
-                return
-            }
-            field = scale
-            if (graph != null) {
-                graph!!.setLocalScale(1f, scale, 1f)
+            when (scale) {
+                this.graphScale -> return
+                else -> {
+                    field = scale
+                    when {
+                        graph != null -> graph!!.setLocalScale(1f, scale, 1f)
+                    }
+                }
             }
         }
 
@@ -153,16 +155,18 @@ class BasicProfilerState @JvmOverloads constructor(enabled: Boolean = false) : B
         refreshBackground()
 
         val inputManager = app.inputManager
-        if (inputManager != null) {
-            inputManager.addMapping(INPUT_MAPPING_PROFILER_TOGGLE, KeyTrigger(KeyInput.KEY_F6))
-            inputManager.addListener(keyListener, INPUT_MAPPING_PROFILER_TOGGLE)
+        when {
+            inputManager != null -> {
+                inputManager.addMapping(INPUT_MAPPING_PROFILER_TOGGLE, KeyTrigger(KeyInput.KEY_F6))
+                inputManager.addListener(keyListener, INPUT_MAPPING_PROFILER_TOGGLE)
+            }
         }
     }
 
     override fun cleanup(app: Application?) {
         val inputManager = app!!.inputManager
-        if (inputManager.hasMapping(INPUT_MAPPING_PROFILER_TOGGLE)) {
-            inputManager.deleteMapping(INPUT_MAPPING_PROFILER_TOGGLE)
+        when {
+            inputManager.hasMapping(INPUT_MAPPING_PROFILER_TOGGLE) -> inputManager.deleteMapping(INPUT_MAPPING_PROFILER_TOGGLE)
         }
         inputManager.removeListener(keyListener)
     }
@@ -187,10 +191,10 @@ class BasicProfilerState @JvmOverloads constructor(enabled: Boolean = false) : B
     private inner class ProfilerKeyListener : ActionListener {
 
         override fun onAction(name: String, value: Boolean, tpf: Float) {
-            if (!value) {
-                return
+            when {
+                !value -> return
+                else -> toggleProfiler()
             }
-            toggleProfiler()
         }
     }
 

@@ -108,36 +108,44 @@ abstract class CompactArray<T> {
      * They are serialized automatically when get() method is called.
      * @param objArray
      */
-    fun add(vararg objArray: T) {
-        if (objArray == null || objArray.size == 0) {
-            return
-        }
-        invalid = true
-        var base = 0
-        if (index == null) {
-            index = IntArray(objArray.size)
-        } else {
-            if (indexPool.isEmpty()) {
-                throw RuntimeException("Internal is already fixed")
-            }
-            base = index!!.size
+    fun add(vararg objArray: T) {//index = Arrays.copyOf(index, base+objArray.length);
+        //index = Arrays.copyOf(index, base+objArray.length);
+        when {
+            objArray.isEmpty() -> return
+            else -> {
+                invalid = true
+                var base = 0
+                when (index) {
+                    null -> index = IntArray(objArray.size)
+                    else -> when {
+                        indexPool.isEmpty() -> throw RuntimeException("Internal is already fixed")
+                    //index = Arrays.copyOf(index, base+objArray.length);
+                        else -> {
+                            base = index!!.size
 
-            val tmp = IntArray(base + objArray.size)
-            System.arraycopy(index!!, 0, tmp, 0, index!!.size)
-            index = tmp
-            //index = Arrays.copyOf(index, base+objArray.length);
-        }
-        for (j in objArray.indices) {
-            val obj = objArray[j]
-            if (obj == null) {
-                index!![base + j] = -1
-            } else {
-                var i: Int? = indexPool[obj]
-                if (i == null) {
-                    i = indexPool.size
-                    indexPool[obj] = i
+                            val tmp = IntArray(base + objArray.size)
+                            System.arraycopy(index!!, 0, tmp, 0, index!!.size)
+                            index = tmp
+                            //index = Arrays.copyOf(index, base+objArray.length);
+                        }
+                    }
                 }
-                index!![base + j] = i
+                objArray.indices.forEach { j ->
+                    val obj = objArray[j]
+                    when (obj) {
+                        null -> index!![base + j] = -1
+                        else -> {
+                            var i: Int? = indexPool[obj]
+                            when (i) {
+                                null -> {
+                                    i = indexPool.size
+                                    indexPool[obj] = i
+                                }
+                            }
+                            index!![base + j] = i!!
+                        }
+                    }
+                }
             }
         }
     }
@@ -176,15 +184,17 @@ abstract class CompactArray<T> {
      * serialize this compact array
      */
     fun serialize() {
-        if (invalid) {
-            val newSize = indexPool.size * tupleSize
-            if (array == null || Array.getLength(array) < newSize) {
-                array = ensureCapacity(array, newSize)
-                for ((obj, i) in indexPool) {
-                    serialize(i, obj)
+        when {
+            invalid -> {
+                val newSize = indexPool.size * tupleSize
+                when {
+                    array == null || Array.getLength(array) < newSize -> {
+                        array = ensureCapacity(array, newSize)
+                        indexPool.forEach { (obj, i) -> serialize(i, obj) }
+                    }
                 }
+                invalid = false
             }
-            invalid = false
         }
     }
 
@@ -195,15 +205,15 @@ abstract class CompactArray<T> {
      * @return
      */
     protected fun ensureCapacity(arr: FloatArray?, size: Int): FloatArray {
-        if (arr == null) {
-            return FloatArray(size)
-        } else if (arr.size >= size) {
-            return arr
-        } else {
-            val tmp = FloatArray(size)
-            System.arraycopy(arr, 0, tmp, 0, arr.size)
-            return tmp
-            //return Arrays.copyOf(arr, size);
+        return when {
+            arr == null -> FloatArray(size)
+            arr.size >= size -> arr
+            else -> {
+                val tmp = FloatArray(size)
+                System.arraycopy(arr, 0, tmp, 0, arr.size)
+                tmp
+                //return Arrays.copyOf(arr, size);
+            }
         }
     }
 
@@ -214,7 +224,7 @@ abstract class CompactArray<T> {
      */
     fun getIndex(vararg objArray: T): IntArray {
         val index = IntArray(objArray.size)
-        for (i in index.indices) {
+        index.indices.forEach { i ->
             val obj = objArray[i]
             index[i] = if (obj != null) indexPool[obj]!! else -1
         }
@@ -237,13 +247,13 @@ abstract class CompactArray<T> {
      fun <T> toObjectArray(): kotlin.Array<T>? {
         try {
             val compactArr = Array.newInstance(elementClass, serializedSize / tupleSize) as kotlin.Array<T>
-            for (i in compactArr.indices) {
+            compactArr.indices.forEach { i ->
                 compactArr[i] = elementClass.newInstance() as T
                 deserialize(i, compactArr[i])
             }
 
             val objArr = Array.newInstance(elementClass, totalObjectSize) as kotlin.Array<T>
-            for (i in objArr.indices) {
+            objArr.indices.forEach { i ->
                 val compactIndex = getCompactIndex(i)
                 objArr[i] = compactArr[compactIndex]
             }

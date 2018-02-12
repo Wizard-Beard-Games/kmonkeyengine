@@ -44,14 +44,15 @@ class AnimationUtils {
          * @param loopMode
          * @return
          */
-        fun clampWrapTime(time: Float, duration: Float, loopMode: LoopMode): Float {
-            if (time == 0f || duration == 0f) {
-                return 0f // prevent division by 0 errors
-            }
-            return when (loopMode) {
+        fun clampWrapTime(time: Float, duration: Float, loopMode: LoopMode): Float = when {
+            time == 0f || duration == 0f -> 0f // prevent division by 0 errors
+            else -> when (loopMode) {
                 LoopMode.Cycle -> {
                     val sign = (time / duration).toInt() % 2 != 0
-                    if (sign) -(duration - time % duration) else time % duration
+                    when {
+                        sign -> -(duration - time % duration)
+                        else -> time % duration
+                    }
                 }
                 LoopMode.DontLoop -> if (time > duration) duration else if (time < 0) 0f else time
                 LoopMode.Loop -> time % duration

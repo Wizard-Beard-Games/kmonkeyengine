@@ -74,8 +74,8 @@ class TrackInfo : Savable, JmeCloneable {
     }
 
     override fun jmeClone(): Any {
-        try {
-            return super.clone()
+        return try {
+            super.clone()
         } catch (e: CloneNotSupportedException) {
             throw RuntimeException("Error cloning", e)
         }

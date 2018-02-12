@@ -71,18 +71,20 @@ class BasicProfiler @JvmOverloads constructor(size: Int = 1280) : AppProfiler {
      */
     var frameCount: Int = 0
         set(size) {
-            if (this.frameCount == size) {
-                return
+            when (size) {
+                this.frameCount -> return
+                else -> {
+                    field = size
+                    this.frames = LongArray(size * 2)
+
+                    createMesh()
+
+                    when {
+                        frameIndex >= size -> frameIndex = 0
+                    }
+                }
             }
 
-            field = size
-            this.frames = LongArray(size * 2)
-
-            createMesh()
-
-            if (frameIndex >= size) {
-                frameIndex = 0
-            }
         }
     private var frameIndex = 0
     private var frames: LongArray? = null
@@ -108,15 +110,19 @@ class BasicProfiler @JvmOverloads constructor(size: Int = 1280) : AppProfiler {
     }
 
     protected fun createMesh() {
-        if (mesh == null) {
-            mesh = Mesh()
-            mesh!!.mode = Mesh.Mode.Lines
+        // For each index we add 4 colors, one for each line
+        // endpoint for two layers.
+        when (mesh) {
+            null -> {
+                mesh = Mesh()
+                mesh!!.mode = Mesh.Mode.Lines
+            }
         }
 
         mesh!!.setBuffer(Type.Position, 3, BufferUtils.createFloatBuffer(frameCount * 4 * 3))
 
         val cb = BufferUtils.createFloatBuffer(frameCount * 4 * 4)
-        for (i in 0 until frameCount) {
+        (0 until frameCount).forEach { i ->
             // For each index we add 4 colors, one for each line
             // endpoint for two layers.
             cb.put(0.5f).put(0.5f).put(0f).put(1f)
@@ -131,7 +137,7 @@ class BasicProfiler @JvmOverloads constructor(size: Int = 1280) : AppProfiler {
         val pb = mesh!!.getBuffer(Type.Position).data as FloatBuffer
         pb.rewind()
         val scale = 1 / 1000000f // scaled to ms as pixels
-        for (i in 0 until frameCount) {
+        (0 until frameCount).forEach { i ->
             val t1 = frames!![i * 2] * scale
             val t2 = frames!![i * 2 + 1] * scale
 
@@ -156,14 +162,25 @@ class BasicProfiler @JvmOverloads constructor(size: Int = 1280) : AppProfiler {
                 frames!![frameIndex * 2 + 1] = time - renderTime
                 previousFrame = startTime
                 frameIndex++
-                if (frameIndex >= frameCount) {
-                    frameIndex = 0
+                when {
+                    frameIndex >= frameCount -> frameIndex = 0
                 }
-                if (startTime - lastUpdate > updateInterval) {
-                    updateMesh()
-                    lastUpdate = startTime
+                when {
+                    startTime - lastUpdate > updateInterval -> {
+                        updateMesh()
+                        lastUpdate = startTime
+                    }
                 }
             }
+            AppStep.QueuedTasks -> TODO()
+            AppStep.ProcessInput -> TODO()
+            AppStep.ProcessAudio -> TODO()
+            AppStep.StateManagerUpdate -> TODO()
+            AppStep.SpatialUpdate -> TODO()
+            AppStep.StateManagerRender -> TODO()
+            AppStep.RenderPreviewViewPorts -> TODO()
+            AppStep.RenderMainViewPorts -> TODO()
+            AppStep.RenderPostViewPorts -> TODO()
         }
     }
 

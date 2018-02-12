@@ -94,11 +94,10 @@ class EffectTrack : ClonableTrack {
 
         override fun setSpatial(spatial: Spatial?) {
             super.setSpatial(spatial)
-            if (spatial != null) {
-                if (spatial is ParticleEmitter) {
-                    emitter = spatial
-                } else {
-                    throw IllegalArgumentException("KillParticleEmitter can only ba attached to ParticleEmitter")
+            when {
+                spatial != null -> when (spatial) {
+                    is ParticleEmitter -> emitter = spatial
+                    else -> throw IllegalArgumentException("KillParticleEmitter can only ba attached to ParticleEmitter")
                 }
             }
 
@@ -106,15 +105,19 @@ class EffectTrack : ClonableTrack {
         }
 
         override fun controlUpdate(tpf: Float) {
-            if (remove) {
-                emitter.removeControl(this)
-                return
-            }
-            if (emitter.numVisibleParticles == 0) {
-                emitter.cullHint = CullHint.Always
-                emitter.isEnabled = false
-                emitter.removeControl(this)
-                stopRequested = false
+            when {
+                remove -> {
+                    emitter.removeControl(this)
+                    return
+                }
+                else -> when {
+                    emitter.numVisibleParticles == 0 -> {
+                        emitter.cullHint = CullHint.Always
+                        emitter.isEnabled = false
+                        emitter.removeControl(this)
+                        stopRequested = false
+                    }
+                }
             }
         }
 
@@ -195,31 +198,43 @@ class EffectTrack : ClonableTrack {
      *
      * @see Track.setTime
      */
-    override fun setTime(time: Float, weight: Float, control: AnimControl, channel: AnimChannel, vars: TempVars) {
+    override fun setTime(time: Float, weight: Float, control: AnimControl, channel: AnimChannel, vars: TempVars) {//else reset its former particlePerSec value to let it emmit.
 
-        if (time >= length) {
-            return
-        }
-        //first time adding the Animation listener to stop the track at the end of the animation
-        if (!initialized) {
-            control.addListener(OnEndListener())
-            initialized = true
-        }
+        //if the emitter has 0 particles per seconds emmit all particles in one shot
+        when {
+            time >= length -> return
+        //first time adding the Animation listener to stop the track at the end of the animation//else reset its former particlePerSec value to let it emmit.
+        //if the emitter has 0 particles per seconds emmit all particles in one shot
         //checking fo time to trigger the effect
-        if (!emitted && time >= startOffset) {
-            emitted = true
-            emitter!!.cullHint = CullHint.Dynamic
-            emitter!!.isEnabled = true
-            //if the emitter has 0 particles per seconds emmit all particles in one shot
-            if (particlesPerSeconds == 0f) {
-                emitter!!.emitAllParticles()
-                if (!killParticles.stopRequested) {
-                    emitter!!.addControl(killParticles)
-                    killParticles.stopRequested = true
+            else -> {
+                when {
+                    !initialized -> {
+                        control.addListener(OnEndListener())
+                        initialized = true
+                    }
                 }
-            } else {
-                //else reset its former particlePerSec value to let it emmit.
-                emitter!!.particlesPerSec = particlesPerSeconds
+                //checking fo time to trigger the effect
+                when {
+                    !emitted && time >= startOffset -> {
+                        emitted = true
+                        emitter!!.cullHint = CullHint.Dynamic
+                        emitter!!.isEnabled = true
+                        //if the emitter has 0 particles per seconds emmit all particles in one shot
+                        when (particlesPerSeconds) {
+                            0f -> {
+                                emitter!!.emitAllParticles()
+                                when {
+                                    !killParticles.stopRequested -> {
+                                        emitter!!.addControl(killParticles)
+                                        killParticles.stopRequested = true
+                                    }
+                                }
+                            }
+                            else -> //else reset its former particlePerSec value to let it emmit.
+                                emitter!!.particlesPerSec = particlesPerSeconds
+                        }
+                    }
+                }
             }
         }
     }
@@ -228,9 +243,11 @@ class EffectTrack : ClonableTrack {
     private fun stop() {
         emitter!!.particlesPerSec = 0f
         emitted = false
-        if (!killParticles.stopRequested) {
-            emitter!!.addControl(killParticles)
-            killParticles.stopRequested = true
+        when {
+            !killParticles.stopRequested -> {
+                emitter!!.addControl(killParticles)
+                killParticles.stopRequested = true
+            }
         }
 
     }
@@ -275,9 +292,12 @@ class EffectTrack : ClonableTrack {
 
         //searching for the newly cloned ParticleEmitter
         effectTrack.emitter = findEmitter(spatial)
-        if (effectTrack.emitter == null) {
-            logger.log(Level.WARNING, "{0} was not found in {1} or is not bound to this track", arrayOf<Any>(emitter!!.name, spatial.name))
-            effectTrack.emitter = emitter
+        when {
+            effectTrack.emitter == null -> {
+                logger.log(Level.WARNING, "{0} was not found in {1} or is not bound to this track", arrayOf<Any>(emitter!!.name, spatial.name))
+                effectTrack.emitter = emitter
+            }
+        //setting user data on the new emmitter and marking it with a reference to the cloned Track.
         }
 
         removeUserData(this)
@@ -309,19 +329,22 @@ class EffectTrack : ClonableTrack {
      * @return
      */
     private fun findEmitter(spat: Spatial): ParticleEmitter? {
-        if (spat is ParticleEmitter) {
-            //spat is a PArticleEmitter
-            //getting the UserData TrackInfo so check if it should be attached to this Track
-            val t = spat.getUserData<Any>("TrackInfo") as TrackInfo
-            return if (t != null && t.getTracks().contains(this)) {
-                spat
-            } else null
+        when (spat) {
+            is ParticleEmitter -> {
+                //spat is a PArticleEmitter
+                //getting the UserData TrackInfo so check if it should be attached to this Track
+                val t = spat.getUserData<Any>("TrackInfo") as TrackInfo
+                return if (t != null && t.tracks.contains(this)) {
+                    spat
+                } else null
 
-        } else if (spat is Node) {
-            for (child in spat.children) {
+            }
+            is Node -> spat.children.forEach { child ->
                 val em = findEmitter(child)
-                if (em != null) {
-                    return em
+                when {
+                    em != null -> return em
+                    else -> {
+                    }
                 }
             }
         }
@@ -330,9 +353,9 @@ class EffectTrack : ClonableTrack {
 
     override fun cleanUp() {
         val t = emitter!!.getUserData<Any>("TrackInfo") as TrackInfo
-        t.getTracks().remove(this)
-        if (t.getTracks().isEmpty()) {
-            emitter!!.setUserData("TrackInfo", null)
+        t.tracks.remove(this)
+        when {
+            t.tracks.isEmpty() -> emitter!!.setUserData("TrackInfo", null)
         }
     }
 
@@ -350,9 +373,11 @@ class EffectTrack : ClonableTrack {
      * @param emitter
      */
     fun setEmitter(emitter: ParticleEmitter) {
-        if (this.emitter != null) {
-            val data = emitter.getUserData<Any>("TrackInfo") as TrackInfo
-            data.getTracks().remove(this)
+        when {
+            this.emitter != null -> {
+                val data = emitter.getUserData<Any>("TrackInfo") as TrackInfo
+                data.tracks.remove(this)
+            }
         }
         this.emitter = emitter
         //saving particles per second value
@@ -364,18 +389,18 @@ class EffectTrack : ClonableTrack {
 
     private fun setUserData(effectTrack: EffectTrack) {
         //fetching the UserData TrackInfo.
-        var data = effectTrack.emitter!!.getUserData<Any>("TrackInfo") as TrackInfo
+        var data = effectTrack.emitter!!.getUserData<Any>("TrackInfo") as TrackInfo?
 
         //if it does not exist, we create it and attach it to the emitter.
-        if (data == null) {
-            data = TrackInfo()
-            effectTrack.emitter!!.setUserData("TrackInfo", data)
+        when (data) {
+            null -> {
+                data = TrackInfo()
+                effectTrack.emitter!!.setUserData("TrackInfo", data)
+            }
         }
 
         //adding the given Track to the TrackInfo.
-        data.addTrack(effectTrack)
-
-
+        data?.addTrack(effectTrack)
     }
 
     private fun removeUserData(effectTrack: EffectTrack) {
@@ -385,7 +410,7 @@ class EffectTrack : ClonableTrack {
         //if it does not exist, we create it and attach it to the emitter.
 
         //removing the given Track to the TrackInfo.
-        data.getTracks().remove(effectTrack)
+        data.tracks.remove(effectTrack)
 
 
     }

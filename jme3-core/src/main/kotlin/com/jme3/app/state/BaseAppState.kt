@@ -119,18 +119,26 @@ abstract class BaseAppState : AppState {
     private var enabled: Boolean = true
 
     override fun setEnabled(enabled: Boolean) {
-            if (this.isEnabled() == enabled)
-                return
-            this.enabled = enabled
-            if (!isInitialized())
-                return
-            if (enabled) {
-                log.log(Level.FINEST, "onEnable():{0}", this)
-                onEnable()
-            } else {
-                log.log(Level.FINEST, "onDisable():{0}", this)
-                onDisable()
-            }    }
+        when (enabled) {
+            this.isEnabled() -> return
+            else -> {
+                this.enabled = enabled
+                when {
+                    !isInitialized() -> return
+                    else -> when {
+                        enabled -> {
+                            log.log(Level.FINEST, "onEnable():{0}", this)
+                            onEnable()
+                        }
+                        else -> {
+                            log.log(Level.FINEST, "onDisable():{0}", this)
+                            onDisable()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     val stateManager: AppStateManager
         get() = application!!.stateManager
@@ -178,9 +186,11 @@ abstract class BaseAppState : AppState {
 //        isInitialized = true
         setInitialized(true)
         initialize(app)
-        if (isEnabled()) {
-            log.log(Level.FINEST, "onEnable():{0}", this)
-            onEnable()
+        when {
+            isEnabled() -> {
+                log.log(Level.FINEST, "onEnable():{0}", this)
+                onEnable()
+            }
         }
     }
 
@@ -207,9 +217,12 @@ abstract class BaseAppState : AppState {
     override fun cleanup() {
         log.log(Level.FINEST, "cleanup():{0}", this)
 
-        if (isEnabled()) {
-            log.log(Level.FINEST, "onDisable():{0}", this)
-            onDisable()
+        when {
+            isEnabled() -> {
+                log.log(Level.FINEST, "onDisable():{0}", this)
+                onDisable()
+            }
+//        isInitialized = false
         }
         cleanup(application)
 //        isInitialized = false

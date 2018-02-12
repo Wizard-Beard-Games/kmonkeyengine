@@ -63,15 +63,18 @@ class AppTask<V>
 
     override fun cancel(mayInterruptIfRunning: Boolean): Boolean {
         stateLock.lock()
-        try {
-            if (result != null) {
-                return false
+        return try {
+            when {
+                result != null -> false
+                else -> {
+                    cancelled = true
+
+                    finishedCondition.signalAll()
+
+                    true
+                }
             }
-            cancelled = true
 
-            finishedCondition.signalAll()
-
-            return true
         } finally {
             stateLock.unlock()
         }
@@ -80,14 +83,14 @@ class AppTask<V>
     @Throws(InterruptedException::class, ExecutionException::class)
     override fun get(): V? {
         stateLock.lock()
-        try {
+        return try {
             while (!isDone) {
                 finishedCondition.await()
             }
-            if (exception != null) {
-                throw exception!!
+            when {
+                exception != null -> throw exception!!
+                else -> result
             }
-            return result
         } finally {
             stateLock.unlock()
         }
@@ -96,17 +99,17 @@ class AppTask<V>
     @Throws(InterruptedException::class, ExecutionException::class, TimeoutException::class)
     override fun get(timeout: Long, unit: TimeUnit): V {
         stateLock.lock()
-        try {
-            if (!isDone) {
-                finishedCondition.await(timeout, unit)
+        return try {
+            when {
+                !isDone -> finishedCondition.await(timeout, unit)
             }
-            if (exception != null) {
-                throw exception!!
+            when {
+                exception != null -> throw exception!!
+                else -> when (result) {
+                    null -> throw TimeoutException("Object not returned in time allocated.")
+                    else -> result!!
+                }
             }
-            if (result == null) {
-                throw TimeoutException("Object not returned in time allocated.")
-            }
-            return result!!
         } finally {
             stateLock.unlock()
         }
@@ -114,8 +117,8 @@ class AppTask<V>
 
     override fun isCancelled(): Boolean {
         stateLock.lock()
-        try {
-            return cancelled
+        return try {
+            cancelled
         } finally {
             stateLock.unlock()
         }
@@ -123,39 +126,36 @@ class AppTask<V>
 
     override fun isDone(): Boolean {
         stateLock.lock()
-        try {
-            return finished || cancelled || exception != null
+        return try {
+            finished || cancelled || exception != null
         } finally {
             stateLock.unlock()
         }
     }
 
-    operator fun invoke() {
+    operator fun invoke() = try {
+        val tmpResult = callable.call()
+
+        stateLock.lock()
         try {
-            val tmpResult = callable.call()
+            result = tmpResult
+            finished = true
 
-            stateLock.lock()
-            try {
-                result = tmpResult
-                finished = true
-
-                finishedCondition.signalAll()
-            } finally {
-                stateLock.unlock()
-            }
-        } catch (e: Exception) {
-            logger.logp(Level.SEVERE, this.javaClass.toString(), "invoke()", "Exception", e)
-
-            stateLock.lock()
-            try {
-                exception = ExecutionException(e)
-
-                finishedCondition.signalAll()
-            } finally {
-                stateLock.unlock()
-            }
+            finishedCondition.signalAll()
+        } finally {
+            stateLock.unlock()
         }
+    } catch (e: Exception) {
+        logger.logp(Level.SEVERE, this.javaClass.toString(), "invoke()", "Exception", e)
 
+        stateLock.lock()
+        try {
+            exception = ExecutionException(e)
+
+            finishedCondition.signalAll()
+        } finally {
+            stateLock.unlock()
+        }
     }
 
     companion object {

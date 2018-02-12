@@ -196,10 +196,10 @@ class Bone : Savable, JmeCloneable {
     var localRotation: Quaternion
         get() = localRot
         set(rot) {
-            if (!userControl) {
-                throw IllegalStateException("User control must be on bone to allow user transforms")
+            when {
+                !userControl -> throw IllegalStateException("User control must be on bone to allow user transforms")
+                else -> this.localRot.set(rot)
             }
-            this.localRot.set(rot)
         }
 
     val modelBindInverseTransform: Transform
@@ -207,8 +207,8 @@ class Bone : Savable, JmeCloneable {
             val t = Transform()
             t.translation = worldBindInversePosition
             t.rotation = worldBindInverseRotation
-            if (worldBindInverseScale != null) {
-                t.scale = worldBindInverseScale
+            when {
+                worldBindInverseScale != null -> t.scale = worldBindInverseScale
             }
             return t
         }
@@ -218,8 +218,8 @@ class Bone : Savable, JmeCloneable {
             val t = Transform()
             t.translation = worldBindPosition
             t.rotation = worldBindRotation
-            if (worldBindScale != null) {
-                t.scale = worldBindScale
+            when {
+                worldBindScale != null -> t.scale = worldBindScale
             }
             return t.invert()
         }
@@ -278,8 +278,8 @@ class Bone : Savable, JmeCloneable {
     constructor() {}
 
     override fun jmeClone(): Any {
-        try {
-            return super.clone() as Bone
+        return try {
+            super.clone() as Bone
         } catch (ex: CloneNotSupportedException) {
             throw AssertionError()
         }
@@ -435,47 +435,62 @@ class Bone : Savable, JmeCloneable {
      * model transform with this bones' local transform.
      */
     fun updateModelTransforms() {
-        if (currentWeightSum == 1f) {
-            currentWeightSum = -1f
-        } else if (currentWeightSum != -1f) {
-            // Apply the weight to the local transform
-            if (currentWeightSum == 0f) {
-                localRot.set(worldBindRotation)
-                localPosition.set(worldBindPosition)
-                localScale.set(worldBindScale)
-            } else {
-                val invWeightSum = 1f - currentWeightSum
-                localRot.nlerp(worldBindRotation, invWeightSum)
-                localPosition.interpolateLocal(worldBindPosition, invWeightSum)
-                localScale.interpolateLocal(worldBindScale, invWeightSum)
+        //rotation
+
+        //scale
+        //For scale parent scale is not taken into account!
+        // worldScale.set(localScale);
+
+        //translation
+        //scale and rotation of parent affect bone position
+        when {
+            currentWeightSum == 1f -> currentWeightSum = -1f
+            currentWeightSum != -1f -> {
+                // Apply the weight to the local transform
+                when (currentWeightSum) {
+                    0f -> {
+                        localRot.set(worldBindRotation)
+                        localPosition.set(worldBindPosition)
+                        localScale.set(worldBindScale)
+                    }
+                    else -> {
+                        val invWeightSum = 1f - currentWeightSum
+                        localRot.nlerp(worldBindRotation, invWeightSum)
+                        localPosition.interpolateLocal(worldBindPosition, invWeightSum)
+                        localScale.interpolateLocal(worldBindScale, invWeightSum)
+                    }
+                }
+
+                // Future invocations of transform blend will start over.
+                currentWeightSum = -1f
             }
-
-            // Future invocations of transform blend will start over.
-            currentWeightSum = -1f
         }
 
-        if (parent != null) {
-            //rotation
-            parent!!.modelSpaceRotation.mult(localRot, modelSpaceRotation)
+        when {
+            parent != null -> {
+                //rotation
+                parent!!.modelSpaceRotation.mult(localRot, modelSpaceRotation)
 
-            //scale
-            //For scale parent scale is not taken into account!
-            // worldScale.set(localScale);
-            parent!!.modelSpaceScale.mult(localScale, modelSpaceScale)
+                //scale
+                //For scale parent scale is not taken into account!
+                // worldScale.set(localScale);
+                parent!!.modelSpaceScale.mult(localScale, modelSpaceScale)
 
-            //translation
-            //scale and rotation of parent affect bone position
-            parent!!.modelSpaceRotation.mult(localPosition, modelSpacePosition)
-            modelSpacePosition.multLocal(parent!!.modelSpaceScale)
-            modelSpacePosition.addLocal(parent!!.modelSpacePosition)
-        } else {
-            modelSpaceRotation.set(localRot)
-            modelSpacePosition.set(localPosition)
-            modelSpaceScale.set(localScale)
+                //translation
+                //scale and rotation of parent affect bone position
+                parent!!.modelSpaceRotation.mult(localPosition, modelSpacePosition)
+                modelSpacePosition.multLocal(parent!!.modelSpaceScale)
+                modelSpacePosition.addLocal(parent!!.modelSpacePosition)
+            }
+            else -> {
+                modelSpaceRotation.set(localRot)
+                modelSpacePosition.set(localPosition)
+                modelSpaceScale.set(localScale)
+            }
         }
 
-        if (attachNode != null) {
-            updateAttachNode()
+        when {
+            attachNode != null -> updateAttachNode()
         }
     }
 
@@ -484,29 +499,31 @@ class Bone : Savable, JmeCloneable {
      */
     private fun updateAttachNode() {
         val attachParent = attachNode!!.parent
-        if (attachParent == null || targetGeometry == null
-                || targetGeometry!!.parent === attachParent && targetGeometry!!.localTransform.isIdentity) {
-            /*
+        when {
+            attachParent == null || targetGeometry == null || targetGeometry!!.parent === attachParent && targetGeometry!!.localTransform.isIdentity -> {
+                /*
              * The animated meshes are in the same coordinate system as the
              * attachments node: no further transforms are needed.
              */
-            attachNode!!.localTranslation = modelSpacePosition
-            attachNode!!.localRotation = modelSpaceRotation
-            attachNode!!.localScale = modelSpaceScale
+                attachNode!!.localTranslation = modelSpacePosition
+                attachNode!!.localRotation = modelSpaceRotation
+                attachNode!!.localScale = modelSpaceScale
 
-        } else {
-            var loopSpatial: Spatial? = targetGeometry
-            val combined = Transform(modelSpacePosition, modelSpaceRotation, modelSpaceScale)
-            /*
+            }
+            else -> {
+                var loopSpatial: Spatial? = targetGeometry
+                val combined = Transform(modelSpacePosition, modelSpaceRotation, modelSpaceScale)
+                /*
              * Climb the scene graph applying local transforms until the
              * attachments node's parent is reached.
              */
-            while (loopSpatial !== attachParent && loopSpatial != null) {
-                val localTransform = loopSpatial.localTransform
-                combined.combineWithParent(localTransform)
-                loopSpatial = loopSpatial.parent
+                while (loopSpatial !== attachParent && loopSpatial != null) {
+                    val localTransform = loopSpatial.localTransform
+                    combined.combineWithParent(localTransform)
+                    loopSpatial = loopSpatial.parent
+                }
+                attachNode!!.localTransform = combined
             }
-            attachNode!!.localTransform = combined
         }
     }
 
@@ -516,9 +533,7 @@ class Bone : Savable, JmeCloneable {
     fun update() {
         this.updateModelTransforms()
 
-        for (i in children.indices.reversed()) {
-            children[i].update()
-        }
+        children.indices.reversed().forEach { i -> children[i].update() }
     }
 
     /**
@@ -529,10 +544,14 @@ class Bone : Savable, JmeCloneable {
         worldBindRotation!!.set(localRot)
         worldBindScale!!.set(localScale)
 
-        if (worldBindInversePosition == null) {
-            worldBindInversePosition = Vector3f()
-            worldBindInverseRotation = Quaternion()
-            worldBindInverseScale = Vector3f()
+        when (worldBindInversePosition) {
+            null -> {
+                worldBindInversePosition = Vector3f()
+                worldBindInverseRotation = Quaternion()
+                worldBindInverseScale = Vector3f()
+            }
+
+        // Save inverse derived position/scale/orientation, used for calculate offset transform later
         }
 
         // Save inverse derived position/scale/orientation, used for calculate offset transform later
@@ -545,24 +564,22 @@ class Bone : Savable, JmeCloneable {
         worldBindInverseScale!!.set(Vector3f.UNIT_XYZ)
         worldBindInverseScale!!.divideLocal(modelSpaceScale)
 
-        for (b in children) {
-            b.setBindingPose()
-        }
+        children.forEach { b -> b.setBindingPose() }
     }
 
     /**
      * Reset the bone and its children to bind pose.
      */
     internal fun reset() {
-        if (!userControl) {
-            localPosition.set(worldBindPosition)
-            localRot.set(worldBindRotation)
-            localScale.set(worldBindScale)
+        when {
+            !userControl -> {
+                localPosition.set(worldBindPosition)
+                localRot.set(worldBindRotation)
+                localScale.set(worldBindScale)
+            }
         }
 
-        for (i in children.indices.reversed()) {
-            children[i].reset()
-        }
+        children.indices.reversed().forEach { i -> children[i].reset() }
     }
 
     /**
@@ -599,17 +616,19 @@ class Bone : Savable, JmeCloneable {
      * @param scale the scale in local space
      */
     fun setUserTransforms(translation: Vector3f, rotation: Quaternion, scale: Vector3f) {
-        if (!userControl) {
-            throw IllegalStateException("You must call setUserControl(true) in order to setUserTransform to work")
+        when {
+            !userControl -> throw IllegalStateException("You must call setUserControl(true) in order to setUserTransform to work")
+            else -> {
+                localPosition.set(worldBindPosition)
+                localRot.set(worldBindRotation)
+                localScale.set(worldBindScale)
+
+                localPosition.addLocal(translation)
+                localRot.multLocal(rotation)
+                localScale.multLocal(scale)
+            }
         }
 
-        localPosition.set(worldBindPosition)
-        localRot.set(worldBindRotation)
-        localScale.set(worldBindScale)
-
-        localPosition.addLocal(translation)
-        localRot.multLocal(rotation)
-        localScale.multLocal(scale)
     }
 
     /**
@@ -630,19 +649,26 @@ class Bone : Savable, JmeCloneable {
      * @param rotation rotation in model space
      */
     fun setUserTransformsInModelSpace(translation: Vector3f, rotation: Quaternion) {
-        if (!userControl) {
-            throw IllegalStateException("You must call setUserControl(true) in order to setUserTransformsInModelSpace to work")
-        }
+        when {
+            !userControl -> throw IllegalStateException("You must call setUserControl(true) in order to setUserTransformsInModelSpace to work")
 
         // TODO: add scale here ???
-        modelSpacePosition.set(translation)
-        modelSpaceRotation.set(rotation)
 
         //if there is an attached Node we need to set its local transforms too.
-        if (attachNode != null) {
-            attachNode!!.localTranslation = translation
-            attachNode!!.localRotation = rotation
+            else -> {
+                modelSpacePosition.set(translation)
+                modelSpaceRotation.set(rotation)
+
+                //if there is an attached Node we need to set its local transforms too.
+                when {
+                    attachNode != null -> {
+                        attachNode!!.localTranslation = translation
+                        attachNode!!.localRotation = rotation
+                    }
+                }
+            }
         }
+
     }
 
     /**
@@ -651,8 +677,8 @@ class Bone : Savable, JmeCloneable {
      * @param rotation a rotation
      */
     fun getCombinedTransform(position: Vector3f, rotation: Quaternion): Transform {
-        if (tmpTransform == null) {
-            tmpTransform = Transform()
+        when (tmpTransform) {
+            null -> tmpTransform = Transform()
         }
         rotation.mult(localPosition, tmpTransform!!.translation).addLocal(position)
         tmpTransform!!.setRotation(rotation).rotation.multLocal(localRot)
@@ -681,11 +707,13 @@ class Bone : Savable, JmeCloneable {
             }
         }
 
-        if (attachNode == null) {
-            attachNode = Node(name!! + "_attachnode")
-            attachNode!!.setUserData("AttachedBone", this)
-            //We don't want the node to have a numBone set by a parent node so we force it to null
-            attachNode!!.addMatParamOverride(MatParamOverride(VarType.Int, "NumberOfBones", null))
+        when (attachNode) {
+            null -> {
+                attachNode = Node(name!! + "_attachnode")
+                attachNode!!.setUserData("AttachedBone", this)
+                //We don't want the node to have a numBone set by a parent node so we force it to null
+                attachNode!!.addMatParamOverride(MatParamOverride(VarType.Int, "NumberOfBones", null))
+            }
         }
 
         return attachNode!!
@@ -704,20 +732,22 @@ class Bone : Savable, JmeCloneable {
      * Bone is assumed to be in bind pose when this is called.
      */
     internal fun setAnimTransforms(translation: Vector3f, rotation: Quaternion, scale: Vector3f?) {
-        if (userControl) {
-            return
-        }
+        when {
+            userControl -> return
 
         //        localPos.addLocal(translation);
         //        localRot.multLocal(rotation);
         //localRot = localRot.mult(rotation);
+            else -> {
+                localPosition.set(worldBindPosition).addLocal(translation)
+                localRot.set(worldBindRotation).multLocal(rotation)
 
-        localPosition.set(worldBindPosition).addLocal(translation)
-        localRot.set(worldBindRotation).multLocal(rotation)
-
-        if (scale != null) {
-            localScale.set(worldBindScale).multLocal(scale)
+                when {
+                    scale != null -> localScale.set(worldBindScale).multLocal(scale)
+                }
+            }
         }
+
     }
 
     /**
@@ -740,52 +770,77 @@ class Bone : Savable, JmeCloneable {
      * @param weight The weight of the transform to apply. Set to 1.0 to prevent
      * any other transform from being applied until updateModelTransforms().
      */
-    internal fun blendAnimTransforms(translation: Vector3f, rotation: Quaternion, scale: Vector3f?, weight: Float) {
-        if (userControl) {
-            return
-        }
+    internal fun blendAnimTransforms(translation: Vector3f, rotation: Quaternion, scale: Vector3f?, weight: Float) {// Ensures no new weights will be blended in the future.
 
-        if (weight == 0f) {
-            // Do not apply this transform at all.
-            return
-        }
+        // Ensures no new weights will be blended in the future.
+// The weight is already set.
+        // Blend in the new transform.
+// Set the transform fully
+        // Set the weight. It will be applied in updateModelTransforms().
+        // Set the weight. It will be applied in updateModelTransforms().
+// More than 2 transforms are being blended
+        // Do not apply this transform at all.
+        when {
+            userControl -> return
+        // Ensures no new weights will be blended in the future.
 
-        if (currentWeightSum == 1f) {
-            return  // More than 2 transforms are being blended
-        } else if (currentWeightSum == -1f || currentWeightSum == 0f) {
-            // Set the transform fully
-            localPosition.set(worldBindPosition).addLocal(translation)
-            localRot.set(worldBindRotation).multLocal(rotation)
-            if (scale != null) {
-                localScale.set(worldBindScale).multLocal(scale)
+        // Ensures no new weights will be blended in the future.
+// The weight is already set.
+        // Blend in the new transform.
+// Set the transform fully
+        // Set the weight. It will be applied in updateModelTransforms().
+        // Set the weight. It will be applied in updateModelTransforms().
+
+        // More than 2 transforms are being blended
+            else -> when (weight) {
+                0f -> // Do not apply this transform at all.
+                    return
+                else -> when (currentWeightSum) {
+                    1f -> return  // More than 2 transforms are being blended
+                    -1f, 0f -> {
+                        // Set the transform fully
+                        localPosition.set(worldBindPosition).addLocal(translation)
+                        localRot.set(worldBindRotation).multLocal(rotation)
+                        when {
+                            scale != null -> localScale.set(worldBindScale).multLocal(scale)
+                        }
+                        // Set the weight. It will be applied in updateModelTransforms().
+                        // Set the weight. It will be applied in updateModelTransforms().
+                        currentWeightSum = weight
+                    }
+                    else -> {
+                        // The weight is already set.
+                        // Blend in the new transform.
+                        val vars = TempVars.get()
+
+                        val tmpV = vars.vect1
+                        val tmpV2 = vars.vect2
+                        val tmpQ = vars.quat1
+
+                        tmpV.set(worldBindPosition).addLocal(translation)
+                        localPosition.interpolateLocal(tmpV, weight)
+
+                        tmpQ.set(worldBindRotation).multLocal(rotation)
+                        localRot.nlerp(tmpQ, weight)
+
+                        when {
+                            scale != null -> {
+                                tmpV2.set(worldBindScale).multLocal(scale)
+                                localScale.interpolateLocal(tmpV2, weight)
+                            }
+
+                        // Ensures no new weights will be blended in the future.
+                        }
+
+                        // Ensures no new weights will be blended in the future.
+                        currentWeightSum = 1f
+
+                        vars.release()
+                    }
+                }
             }
-            // Set the weight. It will be applied in updateModelTransforms().
-            currentWeightSum = weight
-        } else {
-            // The weight is already set.
-            // Blend in the new transform.
-            val vars = TempVars.get()
-
-            val tmpV = vars.vect1
-            val tmpV2 = vars.vect2
-            val tmpQ = vars.quat1
-
-            tmpV.set(worldBindPosition).addLocal(translation)
-            localPosition.interpolateLocal(tmpV, weight)
-
-            tmpQ.set(worldBindRotation).multLocal(rotation)
-            localRot.nlerp(tmpQ, weight)
-
-            if (scale != null) {
-                tmpV2.set(worldBindScale).multLocal(scale)
-                localScale.interpolateLocal(tmpV2, weight)
-            }
-
-            // Ensures no new weights will be blended in the future.
-            currentWeightSum = 1f
-
-            vars.release()
         }
+
     }
 
     /**
@@ -796,27 +851,23 @@ class Bone : Savable, JmeCloneable {
         worldBindPosition!!.set(translation)
         worldBindRotation!!.set(rotation)
         //ogre.xml can have null scale values breaking this if the check is removed
-        if (scale != null) {
-            worldBindScale!!.set(scale)
+        when {
+            scale != null -> worldBindScale!!.set(scale)
         }
 
         localPosition.set(translation)
         localRot.set(rotation)
-        if (scale != null) {
-            localScale.set(scale)
+        when {
+            scale != null -> localScale.set(scale)
         }
     }
 
     private fun toString(depth: Int): String {
         val sb = StringBuilder()
-        for (i in 0 until depth) {
-            sb.append('-')
-        }
+        (0 until depth).forEach { _ -> sb.append('-') }
 
         sb.append(name).append(" bone\n")
-        for (child in children) {
-            sb.append(child.toString(depth + 1))
-        }
+        children.forEach { child -> sb.append(child.toString(depth + 1)) }
         return sb.toString()
     }
 
@@ -830,14 +881,17 @@ class Bone : Savable, JmeCloneable {
 
         name = input.readString("name", null)
         val ver = input.getSavableVersion(Bone::class.java)
-        if (ver < 2) {
-            worldBindPosition = input.readSavable("initialPos", null) as Vector3f
-            worldBindRotation = input.readSavable("initialRot", null) as Quaternion
-            worldBindScale = input.readSavable("initialScale", Vector3f(1.0f, 1.0f, 1.0f)) as Vector3f
-        } else {
-            worldBindPosition = input.readSavable("bindPos", null) as Vector3f
-            worldBindRotation = input.readSavable("bindRot", null) as Quaternion
-            worldBindScale = input.readSavable("bindScale", Vector3f(1.0f, 1.0f, 1.0f)) as Vector3f
+        when {
+            ver < 2 -> {
+                worldBindPosition = input.readSavable("initialPos", null) as Vector3f
+                worldBindRotation = input.readSavable("initialRot", null) as Quaternion
+                worldBindScale = input.readSavable("initialScale", Vector3f(1.0f, 1.0f, 1.0f)) as Vector3f
+            }
+            else -> {
+                worldBindPosition = input.readSavable("bindPos", null) as Vector3f
+                worldBindRotation = input.readSavable("bindRot", null) as Quaternion
+                worldBindScale = input.readSavable("bindScale", Vector3f(1.0f, 1.0f, 1.0f)) as Vector3f
+            }
         }
 
         attachNode = input.readSavable("attachNode", null) as Node
@@ -848,9 +902,7 @@ class Bone : Savable, JmeCloneable {
         localScale.set(worldBindScale)
 
         val childList = input.readSavableArrayList("children", null)
-        for (i in childList.indices.reversed()) {
-            this.addChild(childList[i] as Bone)
-        }
+        childList.indices.reversed().forEach { i -> this.addChild(childList[i] as Bone) }
 
         // NOTE: Parent skeleton will call update() then setBindingPose()
         // after Skeleton has been de-serialized.
@@ -877,10 +929,10 @@ class Bone : Savable, JmeCloneable {
      * @param pos
      */
     fun setLocalTranslation(pos: Vector3f) {
-        if (!userControl) {
-            throw IllegalStateException("User control must be on bone to allow user transforms")
+        when {
+            !userControl -> throw IllegalStateException("User control must be on bone to allow user transforms")
+            else -> this.localPosition.set(pos)
         }
-        this.localPosition.set(pos)
     }
 
     /**
@@ -889,10 +941,10 @@ class Bone : Savable, JmeCloneable {
      * @param scale the scale to apply
      */
     fun setLocalScale(scale: Vector3f) {
-        if (!userControl) {
-            throw IllegalStateException("User control must be on bone to allow user transforms")
+        when {
+            !userControl -> throw IllegalStateException("User control must be on bone to allow user transforms")
+            else -> this.localScale.set(scale)
         }
-        this.localScale.set(scale)
     }
 
     /**

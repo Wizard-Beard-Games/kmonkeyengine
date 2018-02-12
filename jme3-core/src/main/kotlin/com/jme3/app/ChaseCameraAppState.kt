@@ -191,31 +191,32 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
     }
 
     override fun onAnalog(name: String, value: Float, tpf: Float) {
-        if (isEnabled()) {
-            if (canRotate) {
-                when (name) {
-                    CameraInput.CHASECAM_MOVELEFT -> {
-                        horizontalRotation -= value * rotationSpeed
-                        rotateCamera()
-                    }
-                    CameraInput.CHASECAM_MOVERIGHT -> {
-                        horizontalRotation += value * rotationSpeed
-                        rotateCamera()
-                    }
-                    CameraInput.CHASECAM_UP -> {
-                        verticalRotation += value * rotationSpeed
-                        rotateCamera()
-                    }
-                    CameraInput.CHASECAM_DOWN -> {
-                        verticalRotation -= value * rotationSpeed
-                        rotateCamera()
+        when {
+            isEnabled() -> {
+                when {
+                    canRotate -> when (name) {
+                        CameraInput.CHASECAM_MOVELEFT -> {
+                            horizontalRotation -= value * rotationSpeed
+                            rotateCamera()
+                        }
+                        CameraInput.CHASECAM_MOVERIGHT -> {
+                            horizontalRotation += value * rotationSpeed
+                            rotateCamera()
+                        }
+                        CameraInput.CHASECAM_UP -> {
+                            verticalRotation += value * rotationSpeed
+                            rotateCamera()
+                        }
+                        CameraInput.CHASECAM_DOWN -> {
+                            verticalRotation -= value * rotationSpeed
+                            rotateCamera()
+                        }
                     }
                 }
-            }
-            if (name == CameraInput.CHASECAM_ZOOMIN) {
-                zoomCamera(-value * zoomSpeed)
-            } else if (name == CameraInput.CHASECAM_ZOOMOUT) {
-                zoomCamera(+value * zoomSpeed)
+                when (name) {
+                    CameraInput.CHASECAM_ZOOMIN -> zoomCamera(-value * zoomSpeed)
+                    CameraInput.CHASECAM_ZOOMOUT -> zoomCamera(+value * zoomSpeed)
+                }
             }
         }
     }
@@ -248,14 +249,17 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
     }
 
     override fun update(tpf: Float) {
-        if (spatial == null) {
-            throw IllegalArgumentException("The spatial to follow is null, please use the setTarget method")
-        }
-        target.localTranslation = spatial!!.worldTranslation
-        camNode.lookAt(target.worldTranslation, upVector)
+        when (spatial) {
+            null -> throw IllegalArgumentException("The spatial to follow is null, please use the setTarget method")
+            else -> {
+                target.localTranslation = spatial!!.worldTranslation
+                camNode.lookAt(target.worldTranslation, upVector)
 
-        target.updateLogicalState(tpf)
-        target.updateGeometricState()
+                target.updateLogicalState(tpf)
+                target.updateGeometricState()
+            }
+        }
+
     }
 
     /**
@@ -267,10 +271,12 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setToggleRotationTrigger(vararg triggers: Trigger) {
         _toggleRotateTrigger = triggers as Array<Trigger>
-        if (inputManager != null) {
-            inputManager!!.deleteMapping(CameraInput.CHASECAM_TOGGLEROTATE)
-            initTogleRotateInput()
-            inputManager!!.addListener(this, CameraInput.CHASECAM_TOGGLEROTATE)
+        when {
+            inputManager != null -> {
+                inputManager!!.deleteMapping(CameraInput.CHASECAM_TOGGLEROTATE)
+                initTogleRotateInput()
+                inputManager!!.addListener(this, CameraInput.CHASECAM_TOGGLEROTATE)
+            }
         }
     }
 
@@ -282,10 +288,12 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setZoomInTrigger(vararg triggers: Trigger) {
         _zoomInTrigger = triggers as Array<Trigger>
-        if (inputManager != null) {
-            inputManager!!.deleteMapping(CameraInput.CHASECAM_ZOOMIN)
-            inputManager!!.addMapping(CameraInput.CHASECAM_ZOOMIN, *_zoomInTrigger)
-            inputManager!!.addListener(this, CameraInput.CHASECAM_ZOOMIN)
+        when {
+            inputManager != null -> {
+                inputManager!!.deleteMapping(CameraInput.CHASECAM_ZOOMIN)
+                inputManager!!.addMapping(CameraInput.CHASECAM_ZOOMIN, *_zoomInTrigger)
+                inputManager!!.addListener(this, CameraInput.CHASECAM_ZOOMIN)
+            }
         }
     }
 
@@ -297,10 +305,12 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setZoomOutTrigger(vararg triggers: Trigger) {
         _zoomOutTrigger = triggers as Array<Trigger>
-        if (inputManager != null) {
-            inputManager!!.deleteMapping(CameraInput.CHASECAM_ZOOMOUT)
-            inputManager!!.addMapping(CameraInput.CHASECAM_ZOOMOUT, *_zoomOutTrigger)
-            inputManager!!.addListener(this, CameraInput.CHASECAM_ZOOMOUT)
+        when {
+            inputManager != null -> {
+                inputManager!!.deleteMapping(CameraInput.CHASECAM_ZOOMOUT)
+                inputManager!!.addMapping(CameraInput.CHASECAM_ZOOMOUT, *_zoomOutTrigger)
+                inputManager!!.addListener(this, CameraInput.CHASECAM_ZOOMOUT)
+            }
         }
     }
 
@@ -320,8 +330,8 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setMaxDistance(maxDistance: Float) {
         this._maxDistance = maxDistance
-        if (initialized) {
-            zoomCamera(distance)
+        when {
+            initialized -> zoomCamera(distance)
         }
     }
 
@@ -341,8 +351,8 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setMinDistance(minDistance: Float) {
         this._minDistance = minDistance
-        if (initialized) {
-            zoomCamera(distance)
+        when {
+            initialized -> zoomCamera(distance)
         }
     }
 
@@ -362,8 +372,8 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setMaxVerticalRotation(maxVerticalRotation: Float) {
         this._maxVerticalRotation = maxVerticalRotation
-        if (initialized) {
-            rotateCamera()
+        when {
+            initialized -> rotateCamera()
         }
     }
 
@@ -384,8 +394,8 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setMinVerticalRotation(minHeight: Float) {
         this._minVerticalRotation = minHeight
-        if (initialized) {
-            rotateCamera()
+        when {
+            initialized -> rotateCamera()
         }
     }
 
@@ -425,11 +435,13 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setInvertVerticalAxis(invertYaxis: Boolean) {
         this.invertYaxis = invertYaxis
-        if (inputManager != null) {
-            inputManager!!.deleteMapping(CameraInput.CHASECAM_DOWN)
-            inputManager!!.deleteMapping(CameraInput.CHASECAM_UP)
-            initVerticalAxisInputs()
-            inputManager!!.addListener(this, CameraInput.CHASECAM_DOWN, CameraInput.CHASECAM_UP)
+        when {
+            inputManager != null -> {
+                inputManager!!.deleteMapping(CameraInput.CHASECAM_DOWN)
+                inputManager!!.deleteMapping(CameraInput.CHASECAM_UP)
+                initVerticalAxisInputs()
+                inputManager!!.addListener(this, CameraInput.CHASECAM_DOWN, CameraInput.CHASECAM_UP)
+            }
         }
     }
 
@@ -440,31 +452,39 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
      */
     fun setInvertHorizontalAxis(invertXaxis: Boolean) {
         this.invertXaxis = invertXaxis
-        if (inputManager != null) {
-            inputManager!!.deleteMapping(CameraInput.CHASECAM_MOVELEFT)
-            inputManager!!.deleteMapping(CameraInput.CHASECAM_MOVERIGHT)
-            initHorizontalAxisInput()
-            inputManager!!.addListener(this, CameraInput.CHASECAM_MOVELEFT, CameraInput.CHASECAM_MOVERIGHT)
+        when {
+            inputManager != null -> {
+                inputManager!!.deleteMapping(CameraInput.CHASECAM_MOVELEFT)
+                inputManager!!.deleteMapping(CameraInput.CHASECAM_MOVERIGHT)
+                initHorizontalAxisInput()
+                inputManager!!.addListener(this, CameraInput.CHASECAM_MOVELEFT, CameraInput.CHASECAM_MOVERIGHT)
+            }
         }
     }
 
     private fun initVerticalAxisInputs() {
-        if (!invertYaxis) {
-            inputManager!!.addMapping(CameraInput.CHASECAM_DOWN, MouseAxisTrigger(MouseInput.AXIS_Y, true))
-            inputManager!!.addMapping(CameraInput.CHASECAM_UP, MouseAxisTrigger(MouseInput.AXIS_Y, false))
-        } else {
-            inputManager!!.addMapping(CameraInput.CHASECAM_DOWN, MouseAxisTrigger(MouseInput.AXIS_Y, false))
-            inputManager!!.addMapping(CameraInput.CHASECAM_UP, MouseAxisTrigger(MouseInput.AXIS_Y, true))
+        when {
+            !invertYaxis -> {
+                inputManager!!.addMapping(CameraInput.CHASECAM_DOWN, MouseAxisTrigger(MouseInput.AXIS_Y, true))
+                inputManager!!.addMapping(CameraInput.CHASECAM_UP, MouseAxisTrigger(MouseInput.AXIS_Y, false))
+            }
+            else -> {
+                inputManager!!.addMapping(CameraInput.CHASECAM_DOWN, MouseAxisTrigger(MouseInput.AXIS_Y, false))
+                inputManager!!.addMapping(CameraInput.CHASECAM_UP, MouseAxisTrigger(MouseInput.AXIS_Y, true))
+            }
         }
     }
 
     private fun initHorizontalAxisInput() {
-        if (!invertXaxis) {
-            inputManager!!.addMapping(CameraInput.CHASECAM_MOVELEFT, MouseAxisTrigger(MouseInput.AXIS_X, true))
-            inputManager!!.addMapping(CameraInput.CHASECAM_MOVERIGHT, MouseAxisTrigger(MouseInput.AXIS_X, false))
-        } else {
-            inputManager!!.addMapping(CameraInput.CHASECAM_MOVELEFT, MouseAxisTrigger(MouseInput.AXIS_X, false))
-            inputManager!!.addMapping(CameraInput.CHASECAM_MOVERIGHT, MouseAxisTrigger(MouseInput.AXIS_X, true))
+        when {
+            !invertXaxis -> {
+                inputManager!!.addMapping(CameraInput.CHASECAM_MOVELEFT, MouseAxisTrigger(MouseInput.AXIS_X, true))
+                inputManager!!.addMapping(CameraInput.CHASECAM_MOVERIGHT, MouseAxisTrigger(MouseInput.AXIS_X, false))
+            }
+            else -> {
+                inputManager!!.addMapping(CameraInput.CHASECAM_MOVELEFT, MouseAxisTrigger(MouseInput.AXIS_X, false))
+                inputManager!!.addMapping(CameraInput.CHASECAM_MOVERIGHT, MouseAxisTrigger(MouseInput.AXIS_X, true))
+            }
         }
     }
 

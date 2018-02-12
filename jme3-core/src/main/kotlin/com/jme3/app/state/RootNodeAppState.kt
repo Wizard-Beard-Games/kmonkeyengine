@@ -96,11 +96,11 @@ open class RootNodeAppState : AbstractAppState {
     }
 
     override fun initialize(stateManager: AppStateManager, app: Application) {
-        if (rootNode == null) {
-            rootNode = Node("Root Node")
+        when (rootNode) {
+            null -> rootNode = Node("Root Node")
         }
-        if (viewPort == null) {
-            viewPort = app.viewPort
+        when (viewPort) {
+            null -> viewPort = app.viewPort
         }
         viewPort!!.attachScene(rootNode)
         super.initialize(stateManager, app)

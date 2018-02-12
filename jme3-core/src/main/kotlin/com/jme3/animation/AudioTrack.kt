@@ -125,16 +125,22 @@ class AudioTrack : ClonableTrack {
      */
     override fun setTime(time: Float, weight: Float, control: AnimControl, channel: AnimChannel, vars: TempVars) {
 
-        if (time >= length) {
-            return
-        }
-        if (!initialized) {
-            control.addListener(OnEndListener())
-            initialized = true
-        }
-        if (!started && time >= startOffset) {
-            started = true
-            audio!!.playInstance()
+        when {
+            time >= length -> return
+            else -> {
+                when {
+                    !initialized -> {
+                        control.addListener(OnEndListener())
+                        initialized = true
+                    }
+                }
+                when {
+                    !started && time >= startOffset -> {
+                        started = true
+                        audio!!.playInstance()
+                    }
+                }
+            }
         }
     }
 
@@ -162,7 +168,7 @@ class AudioTrack : ClonableTrack {
      *
      * @return
      */
-    override fun clone(): Track {
+    override fun clone(): AudioTrack {
         return AudioTrack(audio!!, length, startOffset)
     }
 
@@ -182,9 +188,13 @@ class AudioTrack : ClonableTrack {
 
         //searching for the newly cloned AudioNode
         audioTrack.audio = findAudio(spatial)
-        if (audioTrack.audio == null) {
-            logger.log(Level.WARNING, "{0} was not found in {1} or is not bound to this track", arrayOf<Any>(audio!!.name, spatial.name))
-            audioTrack.audio = audio
+        when {
+            audioTrack.audio == null -> {
+                logger.log(Level.WARNING, "{0} was not found in {1} or is not bound to this track", arrayOf<Any>(audio!!.name, spatial.name))
+                audioTrack.audio = audio
+            }
+
+        //setting user data on the new AudioNode and marking it with a reference to the cloned Track.
         }
 
         //setting user data on the new AudioNode and marking it with a reference to the cloned Track.
@@ -193,15 +203,12 @@ class AudioTrack : ClonableTrack {
         return audioTrack
     }
 
-    override fun jmeClone(): Any {
-        try {
-//            return super.clone()
-            // TODO: determine proper supertype
-            return clone()
-        } catch (e: CloneNotSupportedException) {
-            throw RuntimeException("Error cloning", e)
-        }
-
+    override fun jmeClone(): Any = try {
+//      super.clone()
+        // TODO: determine proper supertype
+        clone()
+    } catch (e: CloneNotSupportedException) {
+        throw RuntimeException("Error cloning $this", e)
     }
 
 
@@ -221,44 +228,49 @@ class AudioTrack : ClonableTrack {
      * @return
      */
     private fun findAudio(spat: Spatial): AudioNode? {
-        if (spat is AudioNode) {
-            //spat is an AudioNode
-            //getting the UserData TrackInfo so check if it should be attached to this Track
-            val t = spat.getUserData<Any>("TrackInfo") as TrackInfo
-            return if (t != null && t.getTracks().contains(this)) {
-                spat
-            } else null
+        when (spat) {
+            is AudioNode -> {
+                //spat is an AudioNode
+                //getting the UserData TrackInfo so check if it should be attached to this Track
+                val t = spat.getUserData<Any>("TrackInfo") as TrackInfo
+                return if (t != null && t.tracks.contains(this)) {
+                    spat
+                } else null
 
-        } else if (spat is Node) {
-            for (child in spat.children) {
-                val em = findAudio(child)
-                if (em != null) {
-                    return em
-                }
             }
+            is Node -> spat.children
+                    .asSequence()
+                    .map { findAudio(it) }
+                    .forEach {
+                        when {
+                            it != null -> return it
+                        }
+                    }
         }
         return null
     }
 
     private fun setUserData(audioTrack: AudioTrack) {
         //fetching the UserData TrackInfo.
-        var data = audioTrack.audio!!.getUserData<Any>("TrackInfo") as TrackInfo
+        var data = audioTrack.audio!!.getUserData<Any>("TrackInfo") as TrackInfo?
 
         //if it does not exist, we create it and attach it to the AudioNode.
-        if (data == null) {
-            data = TrackInfo()
-            audioTrack.audio!!.setUserData("TrackInfo", data)
+        when (data) {
+            null -> {
+                data = TrackInfo()
+                audioTrack.audio!!.setUserData("TrackInfo", data)
+            }
         }
 
         //adding the given Track to the TrackInfo.
-        data.addTrack(audioTrack)
+        data?.addTrack(audioTrack)
     }
 
     override fun cleanUp() {
         val t = audio!!.getUserData<Any>("TrackInfo") as TrackInfo
-        t.getTracks().remove(this)
-        if (!t.getTracks().isEmpty()) {
-            audio!!.setUserData("TrackInfo", null)
+        t.tracks.remove(this)
+        when {
+            !t.tracks.isEmpty() -> audio!!.setUserData("TrackInfo", null)
         }
     }
 
@@ -276,9 +288,11 @@ class AudioTrack : ClonableTrack {
      * @param audio
      */
     fun setAudio(audio: AudioNode) {
-        if (this.audio != null) {
-            val data = audio.getUserData<Any>("TrackInfo") as TrackInfo
-            data.getTracks().remove(this)
+        when {
+            this.audio != null -> {
+                val data = audio.getUserData<Any>("TrackInfo") as TrackInfo
+                data.tracks.remove(this)
+            }
         }
         this.audio = audio
         setUserData(this)

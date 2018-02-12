@@ -84,18 +84,17 @@ class Skeleton : Savable, JmeCloneable {
     constructor(boneList: Array<Bone>) {
         this.boneList = boneList
 
-        val rootBoneList = ArrayList<Bone>()
-        for (i in boneList.indices.reversed()) {
-            val b = boneList[i]
-            if (b.parent == null) {
-                rootBoneList.add(b)
-            }
-        }
+        val rootBoneList = boneList.indices.reversed()
+                .asSequence()
+                .map { boneList[it] }
+                .filter { it.parent == null }
+                .toList()
+
         roots = rootBoneList.toTypedArray()
 
         createSkinningMatrices()
 
-        for (i in roots!!.indices.reversed()) {
+        roots!!.indices.reversed().forEach { i ->
             val rootBone = roots!![i]
             rootBone.update()
             rootBone.setBindingPose()
@@ -115,20 +114,14 @@ class Skeleton : Savable, JmeCloneable {
         val sourceList = source.boneList
 //        boneList = arrayOfNulls(sourceList!!.size)
         boneList = Array(size = sourceList!!.size, init = { Bone() })
-        for (i in sourceList.indices) {
-            boneList!![i] = Bone(sourceList[i])
-        }
+        sourceList.indices.forEach { i -> boneList!![i] = Bone(sourceList[i]) }
 
 //        roots = arrayOfNulls(source.roots!!.size)
         roots = Array(size = source.roots!!.size, init = { Bone() })
-        for (i in roots!!.indices) {
-            roots!![i] = recreateBoneStructure(source.roots!![i])
-        }
+        roots!!.indices.forEach { i -> roots!![i] = recreateBoneStructure(source.roots!![i]) }
         createSkinningMatrices()
 
-        for (i in roots!!.indices.reversed()) {
-            roots!![i].update()
-        }
+        roots!!.indices.reversed().forEach { i -> roots!![i].update() }
     }
 
     /**
@@ -137,8 +130,8 @@ class Skeleton : Savable, JmeCloneable {
     constructor() {}
 
     override fun jmeClone(): Any {
-        try {
-            return super.clone() as Skeleton
+        return try {
+            super.clone() as Skeleton
         } catch (ex: CloneNotSupportedException) {
             throw AssertionError()
         }
@@ -154,15 +147,13 @@ class Skeleton : Savable, JmeCloneable {
     private fun createSkinningMatrices() {
 //        skinningMatrixes = arrayOfNulls(boneList!!.size)
         skinningMatrixes = Array(size = boneList!!.size, init = { Matrix4f() })
-        for (i in skinningMatrixes!!.indices) {
-            skinningMatrixes!![i] = Matrix4f()
-        }
+        skinningMatrixes!!.indices.forEach { i -> skinningMatrixes!![i] = Matrix4f() }
     }
 
     private fun recreateBoneStructure(sourceRoot: Bone): Bone {
         val targetRoot = getBone(sourceRoot.name)
         val children = sourceRoot.children
-        for (i in children.indices) {
+        children.indices.forEach { i ->
             val sourceChild = children[i]
             // find my version of the child
             val targetChild = getBone(sourceChild.name)
@@ -178,34 +169,28 @@ class Skeleton : Savable, JmeCloneable {
      * Typically called after setting local animation transforms.
      */
     fun updateWorldVectors() {
-        for (i in roots!!.indices.reversed()) {
-            roots!![i].update()
-        }
+        roots!!.indices.reversed().forEach { i -> roots!![i].update() }
     }
 
     /**
      * Saves the current skeleton state as its binding pose.
      */
     fun setBindingPose() {
-        for (i in roots!!.indices.reversed()) {
-            roots!![i].setBindingPose()
-        }
+        roots!!.indices.reversed().forEach { i -> roots!![i].setBindingPose() }
     }
 
     /**
      * Reset the skeleton to bind pose.
      */
     fun reset() {
-        for (i in roots!!.indices.reversed()) {
-            roots!![i].reset()
-        }
+        roots!!.indices.reversed().forEach { i -> roots!![i].reset() }
     }
 
     /**
      * Reset the skeleton to bind pose and updates the bones
      */
     fun resetAndUpdate() {
-        for (i in roots!!.indices.reversed()) {
+        roots!!.indices.reversed().forEach { i ->
             val rootBone = roots!![i]
             rootBone.reset()
             rootBone.update()
@@ -227,12 +212,9 @@ class Skeleton : Savable, JmeCloneable {
      * @return
      */
     fun getBone(name: String?): Bone? {
-        for (i in boneList!!.indices) {
-            if (boneList!![i].name == name) {
-                return boneList!![i]
-            }
-        }
-        return null
+        return boneList!!.indices
+                .firstOrNull { boneList!![it].name == name }
+                ?.let { boneList!![it] }
     }
 
     /**
@@ -241,13 +223,9 @@ class Skeleton : Savable, JmeCloneable {
      * @return
      */
     fun getBoneIndex(bone: Bone): Int {
-        for (i in boneList!!.indices) {
-            if (boneList!![i] == bone) {
-                return i
-            }
-        }
 
-        return -1
+        return boneList!!.indices.firstOrNull { boneList!![it] == bone }
+                ?: -1
     }
 
     /**
@@ -256,13 +234,9 @@ class Skeleton : Savable, JmeCloneable {
      * @return
      */
     fun getBoneIndex(name: String): Int {
-        for (i in boneList!!.indices) {
-            if (boneList!![i].name == name) {
-                return i
-            }
-        }
 
-        return -1
+        return boneList!!.indices.firstOrNull { boneList!![it].name == name }
+                ?: -1
     }
 
     /**
@@ -271,9 +245,7 @@ class Skeleton : Savable, JmeCloneable {
      */
     fun computeSkinningMatrices(): Array<Matrix4f> {
         val vars = TempVars.get()
-        for (i in boneList!!.indices) {
-            boneList!![i].getOffsetTransform(skinningMatrixes!![i], vars.quat1, vars.vect1, vars.vect2, vars.tempMat3)
-        }
+        boneList!!.indices.forEach { i -> boneList!![i].getOffsetTransform(skinningMatrixes!![i], vars.quat1, vars.vect1, vars.vect2, vars.tempMat3) }
         vars.release()
         return skinningMatrixes!!
     }
@@ -281,9 +253,7 @@ class Skeleton : Savable, JmeCloneable {
     override fun toString(): String {
         val sb = StringBuilder()
         sb.append("Skeleton - ").append(boneList!!.size).append(" bones, ").append(roots!!.size).append(" roots\n")
-        for (rootBone in roots!!) {
-            sb.append(rootBone.toString())
-        }
+        roots!!.forEach { rootBone -> sb.append(rootBone.toString()) }
         return sb.toString()
     }
 
@@ -303,7 +273,7 @@ class Skeleton : Savable, JmeCloneable {
 
         createSkinningMatrices()
 
-        for (rootBone in roots!!) {
+        roots!!.forEach { rootBone ->
             rootBone.reset()
             rootBone.update()
             rootBone.setBindingPose()

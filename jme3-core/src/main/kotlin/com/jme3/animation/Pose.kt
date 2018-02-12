@@ -77,7 +77,7 @@ class Pose : Savable, Cloneable {
      * @param vertbuf Vertex buffer to apply this pose to
      */
     fun apply(blend: Float, vertbuf: FloatBuffer) {
-        for (i in indices!!.indices) {
+        indices!!.indices.forEach { i ->
             val offset = offsets!![i]
             val vertIndex = indices!![i]
 
@@ -98,22 +98,19 @@ class Pose : Savable, Cloneable {
      * This method creates a clone of the current object.
      * @return a clone of the current object
      */
-    public override fun clone(): Pose {
-        try {
-            val result = super.clone() as Pose
-            result.indices = this.indices!!.clone()
-            if (this.offsets != null) {
-//                result.offsets = arrayOfNulls(this.offsets!!.size)
+    public override fun clone(): Pose = try {
+        val result = super.clone() as Pose
+        result.indices = this.indices!!.clone()
+        when {
+            this.offsets != null -> {
+                //                result.offsets = arrayOfNulls(this.offsets!!.size)
                 result.offsets = Array(size = this.offsets!!.size, init = { Vector3f() })
-                for (i in this.offsets!!.indices) {
-                    result.offsets!![i] = this.offsets!![i].clone()
-                }
+                this.offsets!!.indices.forEach { i -> result.offsets!![i] = this.offsets!![i].clone() }
             }
-            return result
-        } catch (e: CloneNotSupportedException) {
-            throw AssertionError()
         }
-
+        result
+    } catch (e: CloneNotSupportedException) {
+        throw AssertionError()
     }
 
     @Throws(IOException::class)
@@ -133,10 +130,12 @@ class Pose : Savable, Cloneable {
         indices = `in`.readIntArray("indices", null)
 
         val readSavableArray = `in`.readSavableArray("offsets", null)
-        if (readSavableArray != null) {
+        when {
+            readSavableArray != null -> {
 //            offsets = arrayOfNulls(readSavableArray.size)
-            offsets = Array(size = readSavableArray.size, init = { Vector3f() })
-            System.arraycopy(readSavableArray, 0, offsets!!, 0, readSavableArray.size)
+                offsets = Array(size = readSavableArray.size, init = { Vector3f() })
+                System.arraycopy(readSavableArray, 0, offsets!!, 0, readSavableArray.size)
+            }
         }
     }
 }

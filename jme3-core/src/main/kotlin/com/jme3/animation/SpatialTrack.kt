@@ -111,8 +111,9 @@ class SpatialTrack : Track, JmeCloneable {
      */
     override fun setTime(time: Float, weight: Float, control: AnimControl, channel: AnimChannel, vars: TempVars) {
         var spatial = trackSpatial
-        if (spatial == null) {
-            spatial = control.spatial
+        // use lastFrame so we never overflow the array
+        when (spatial) {
+            null -> spatial = control.spatial
         }
 
         val tempV = vars.vect1
@@ -123,62 +124,70 @@ class SpatialTrack : Track, JmeCloneable {
         val tempQ2 = vars.quat2
 
         val lastFrame = times!!.size - 1
-        if (time < 0 || lastFrame == 0) {
-            if (rotations != null)
-                rotations!![0, tempQ]
-            if (translations != null)
-                translations!![0, tempV]
-            if (scales != null) {
-                scales!![0, tempS]
+        when {
+            time < 0 || lastFrame == 0 -> {
+                if (rotations != null)
+                    rotations!![0, tempQ]
+                if (translations != null)
+                    translations!![0, tempV]
+                if (scales != null) {
+                    scales!![0, tempS]
+                }
             }
-        } else if (time >= times!![lastFrame]) {
-            if (rotations != null)
-                rotations!![lastFrame, tempQ]
-            if (translations != null)
-                translations!![lastFrame, tempV]
-            if (scales != null) {
-                scales!![lastFrame, tempS]
+            time >= times!![lastFrame] -> {
+                if (rotations != null)
+                    rotations!![lastFrame, tempQ]
+                if (translations != null)
+                    translations!![lastFrame, tempV]
+                if (scales != null) {
+                    scales!![lastFrame, tempS]
+                }
             }
-        } else {
-            var startFrame = 0
-            var endFrame = 1
-            // use lastFrame so we never overflow the array
-            var i = 0
-            while (i < lastFrame && times!![i] < time) {
-                startFrame = i
-                endFrame = i + 1
-                ++i
-            }
+            else -> {
+                var startFrame = 0
+                var endFrame = 1
+                // use lastFrame so we never overflow the array
+                var i = 0
+                while (i < lastFrame && times!![i] < time) {
+                    startFrame = i
+                    endFrame = i + 1
+                    ++i
+                }
 
-            val blend = (time - times!![startFrame]) / (times!![endFrame] - times!![startFrame])
+                val blend = (time - times!![startFrame]) / (times!![endFrame] - times!![startFrame])
 
-            if (rotations != null)
-                rotations!![startFrame, tempQ]
-            if (translations != null)
-                translations!![startFrame, tempV]
-            if (scales != null) {
-                scales!![startFrame, tempS]
+                when {
+                    rotations != null -> rotations!![startFrame, tempQ]
+                }
+                when {
+                    translations != null -> translations!![startFrame, tempV]
+                }
+                when {
+                    scales != null -> scales!![startFrame, tempS]
+                }
+                when {
+                    rotations != null -> rotations!![endFrame, tempQ2]
+                }
+                when {
+                    translations != null -> translations!![endFrame, tempV2]
+                }
+                when {
+                    scales != null -> scales!![endFrame, tempS2]
+                }
+                tempQ.nlerp(tempQ2, blend)
+                tempV.interpolateLocal(tempV2, blend)
+                tempS.interpolateLocal(tempS2, blend)
             }
-            if (rotations != null)
-                rotations!![endFrame, tempQ2]
-            if (translations != null)
-                translations!![endFrame, tempV2]
-            if (scales != null) {
-                scales!![endFrame, tempS2]
-            }
-            tempQ.nlerp(tempQ2, blend)
-            tempV.interpolateLocal(tempV2, blend)
-            tempS.interpolateLocal(tempS2, blend)
         }
 
-        if (translations != null) {
-            spatial!!.localTranslation = tempV
+        when {
+            translations != null -> spatial!!.localTranslation = tempV
         }
-        if (rotations != null) {
-            spatial!!.localRotation = tempQ
+        when {
+            rotations != null -> spatial!!.localRotation = tempQ
         }
-        if (scales != null) {
-            spatial!!.localScale = tempS
+        when {
+            scales != null -> spatial!!.localScale = tempS
         }
     }
 
@@ -196,29 +205,37 @@ class SpatialTrack : Track, JmeCloneable {
      */
     fun setKeyframes(times: FloatArray, translations: Array<Vector3f>?,
                      rotations: Array<Quaternion>?, scales: Array<Vector3f>?) {
-        if (times.size == 0) {
-            throw RuntimeException("BoneTrack with no keyframes!")
+        when {
+            times.isEmpty() -> throw RuntimeException("BoneTrack with no keyframes!")
+            else -> {
+                this.times = times
+                when {
+                    translations != null -> {
+                        assert(times.size == translations.size)
+                        this.translations = CompactVector3Array()
+                        this.translations!!.add(*translations)
+                        this.translations!!.freeze()
+                    }
+                }
+                when {
+                    rotations != null -> {
+                        assert(times.size == rotations.size)
+                        this.rotations = CompactQuaternionArray()
+                        this.rotations!!.add(*rotations)
+                        this.rotations!!.freeze()
+                    }
+                }
+                when {
+                    scales != null -> {
+                        assert(times.size == scales.size)
+                        this.scales = CompactVector3Array()
+                        this.scales!!.add(*scales)
+                        this.scales!!.freeze()
+                    }
+                }
+            }
         }
 
-        this.times = times
-        if (translations != null) {
-            assert(times.size == translations.size)
-            this.translations = CompactVector3Array()
-            this.translations!!.add(*translations)
-            this.translations!!.freeze()
-        }
-        if (rotations != null) {
-            assert(times.size == rotations.size)
-            this.rotations = CompactQuaternionArray()
-            this.rotations!!.add(*rotations)
-            this.rotations!!.freeze()
-        }
-        if (scales != null) {
-            assert(times.size == scales.size)
-            this.scales = CompactVector3Array()
-            this.scales!!.add(*scales)
-            this.scales!!.freeze()
-        }
     }
 
     /**

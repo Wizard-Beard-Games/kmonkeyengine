@@ -106,13 +106,11 @@ class Animation : Savable, Cloneable, JmeCloneable {
      * @param channel the animation channel
      */
     internal fun setTime(time: Float, blendAmount: Float, control: AnimControl, channel: AnimChannel, vars: TempVars) {
-        if (tracks == null) {
-            return
+        when (tracks) {
+            null -> return
+            else -> tracks!!.forEach { track -> track.setTime(time, blendAmount, control, channel, vars) }
         }
 
-        for (track in tracks!!) {
-            track.setTime(time, blendAmount, control, channel, vars)
-        }
     }
 
     /**
@@ -121,9 +119,7 @@ class Animation : Savable, Cloneable, JmeCloneable {
      * @param tracksArray The tracks to set.
      */
     fun setTracks(tracksArray: Array<Track>) {
-        for (track in tracksArray) {
-            tracks!!.add(track)
-        }
+        tracksArray.forEach { track -> tracks!!.add(track) }
     }
 
     /**
@@ -156,20 +152,15 @@ class Animation : Savable, Cloneable, JmeCloneable {
      * This method creates a clone of the current object.
      * @return a clone of the current object
      */
-    public override fun clone(): Animation {
-        try {
+    public override fun clone(): Animation = try {
 //            val result = super.clone() as Animation
-            // TODO: fix call to super::clone
-            val result = clone() as Animation
-            result.tracks = SafeArrayList(Track::class.java)
-            for (track in tracks!!) {
-                result.tracks!!.add(track.clone())
-            }
-            return result
-        } catch (e: CloneNotSupportedException) {
-            throw AssertionError()
-        }
-
+        // TODO: fix call to super::clone
+        val result = clone() as Animation
+        result.tracks = SafeArrayList(Track::class.java)
+        tracks!!.forEach { track -> result.tracks!!.add(track.clone()) }
+        result
+    } catch (e: CloneNotSupportedException) {
+        throw AssertionError()
     }
 
     /**
@@ -177,31 +168,27 @@ class Animation : Savable, Cloneable, JmeCloneable {
      * @param spat
      * @return
      */
-    fun cloneForSpatial(spat: Spatial): Animation {
-        try {
+    fun cloneForSpatial(spat: Spatial): Animation = try {
 //            val result = super.clone() as Animation
-            // TODO: fix the call to super::clone
-            val result = clone() as Animation
-            result.tracks = SafeArrayList(Track::class.java)
-            for (track in tracks!!) {
-                if (track is ClonableTrack) {
-                    result.tracks!!.add(track.cloneForSpatial(spat))
-                } else {
-                    result.tracks!!.add(track)
-                }
+        // TODO: fix the call to super::clone
+        val result = clone() as Animation
+        result.tracks = SafeArrayList(Track::class.java)
+        tracks!!.forEach { track ->
+            when (track) {
+                is ClonableTrack -> result.tracks!!.add(track.cloneForSpatial(spat))
+                else -> result.tracks!!.add(track)
             }
-            return result
-        } catch (e: CloneNotSupportedException) {
-            throw AssertionError()
         }
-
+        result
+    } catch (e: CloneNotSupportedException) {
+        throw AssertionError()
     }
 
     override fun jmeClone(): Any {
-        try {
+        return try {
 //            return super.clone()
             // TODO: fix call to super::clone
-            return clone()
+            clone()
         } catch (e: CloneNotSupportedException) {
             throw RuntimeException("Error cloning", e)
         }
@@ -214,12 +201,11 @@ class Animation : Savable, Cloneable, JmeCloneable {
         // it's a mistake or not.  If a track is not a CloneableTrack then it
         // isn't cloned at all... even though they all implement clone() methods. -pspeed
         val newTracks = SafeArrayList<Track>(Track::class.java)
-        for (track in tracks!!) {
-            if (track is JmeCloneable) {
-                newTracks.add(cloner.clone(track))
-            } else {
-                // this is the part that seems fishy
-                newTracks.add(track)
+        tracks!!.forEach { track ->
+            when (track) {
+                is JmeCloneable -> newTracks.add(cloner.clone(track))
+                else -> // this is the part that seems fishy
+                    newTracks.add(track)
             }
         }
         this.tracks = newTracks
@@ -244,14 +230,14 @@ class Animation : Savable, Cloneable, JmeCloneable {
         length = `in`.readFloat("length", 0f)
 
         val arr = `in`.readSavableArray("tracks", null)
-        if (arr != null) {
-            // NOTE: Backward compat only .. Some animations have no
-            // tracks set at all even though it makes no sense.
-            // Since there's a null check in setTime(),
-            // its only appropriate that the check is made here as well.
-            tracks = SafeArrayList(Track::class.java)
-            for (savable in arr) {
-                tracks!!.add(savable as Track)
+        when {
+            arr != null -> {
+                // NOTE: Backward compat only .. Some animations have no
+                // tracks set at all even though it makes no sense.
+                // Since there's a null check in setTime(),
+                // its only appropriate that the check is made here as well.
+                tracks = SafeArrayList(Track::class.java)
+                arr.forEach { savable -> tracks!!.add(savable as Track) }
             }
         }
     }

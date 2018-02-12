@@ -139,14 +139,14 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
             clone.channels = ArrayList()
             clone.listeners = ArrayList()
 
-            if (skeleton != null) {
-                clone.skeleton = Skeleton(skeleton)
+            when {
+                skeleton != null -> clone.skeleton = Skeleton(skeleton!!)
             }
 
             // animationMap is cloned, but only ClonableTracks will be cloned as they need a reference to a cloned spatial
-            for ((key, value) in animationMap) {
-                clone.animationMap[key] = value.cloneForSpatial(spatial)
-            }
+
+            // animationMap is cloned, but only ClonableTracks will be cloned as they need a reference to a cloned spatial
+            animationMap.forEach { (key, value) -> clone.animationMap[key] = value.cloneForSpatial(spatial) }
 
             return clone
         } catch (ex: CloneNotSupportedException) {
@@ -172,9 +172,7 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
         val newMap = HashMap<String, Animation>()
 
         // animationMap is cloned, but only ClonableTracks will be cloned as they need a reference to a cloned spatial
-        for ((key, value) in animationMap) {
-            newMap[key] = cloner.clone(value)
-        }
+        animationMap.forEach { (key, value) -> newMap[key] = cloner.clone(value) }
 
         this.animationMap = newMap
     }
@@ -212,11 +210,11 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
      * @param anim The animation to remove.
      */
     fun removeAnim(anim: Animation) {
-        if (!animationMap.containsKey(anim.name)) {
-            throw IllegalArgumentException("Given animation does not exist " + "in this AnimControl")
+        when {
+            !animationMap.containsKey(anim.name) -> throw IllegalArgumentException("Given animation does not exist " + "in this AnimControl")
+            else -> animationMap.remove(anim.name)
         }
 
-        animationMap.remove(anim.name)
     }
 
     /**
@@ -249,11 +247,7 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
      * @see AnimControl.createChannel
      */
     fun clearChannels() {
-        for (animChannel in channels) {
-            for (list in listeners) {
-                list.onAnimCycleDone(this, animChannel, animChannel.animationName!!)
-            }
-        }
+        channels.forEach { animChannel -> listeners.forEach { list -> list.onAnimCycleDone(this, animChannel, animChannel.animationName!!) } }
         channels.clear()
     }
 
@@ -262,11 +256,11 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
      * @param listener The listener to add.
      */
     fun addListener(listener: AnimEventListener) {
-        if (listeners.contains(listener)) {
-            throw IllegalArgumentException("The given listener is already " + "registed at this AnimControl")
+        when {
+            listeners.contains(listener) -> throw IllegalArgumentException("The given listener is already " + "registed at this AnimControl")
+            else -> listeners.add(listener)
         }
 
-        listeners.add(listener)
     }
 
     /**
@@ -275,8 +269,10 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
      * @see AnimControl.addListener
      */
     fun removeListener(listener: AnimEventListener) {
-        if (!listeners.remove(listener)) {
-            throw IllegalArgumentException("The given listener is not " + "registed at this AnimControl")
+        when {
+            !listeners.remove(listener) -> throw IllegalArgumentException("The given listener is not " + "registed at this AnimControl")
+            else -> {
+            }
         }
     }
 
@@ -290,36 +286,34 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
     }
 
     internal fun notifyAnimChange(channel: AnimChannel, name: String) {
-        for (i in listeners.indices) {
-            listeners[i].onAnimChange(this, channel, name)
-        }
+        listeners.indices.forEach { i -> listeners[i].onAnimChange(this, channel, name) }
     }
 
     internal fun notifyAnimCycleDone(channel: AnimChannel, name: String) {
-        for (i in listeners.indices) {
-            listeners[i].onAnimCycleDone(this, channel, name)
-        }
+        listeners.indices.forEach { i -> listeners[i].onAnimCycleDone(this, channel, name) }
     }
 
     /**
      * Internal use only.
      */
     override fun setSpatial(spatial: Spatial?) {
-        if (spatial == null && skeletonControl != null) {
-            this.spatial.removeControl(skeletonControl)
+        when {
+            spatial == null && skeletonControl != null -> this.spatial.removeControl(skeletonControl)
         }
 
         super.setSpatial(spatial)
 
+                //Backward compatibility.
+
         //Backward compatibility.
-        if (spatial != null && skeletonControl != null) {
-            spatial.addControl(skeletonControl)
+        when {
+            spatial != null && skeletonControl != null -> spatial.addControl(skeletonControl)
         }
     }
 
     internal fun reset() {
-        if (skeleton != null) {
-            skeleton!!.resetAndUpdate()
+        when {
+            skeleton != null -> skeleton!!.resetAndUpdate()
         }
     }
 
@@ -339,8 +333,8 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
      * Internal use only.
      */
     override fun controlUpdate(tpf: Float) {
-        if (skeleton != null) {
-            skeleton!!.reset() // reset skeleton to bind pose
+        when {
+            skeleton != null -> skeleton!!.reset() // reset skeleton to bind pose
         }
 
         val vars = TempVars.get()
@@ -349,8 +343,8 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
         }
         vars.release()
 
-        if (skeleton != null) {
-            skeleton!!.updateWorldVectors()
+        when {
+            skeleton != null -> skeleton!!.updateWorldVectors()
         }
     }
 
@@ -375,18 +369,22 @@ class AnimControl : AbstractControl, Cloneable, JmeCloneable {
         val loadedAnimationMap = `in`.readStringSavableMap("animations", null) as HashMap<String, Animation>
         animationMap = loadedAnimationMap
 
-        if (im.formatVersion == 0) {
-            // Changed for backward compatibility with j3o files generated
-            // before the AnimControl/SkeletonControl split.
+        when {
+            im.formatVersion == 0 -> {
+                // Changed for backward compatibility with j3o files generated
+                // before the AnimControl/SkeletonControl split.
 
-            // If we find a target mesh array the AnimControl creates the
-            // SkeletonControl for old files and add it to the spatial.
-            // When backward compatibility won't be needed anymore this can deleted
-            val sav = `in`.readSavableArray("targets", null)
-            if (sav != null) {
-                // NOTE: allow the targets to be gathered automatically
-                skeletonControl = SkeletonControl(skeleton)
-                spatial.addControl(skeletonControl)
+                // If we find a target mesh array the AnimControl creates the
+                // SkeletonControl for old files and add it to the spatial.
+                // When backward compatibility won't be needed anymore this can deleted
+                val sav = `in`.readSavableArray("targets", null)
+                when {
+                    sav != null -> {
+                        // NOTE: allow the targets to be gathered automatically
+                        skeletonControl = SkeletonControl(skeleton)
+                        spatial.addControl(skeletonControl)
+                    }
+                }
             }
         }
     }

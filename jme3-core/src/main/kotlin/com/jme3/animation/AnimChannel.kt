@@ -111,9 +111,7 @@ class AnimChannel {
     val animMaxTime: Float
         get() = if (animation != null) animation!!.length else 0f
 
-    constructor() {
-
-    }
+    constructor()
 
     constructor(control: AnimControl) {
         this.control = control
@@ -137,10 +135,12 @@ class AnimChannel {
      */
     fun setSpeed(speed: Float) {
         this.speed = speed
-        if (blendTime > 0) {
-            this.speedBlendFrom = speed
-            blendTime = Math.min(blendTime, animation!!.length / speed)
-            blendRate = 1 / blendTime
+        when {
+            blendTime > 0 -> {
+                this.speedBlendFrom = speed
+                blendTime = Math.min(blendTime, animation!!.length / speed)
+                blendRate = 1 / blendTime
+            }
         }
     }
 
@@ -178,35 +178,43 @@ class AnimChannel {
     @JvmOverloads
     fun setAnim(name: String?, blendTime: Float = DEFAULT_BLEND_TIME) {
         var blendTime = blendTime
-        if (name == null)
-            throw IllegalArgumentException("name cannot be null")
+        // activate blending
+        when (name) {
+            null -> throw IllegalArgumentException("name cannot be null")
 
-        if (blendTime < 0f)
-            throw IllegalArgumentException("blendTime cannot be less than zero")
+        // activate blending
+            else -> when {
+                blendTime < 0f -> throw IllegalArgumentException("blendTime cannot be less than zero")
+                else -> {
+                    val anim = control.animationMap[name]
+                            ?: throw IllegalArgumentException("Cannot find animation named: '$name'")
 
-        val anim = control.animationMap[name] ?: throw IllegalArgumentException("Cannot find animation named: '$name'")
+                    control.notifyAnimChange(this, name)
 
-        control.notifyAnimChange(this, name)
+                    when {
+                        animation != null && blendTime > 0f -> {
+                            this.blendTime = blendTime
+                            // activate blending
+                            blendTime = Math.min(blendTime, anim.length / speed)
+                            blendFrom = animation
+                            timeBlendFrom = time
+                            speedBlendFrom = speed
+                            loopModeBlendFrom = loopMode
+                            blendAmount = 0f
+                            blendRate = 1f / blendTime
+                        }
+                        else -> blendFrom = null
+                    }
 
-        if (animation != null && blendTime > 0f) {
-            this.blendTime = blendTime
-            // activate blending
-            blendTime = Math.min(blendTime, anim.length / speed)
-            blendFrom = animation
-            timeBlendFrom = time
-            speedBlendFrom = speed
-            loopModeBlendFrom = loopMode
-            blendAmount = 0f
-            blendRate = 1f / blendTime
-        } else {
-            blendFrom = null
+                    animation = anim
+                    time = 0f
+                    speed = 1f
+                    loopMode = LoopMode.Loop
+                    notified = false
+                }
+            }
         }
 
-        animation = anim
-        time = 0f
-        speed = 1f
-        loopMode = LoopMode.Loop
-        notified = false
     }
 
     /**
@@ -228,9 +236,9 @@ class AnimChannel {
      * Add a single bone to be influenced by this animation channel.
      */
     fun addBone(bone: Bone?) {
-        val boneIndex = control.skeleton!!.getBoneIndex(bone)
-        if (affectedBones == null) {
-            affectedBones = BitSet(control.skeleton!!.boneCount)
+        val boneIndex = control.skeleton!!.getBoneIndex(bone!!)
+        when (affectedBones) {
+            null -> affectedBones = BitSet(control.skeleton!!.boneCount)
         }
         affectedBones!!.set(boneIndex)
     }
@@ -270,75 +278,93 @@ class AnimChannel {
      */
     fun addFromRootBone(bone: Bone?) {
         addBone(bone)
-        if (bone!!.children == null)
-            return
-        for (childBone in bone.children) {
+        bone!!.children.forEach { childBone ->
             addBone(childBone)
             addFromRootBone(childBone)
         }
     }
 
     fun reset(rewind: Boolean) {
-        if (rewind) {
-            setTime(0f)
-            if (control.skeleton != null) {
-                control.skeleton!!.resetAndUpdate()
-            } else {
-                val vars = TempVars.get()
-                update(0f, vars)
-                vars.release()
+        when {
+            rewind -> {
+                setTime(0f)
+                when {
+                    control.skeleton != null -> control.skeleton!!.resetAndUpdate()
+                    else -> {
+                        val vars = TempVars.get()
+                        update(0f, vars)
+                        vars.release()
+                    }
+                }
             }
         }
         animation = null
         notified = false
     }
 
-    internal fun update(tpf: Float, vars: TempVars) {
-        if (animation == null)
-            return
+    internal fun update(tpf: Float, vars: TempVars) {// Negative time indicates that speed should be inverted
+        when (animation) {
+            null -> return
+            else -> {
+                when {
+                    blendFrom != null && blendAmount != 1.0f -> {
+                        // The blendFrom anim is set, the actual animation
+                        // playing will be set
+                        //            blendFrom.setTime(timeBlendFrom, 1f, control, this, vars);
+                        blendFrom!!.setTime(timeBlendFrom, 1f - blendAmount, control, this, vars)
 
-        if (blendFrom != null && blendAmount != 1.0f) {
-            // The blendFrom anim is set, the actual animation
-            // playing will be set
-            //            blendFrom.setTime(timeBlendFrom, 1f, control, this, vars);
-            blendFrom!!.setTime(timeBlendFrom, 1f - blendAmount, control, this, vars)
+                        timeBlendFrom += tpf * speedBlendFrom
+                        timeBlendFrom = AnimationUtils.clampWrapTime(timeBlendFrom,
+                                blendFrom!!.length,
+                                loopModeBlendFrom!!)
+                        when {
+                            timeBlendFrom < 0 -> {
+                                timeBlendFrom = -timeBlendFrom
+                                speedBlendFrom = -speedBlendFrom
+                            }
+                        }
 
-            timeBlendFrom += tpf * speedBlendFrom
-            timeBlendFrom = AnimationUtils.clampWrapTime(timeBlendFrom,
-                    blendFrom!!.length,
-                    loopModeBlendFrom!!)
-            if (timeBlendFrom < 0) {
-                timeBlendFrom = -timeBlendFrom
-                speedBlendFrom = -speedBlendFrom
-            }
-
-            blendAmount += tpf * blendRate
-            if (blendAmount > 1f) {
-                blendAmount = 1f
-                blendFrom = null
-            }
-        }
-
-        animation!!.setTime(time, blendAmount, control, this, vars)
-        time += tpf * speed
-        if (animation!!.length > 0) {
-            if (!notified && (time >= animation!!.length || time < 0)) {
-                if (loopMode == LoopMode.DontLoop) {
-                    // Note that this flag has to be set before calling the notify
-                    // since the notify may start a new animation and then unset
-                    // the flag.
-                    notified = true
+                        blendAmount += tpf * blendRate
+                        when {
+                            blendAmount > 1f -> {
+                                blendAmount = 1f
+                                blendFrom = null
+                            }
+                        }
+                    }
+                // Negative time indicates that speed should be inverted
+                // (for cycle loop mode only)
                 }
-                control.notifyAnimCycleDone(this, animation!!.name!!)
+
+                animation!!.setTime(time, blendAmount, control, this, vars)
+                time += tpf * speed
+                // Negative time indicates that speed should be inverted
+                // (for cycle loop mode only)
+                when {
+                    animation!!.length > 0 -> when {
+                        !notified && (time >= animation!!.length || time < 0) -> {
+                            when (loopMode) {
+                                LoopMode.DontLoop -> // Note that this flag has to be set before calling the notify
+                                    // since the notify may start a new animation and then unset
+                                    // the flag.
+                                    notified = true
+                            }
+                            control.notifyAnimCycleDone(this, animation!!.name!!)
+                        }
+                    }
+                }
+                time = AnimationUtils.clampWrapTime(time, animation!!.length, loopMode!!)
+                when {
+                    time < 0 -> {
+                        // Negative time indicates that speed should be inverted
+                        // (for cycle loop mode only)
+                        time = -time
+                        speed = -speed
+                    }
+                }
             }
         }
-        time = AnimationUtils.clampWrapTime(time, animation!!.length, loopMode!!)
-        if (time < 0) {
-            // Negative time indicates that speed should be inverted
-            // (for cycle loop mode only)
-            time = -time
-            speed = -speed
-        }
+
     }
 
     companion object {

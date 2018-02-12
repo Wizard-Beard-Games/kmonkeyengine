@@ -152,9 +152,7 @@ class AppStateManager(
      */
     fun attachAll(states: Iterable<AppState>) {
         synchronized(this.states) {
-            for (state in states) {
-                attach(state)
-            }
+            states.forEach { state -> attach(state) }
         }
     }
 
@@ -207,9 +205,11 @@ class AppStateManager(
     fun <T : AppState> getState(stateClass: Class<T>): T? {
         synchronized(states) {
             var array = getStates()
-            for (state in array) {
-                if (stateClass.isAssignableFrom(state.javaClass)) {
-                    return state as T
+            array.forEach { state ->
+                when {
+                    stateClass.isAssignableFrom(state.javaClass) -> return state as T
+                    else -> {
+                    }
                 }
             }
 
@@ -219,8 +219,8 @@ class AppStateManager(
             // up even if it wasn't initialized. -pspeed
             array = getInitializing()
             array.forEach { state ->
-                if (stateClass.isAssignableFrom(state.javaClass)) {
-                    return state as T
+                when {
+                    stateClass.isAssignableFrom(state.javaClass) -> return state as T
                 }
             }
         }
@@ -229,34 +229,48 @@ class AppStateManager(
 
     protected fun initializePending() {
         val array = getInitializing()
-        if (array.isEmpty())
-            return
-
-        synchronized(states) {
-            // Move the states that will be initialized
-            // into the active array.  In all but one case the
-            // order doesn't matter but if we do this here then
-            // a state can detach itself in initialize().  If we
-            // did it after then it couldn't.
-            val transfer = Arrays.asList(*array)
-            states.addAll(transfer)
-            initializing.removeAll(transfer)
+        // Move the states that will be initialized
+        // into the active array.  In all but one case the
+        // order doesn't matter but if we do this here then
+        // a state can detach itself in initialize().  If we
+        // did it after then it couldn't.
+        when {
+            array.isEmpty() -> return
+            else -> {
+                synchronized(states) {
+                    // Move the states that will be initialized
+                    // into the active array.  In all but one case the
+                    // order doesn't matter but if we do this here then
+                    // a state can detach itself in initialize().  If we
+                    // did it after then it couldn't.
+                    val transfer = Arrays.asList(*array)
+                    states.addAll(transfer)
+                    initializing.removeAll(transfer)
+                }
+                array.forEach { state -> state.initialize(this, application) }
+            }
         }
-        array.forEach { state -> state.initialize(this, application) }
+
     }
 
     protected fun terminatePending() {
         val array = getTerminating()
-        if (array.isEmpty())
-            return
-
-        array.forEach { state -> state.cleanup() }
-        synchronized(states) {
-            // Remove just the states that were terminated...
-            // which might now be a subset of the total terminating
-            // list.
-            terminating.removeAll(Arrays.asList(*array))
+        // Remove just the states that were terminated...
+        // which might now be a subset of the total terminating
+        // list.
+        when {
+            array.isEmpty() -> return
+            else -> {
+                array.forEach { state -> state.cleanup() }
+                synchronized(states) {
+                    // Remove just the states that were terminated...
+                    // which might now be a subset of the total terminating
+                    // list.
+                    terminating.removeAll(Arrays.asList(*array))
+                }
+            }
         }
+
     }
 
     /**
@@ -274,7 +288,7 @@ class AppStateManager(
         // Update enabled states
         val array = getStates()
         array
-                .filter { it.isEnabled }
+                .filter { it.isEnabled() }
                 .forEach { it.update(tpf) }
     }
 
@@ -285,7 +299,7 @@ class AppStateManager(
     fun render(rm: RenderManager) {
         val array = getStates()
         array
-                .filter { it.isEnabled }
+                .filter { it.isEnabled() }
                 .forEach { it.render(rm) }
     }
 
@@ -295,7 +309,7 @@ class AppStateManager(
     fun postRender() {
         val array = getStates()
         array
-                .filter { it.isEnabled }
+                .filter { it.isEnabled() }
                 .forEach { it.postRender() }
     }
 

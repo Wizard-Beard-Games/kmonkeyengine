@@ -75,11 +75,11 @@ class PoseTrack : Track {
             try {
                 val result = super.clone() as PoseFrame
                 result.weights = this.weights.clone()
-                if (this.poses != null) {
-//                    result.poses = arrayOfNulls(this.poses!!.size)
-                    result.poses = Array(size = this.poses!!.size, init = { Pose() })
-                    for (i in this.poses!!.indices) {
-                        result.poses!![i] = this.poses!![i].clone()
+                when {
+                    this.poses != null -> {
+        //                    result.poses = arrayOfNulls(this.poses!!.size)
+                        result.poses = Array(size = this.poses!!.size, init = { Pose() })
+                        this.poses!!.indices.forEach { i -> result.poses!![i] = this.poses!![i].clone() }
                     }
                 }
                 return result
@@ -102,10 +102,12 @@ class PoseTrack : Track {
             weights = `in`.readFloatArray("weights", null)
 
             val readSavableArray = `in`.readSavableArray("poses", null)
-            if (readSavableArray != null) {
-//                poses = arrayOfNulls(readSavableArray.size)
-                poses = Array(size = readSavableArray.size, init = { Pose() })
-                System.arraycopy(readSavableArray, 0, poses!!, 0, readSavableArray.size)
+            when {
+                readSavableArray != null -> {
+    //                poses = arrayOfNulls(readSavableArray.size)
+                    poses = Array(size = readSavableArray.size, init = { Pose() })
+                    System.arraycopy(readSavableArray, 0, poses!!, 0, readSavableArray.size)
+                }
             }
         }
     }
@@ -124,7 +126,7 @@ class PoseTrack : Track {
     private fun applyFrame(target: Mesh, frameIndex: Int, weight: Float) {
         val frame = frames!![frameIndex]
         val pb = target.getBuffer(Type.Position)
-        for (i in frame.poses!!.indices) {
+        frame.poses!!.indices.forEach { i ->
             val pose = frame.poses!![i]
             val poseWeight = frame.weights[i] * weight
 
@@ -176,23 +178,20 @@ class PoseTrack : Track {
      * This method creates a clone of the current object.
      * @return a clone of the current object
      */
-    override fun clone(): PoseTrack {
-        try {
+    override fun clone(): PoseTrack = try {
 //            val result = super.clone() as PoseTrack
-            val result = clone()
-            result.times = this.times!!.clone()
-            if (this.frames != null) {
-//                result.frames = arrayOfNulls(this.frames!!.size)
+        val result = clone()
+        result.times = this.times!!.clone()
+        when {
+            this.frames != null -> {
+                //                result.frames = arrayOfNulls(this.frames!!.size)
                 result.frames = Array(size = this.frames!!.size, init = { PoseFrame() })
-                for (i in this.frames!!.indices) {
-                    result.frames!![i] = this.frames!![i].clone()
-                }
+                this.frames!!.indices.forEach { i -> result.frames!![i] = this.frames!![i].clone() }
             }
-            return result
-        } catch (e: CloneNotSupportedException) {
-            throw AssertionError()
         }
-
+        result
+    } catch (e: CloneNotSupportedException) {
+        throw AssertionError()
     }
 
     @Throws(IOException::class)
@@ -210,10 +209,12 @@ class PoseTrack : Track {
         times = `in`.readFloatArray("times", null)
 
         val readSavableArray = `in`.readSavableArray("frames", null)
-        if (readSavableArray != null) {
+        when {
+            readSavableArray != null -> {
 //            frames = arrayOfNulls(readSavableArray.size)
-            frames = Array(size = readSavableArray.size, init = { PoseFrame() })
-            System.arraycopy(readSavableArray, 0, frames!!, 0, readSavableArray.size)
+                frames = Array(size = readSavableArray.size, init = { PoseFrame() })
+                System.arraycopy(readSavableArray, 0, frames!!, 0, readSavableArray.size)
+            }
         }
     }
 }
