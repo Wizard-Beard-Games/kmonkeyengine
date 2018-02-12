@@ -545,7 +545,7 @@ public class ChaseCamera implements ActionListener, AnalogListener, Control, Jme
 
     /**
      * Returns the max zoom distance of the camera (default is 40)
-     * @return maxDistance
+     * @return _maxDistance
      */
     public float getMaxDistance() {
         return maxDistance;
@@ -564,7 +564,7 @@ public class ChaseCamera implements ActionListener, AnalogListener, Control, Jme
 
     /**
      * Returns the min zoom distance of the camera (default is 1)
-     * @return minDistance
+     * @return _minDistance
      */
     public float getMinDistance() {
         return minDistance;
@@ -657,8 +657,8 @@ public class ChaseCamera implements ActionListener, AnalogListener, Control, Jme
      */
     public void read(JmeImporter im) throws IOException {
         InputCapsule ic = im.getCapsule(this);
-        maxDistance = ic.readFloat("maxDistance", 40);
-        minDistance = ic.readFloat("minDistance", 1);
+        maxDistance = ic.readFloat("_maxDistance", 40);
+        minDistance = ic.readFloat("_minDistance", 1);
     }
 
     /**
@@ -889,7 +889,7 @@ public class ChaseCamera implements ActionListener, AnalogListener, Control, Jme
      * camera will always rotate around its spatial independently of their
      * distance to one another. If set to true, the chase camera will only
      * be allowed to rotated below the "horizon" when the distance is smaller
-     * than minDistance + 1.0f (when fully zoomed-in).
+     * than _minDistance + 1.0f (when fully zoomed-in).
      */
     public void setDownRotateOnCloseViewOnly(boolean rotateOnlyWhenClose) {
         veryCloseRotation = rotateOnlyWhenClose;
@@ -897,7 +897,7 @@ public class ChaseCamera implements ActionListener, AnalogListener, Control, Jme
 
     /**
      * @return True if rotation below the vertical plane of the spatial tied
-     * to the camera is allowed only when zoomed in at minDistance + 1.0f.
+     * to the camera is allowed only when zoomed in at _minDistance + 1.0f.
      * False if vertical rotation is always allowed.
      */
     public boolean getDownRotateOnCloseViewOnly() {

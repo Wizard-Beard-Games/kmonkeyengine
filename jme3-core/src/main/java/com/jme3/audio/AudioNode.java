@@ -551,7 +551,7 @@ public class AudioNode extends Node implements AudioSource {
      * very long.
      *
      * @param maxDistance The maximum playing distance.
-     * @throws IllegalArgumentException If maxDistance is negative
+     * @throws IllegalArgumentException If _maxDistance is negative
      */
     public void setMaxDistance(float maxDistance) {
         if (maxDistance < 0) {

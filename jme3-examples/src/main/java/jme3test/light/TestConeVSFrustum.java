@@ -93,7 +93,7 @@ public class TestConeVSFrustum extends SimpleApplication {
         gridGeom.setLocalTranslation(-125, -25, -125);
 
 //        flyCam.setMoveSpeed(30);
-//        flyCam.setDragToRotate(true);
+//        flyCam.set_dragToRotate(true);
 //        cam.setLocation(new Vector3f(56.182674f, 19.037334f, 7.093905f));
 //        cam.setRotation(new Quaternion(0.0816657f, -0.82228005f, 0.12213967f, 0.5497892f));
         spotLight = new SpotLight();
