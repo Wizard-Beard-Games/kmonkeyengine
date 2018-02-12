@@ -168,24 +168,26 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
     }
 
     override fun onAction(name: String, keyPressed: Boolean, tpf: Float) {
-        if (isEnabled()) {
-            if (_dragToRotate) {
-                if (name == CameraInput.CHASECAM_TOGGLEROTATE && isEnabled()) {
-                    if (keyPressed) {
-                        canRotate = true
-                        if (hideCursorOnRotate) {
-                            inputManager!!.isCursorVisible = false
+        when {
+            isEnabled() -> when {
+                _dragToRotate -> when {
+                    name == CameraInput.CHASECAM_TOGGLEROTATE && isEnabled() -> when {
+                        keyPressed -> {
+                            canRotate = true
+                            if (hideCursorOnRotate) {
+                                inputManager!!.isCursorVisible = false
+                            }
                         }
-                    } else {
-                        canRotate = false
-                        if (hideCursorOnRotate) {
-                            inputManager!!.isCursorVisible = true
+                        else -> {
+                            canRotate = false
+                            if (hideCursorOnRotate) {
+                                inputManager!!.isCursorVisible = true
+                            }
                         }
                     }
                 }
             }
         }
-
     }
 
     override fun onAnalog(name: String, value: Float, tpf: Float) {
