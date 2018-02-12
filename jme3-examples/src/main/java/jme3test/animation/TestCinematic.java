@@ -107,7 +107,7 @@ public class TestCinematic extends SimpleApplication {
         createCameraMotion();
 
         //creating spatial animation for the teapot
-        AnimationFactory factory = new AnimationFactory(20, "teapotAnim");
+        AnimationFactory factory = new AnimationFactory(20, "teapotAnim");  // TODO: test this with KME >= 2/12/2018
         factory.addTimeTranslation(0, new Vector3f(10, 0, 10));
         factory.addTimeTranslation(20, new Vector3f(10, 0, -10));
         factory.addTimeScale(10, new Vector3f(4, 4, 4));
