@@ -126,7 +126,7 @@ interface Application {
     /**
      * @return The [renderer][Renderer] for the application
      */
-    var renderer: Renderer
+    var renderer: Renderer?
 
     /**
      * @return The [audio renderer][AudioRenderer] for the application
@@ -162,9 +162,9 @@ interface Application {
      * @return The GUI viewport. Which is used for the on screen
      * statistics and FPS.
      */
-    var guiViewPort: ViewPort
+    var guiViewPort: ViewPort?
 
-    var viewPort: ViewPort
+    var viewPort: ViewPort?
 
     /**
      * Set the display settings to define the display created.
@@ -177,7 +177,8 @@ interface Application {
      *
      * @param settings The settings to set.
      */
-    fun setSettings(settings: AppSettings?)
+    var settings: AppSettings?
+//    fun setSettings(settings: AppSettings?)
 
     /**
      * Starts the application.

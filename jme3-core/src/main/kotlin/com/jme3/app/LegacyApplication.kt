@@ -72,7 +72,7 @@ class LegacyApplication
  */
 @JvmOverloads constructor(vararg initialStates: AppState = null) : Application, SystemListener {
 
-     override var _assetManager: AssetManager? = null
+    override var _assetManager: AssetManager? = null
         set(value) {
             if (field != null) {
                 throw IllegalStateException("Can only set asset manager before initialization.")
@@ -84,44 +84,47 @@ class LegacyApplication
      * @return The [audio renderer][AudioRenderer] for the application
      */
     override var audioRenderer: AudioRenderer? = null
-        protected set(value: AudioRenderer?) {
-            super.audioRenderer = value
-        }
+
     /**
      * @return The [renderer][Renderer] for the application
      */
-    override var renderer: Renderer
-        protected set(value: Renderer) {
-            super.renderer = value
-        }
+    override var renderer: Renderer? = null
+
     /**
      * @return the [render manager][RenderManager]
      */
     override var renderManager: RenderManager? = null
-        protected set(value: RenderManager?) {
-            super.renderManager = value
-        }
-    override var viewPort: ViewPort
-        protected set(value: ViewPort) {
-            super.viewPort = value
-        }
+
+    override var viewPort: ViewPort? = null
+
     /**
      * @return The GUI viewport. Which is used for the on screen
      * statistics and FPS.
      */
-    override var guiViewPort: ViewPort
-        protected set(value: ViewPort) {
-            super.guiViewPort = value
-        }
+    override var guiViewPort: ViewPort? = null
 
     /**
      * @return The [display context][JmeContext] for the application
      */
     override var context: JmeContext? = null
-        protected set(value: JmeContext?) {
-            super.context = value
+
+    override var settings: AppSettings? = null
+        set(settings) {
+            field = settings
+            if (context != null && settings!!.useInput() != inputEnabled) {
+                // may need to create or destroy input based
+                // on settings change
+                inputEnabled = !inputEnabled
+                if (inputEnabled) {
+                    initInput()
+                } else {
+                    destroyInput()
+                }
+            } else {
+                inputEnabled = settings!!.useInput()
+            }
         }
-    protected var settings: AppSettings? = null
+
     protected var timer: Timer? = NanoTimer()
     /**
      * @return The [camera][Camera] for the application
@@ -290,21 +293,21 @@ class LegacyApplication
      *
      * @param settings The settings to set.
      */
-    override fun setSettings(settings: AppSettings?) {
-        this.settings = settings
-        if (context != null && settings!!.useInput() != inputEnabled) {
-            // may need to create or destroy input based
-            // on settings change
-            inputEnabled = !inputEnabled
-            if (inputEnabled) {
-                initInput()
-            } else {
-                destroyInput()
-            }
-        } else {
-            inputEnabled = settings!!.useInput()
-        }
-    }
+//    override fun setSettings(settings: AppSettings?) {
+//        this.settings = settings
+//        if (context != null && settings!!.useInput() != inputEnabled) {
+//            // may need to create or destroy input based
+//            // on settings change
+//            inputEnabled = !inputEnabled
+//            if (inputEnabled) {
+//                initInput()
+//            } else {
+//                destroyInput()
+//            }
+//        } else {
+//            inputEnabled = settings!!.useInput()
+//        }
+//    }
 
     /**
      * Sets the Timer implementation that will be used for calculating
