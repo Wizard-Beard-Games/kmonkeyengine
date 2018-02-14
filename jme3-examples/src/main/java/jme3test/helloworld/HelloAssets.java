@@ -54,23 +54,23 @@ public class HelloAssets extends SimpleApplication {
     public void simpleInitApp() {
 
         /** Load a teapot model (OBJ file from test-data) */
-        Spatial teapot = assetManager.loadModel("Models/Teapot/Teapot.obj");
-        Material mat_default = new Material( assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
+        Spatial teapot = _assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Material mat_default = new Material(_assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
         teapot.setMaterial(mat_default);
         rootNode.attachChild(teapot);
 
         /** Create a wall (Box with material and texture from test-data) */
         Box box = new Box(2.5f, 2.5f, 1.0f);
         Spatial wall = new Geometry("Box", box );
-        Material mat_brick = new Material( assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat_brick.setTexture("ColorMap", assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg"));
+        Material mat_brick = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat_brick.setTexture("ColorMap", _assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg"));
         wall.setMaterial(mat_brick);
         wall.setLocalTranslation(2.0f,-2.5f,0.0f);
         rootNode.attachChild(wall);
 
         /** Display a line of text (default font from test-data) */
         setDisplayStatView(false);
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         BitmapText helloText = new BitmapText(guiFont, false);
         helloText.setSize(guiFont.getCharSet().getRenderedSize());
         helloText.setText("Hello World");
@@ -78,7 +78,7 @@ public class HelloAssets extends SimpleApplication {
         guiNode.attachChild(helloText);
 
         /** Load a Ninja model (OgreXML + material + texture from test_data) */
-        Spatial ninja = assetManager.loadModel("Models/Ninja/Ninja.mesh.xml");
+        Spatial ninja = _assetManager.loadModel("Models/Ninja/Ninja.mesh.xml");
         ninja.scale(0.05f, 0.05f, 0.05f);
         ninja.rotate(0.0f, -3.0f, 0.0f);
         ninja.setLocalTranslation(0.0f, -5.0f, -2.0f);

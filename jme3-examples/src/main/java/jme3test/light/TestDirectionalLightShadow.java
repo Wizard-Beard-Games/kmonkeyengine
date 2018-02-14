@@ -40,14 +40,12 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -100,8 +98,8 @@ public class TestDirectionalLightShadow extends SimpleApplication implements Act
 
 
         mat = new Material[2];
-        mat[0] = assetManager.loadMaterial("Common/Materials/RedColor.j3m");
-        mat[1] = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        mat[0] = _assetManager.loadMaterial("Common/Materials/RedColor.j3m");
+        mat[1] = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
         mat[1].setBoolean("UseMaterialColors", true);
         mat[1].setColor("Ambient", ColorRGBA.White);
         mat[1].setColor("Diffuse", ColorRGBA.White.clone());
@@ -132,12 +130,12 @@ public class TestDirectionalLightShadow extends SimpleApplication implements Act
         b.scaleTextureCoordinates(new Vector2f(10, 10));
         ground = new Geometry("soil", b);
         ground.setLocalTranslation(0, 10, 550);
-        matGroundU = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matGroundU = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matGroundU.setColor("Color", ColorRGBA.Green);
 
 
-        matGroundL = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        matGroundL = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         matGroundL.setTexture("DiffuseMap", grass);
 
@@ -156,7 +154,7 @@ public class TestDirectionalLightShadow extends SimpleApplication implements Act
         al.setColor(ColorRGBA.White.mult(0.02f));
         rootNode.addLight(al);
 
-        Spatial sky = SkyFactory.createSky(assetManager,
+        Spatial sky = SkyFactory.createSky(_assetManager,
                 "Scenes/Beach/FullskiesSunset0068.dds", EnvMapType.CubeMap);
         sky.setLocalScale(350);
 
@@ -177,7 +175,7 @@ public class TestDirectionalLightShadow extends SimpleApplication implements Act
 
         loadScene();
 
-        dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE, 3);
+        dlsr = new DirectionalLightShadowRenderer(_assetManager, SHADOWMAP_SIZE, 3);
         dlsr.setLight(l);
         dlsr.setLambda(0.55f);
         dlsr.setShadowIntensity(0.8f);
@@ -185,14 +183,14 @@ public class TestDirectionalLightShadow extends SimpleApplication implements Act
         dlsr.displayDebug();
         viewPort.addProcessor(dlsr);
 
-        dlsf = new DirectionalLightShadowFilter(assetManager, SHADOWMAP_SIZE, 3);
+        dlsf = new DirectionalLightShadowFilter(_assetManager, SHADOWMAP_SIZE, 3);
         dlsf.setLight(l);
         dlsf.setLambda(0.55f);
         dlsf.setShadowIntensity(0.8f);
         dlsf.setEdgeFilteringMode(EdgeFilteringMode.Nearest);
         dlsf.setEnabled(false);
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         fpp.addFilter(dlsf);
 
         viewPort.addProcessor(fpp);
@@ -225,7 +223,7 @@ public class TestDirectionalLightShadow extends SimpleApplication implements Act
         inputManager.addListener(this, "lambdaUp", "lambdaDown", "ThicknessUp", "ThicknessDown",
                 "switchGroundMat", "debug", "up", "down", "right", "left", "fwd", "back", "pp", "stabilize", "distance", "ShadowUp", "ShadowDown", "backShadows");
 
-        ShadowTestUIManager uiMan = new ShadowTestUIManager(assetManager, dlsr, dlsf, guiNode, inputManager, viewPort);
+        ShadowTestUIManager uiMan = new ShadowTestUIManager(_assetManager, dlsr, dlsf, guiNode, inputManager, viewPort);
 
         inputManager.addListener(this, "Size+", "Size-");
         inputManager.addMapping("Size+", new KeyTrigger(KeyInput.KEY_W));

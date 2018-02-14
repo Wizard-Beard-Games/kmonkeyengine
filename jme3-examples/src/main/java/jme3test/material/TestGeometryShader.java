@@ -24,13 +24,13 @@ public class TestGeometryShader extends SimpleApplication {
         mesh.updateCounts();
         Geometry geometry = new Geometry("Test", mesh);
         geometry.updateGeometricState();
-        geometry.setMaterial(new Material(assetManager, "Materials/Geom/SimpleGeom.j3md"));
+        geometry.setMaterial(new Material(_assetManager, "Materials/Geom/SimpleGeom.j3md"));
         //geometry.getMaterial().getAdditionalRenderState().setFaceCullMode(RenderState.FaceCullMode.Off);
-        //geometry.setMaterial(assetManager.loadMaterial("Materials/Geom/SimpleTess.j3md"));
+        //geometry.setMaterial(_assetManager.loadMaterial("Materials/Geom/SimpleTess.j3md"));
         rootNode.attachChild(geometry);
 
         Geometry geometry1 = new Geometry("T1", new Sphere(10, 10, 1));
-        geometry1.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        geometry1.setMaterial(new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
         rootNode.attachChild(geometry1);
 
     }

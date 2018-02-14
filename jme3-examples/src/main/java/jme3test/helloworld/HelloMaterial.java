@@ -61,8 +61,8 @@ public class HelloMaterial extends SimpleApplication {
     Box cube1Mesh = new Box( 1f,1f,1f);
     Geometry cube1Geo = new Geometry("My Textured Box", cube1Mesh);
     cube1Geo.setLocalTranslation(new Vector3f(-3f,1.1f,0f));
-    Material cube1Mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    Texture cube1Tex = assetManager.loadTexture("Interface/Logo/Monkey.jpg");
+    Material cube1Mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    Texture cube1Tex = _assetManager.loadTexture("Interface/Logo/Monkey.jpg");
     cube1Mat.setTexture("ColorMap", cube1Tex);
     cube1Geo.setMaterial(cube1Mat);
     rootNode.attachChild(cube1Geo);
@@ -70,8 +70,8 @@ public class HelloMaterial extends SimpleApplication {
     /** A translucent/transparent texture, similar to a window frame. */
     Box cube2Mesh = new Box( 1f,1f,0.01f);
     Geometry cube2Geo = new Geometry("window frame", cube2Mesh);
-    Material cube2Mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    cube2Mat.setTexture("ColorMap", assetManager.loadTexture("Textures/ColoredTex/Monkey.png"));
+    Material cube2Mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    cube2Mat.setTexture("ColorMap", _assetManager.loadTexture("Textures/ColoredTex/Monkey.png"));
     cube2Mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);  // activate transparency
     cube2Geo.setQueueBucket(Bucket.Transparent);
     cube2Geo.setMaterial(cube2Mat);
@@ -82,15 +82,15 @@ public class HelloMaterial extends SimpleApplication {
     Geometry sphereGeo = new Geometry("Shiny rock", sphereMesh);
     sphereMesh.setTextureMode(Sphere.TextureMode.Projected); // better quality on spheres
     TangentBinormalGenerator.generate(sphereMesh);           // for lighting effect
-    Material sphereMat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-    sphereMat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Terrain/Pond/Pond.jpg"));
-    sphereMat.setTexture("NormalMap", assetManager.loadTexture("Textures/Terrain/Pond/Pond_normal.png"));
+    Material sphereMat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
+    sphereMat.setTexture("DiffuseMap", _assetManager.loadTexture("Textures/Terrain/Pond/Pond.jpg"));
+    sphereMat.setTexture("NormalMap", _assetManager.loadTexture("Textures/Terrain/Pond/Pond_normal.png"));
     sphereMat.setBoolean("UseMaterialColors",true);    
     sphereMat.setColor("Diffuse",ColorRGBA.White);
     sphereMat.setColor("Specular",ColorRGBA.White);
     sphereMat.setFloat("Shininess", 64f); // [0,128]
     sphereGeo.setMaterial(sphereMat);
-    //sphereGeo.setMaterial((Material) assetManager.loadMaterial("Materials/MyCustomMaterial.j3m"));
+    //sphereGeo.setMaterial((Material) _assetManager.loadMaterial("Materials/MyCustomMaterial.j3m"));
     sphereGeo.setLocalTranslation(0,2,-2); // Move it a bit
     sphereGeo.rotate(1.6f, 0, 0);          // Rotate it a bit
     rootNode.attachChild(sphereGeo);

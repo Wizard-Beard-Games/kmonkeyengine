@@ -50,8 +50,8 @@ interface ClonableTrack : Track, JmeCloneable {
     /**
      * Allows to clone the track for a given Spatial.
      * The spatial fed to the method is the Spatial holding the AnimControl controlling the Animation using this track.
-     * This method will be called during the loading process of a j3o model by the assetManager.
-     * The assetManager keeps the original model in cache and returns a clone of the model.
+     * This method will be called during the loading process of a j3o model by the _assetManager.
+     * The _assetManager keeps the original model in cache and returns a clone of the model.
      *
      * This method purpose is to find the cloned reference of the original spatial which it refers to in the cloned model.
      *

@@ -48,7 +48,7 @@ public class TestZOrder extends SimpleApplication {
         p.setPosition(100, 100);
         p.setWidth(100);
         p.setHeight(100);
-        p.setImage(assetManager, "Interface/Logo/Monkey.png", false);
+        p.setImage(_assetManager, "Interface/Logo/Monkey.png", false);
         guiNode.attachChild(p);
 
         Picture p2 = new Picture("Picture2");
@@ -56,7 +56,7 @@ public class TestZOrder extends SimpleApplication {
         p2.setPosition(150, 150);
         p2.setWidth(100);
         p2.setHeight(100);
-        p2.setImage(assetManager, "Interface/Logo/Monkey.png", false);
+        p2.setImage(_assetManager, "Interface/Logo/Monkey.png", false);
         guiNode.attachChild(p2);
     }
 

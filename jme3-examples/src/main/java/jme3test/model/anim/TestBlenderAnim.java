@@ -66,7 +66,7 @@ public class TestBlenderAnim extends SimpleApplication {
 
         BlenderKey blenderKey = new BlenderKey("Blender/2.4x/BaseMesh_249.blend");
         
-        Spatial scene = (Spatial) assetManager.loadModel(blenderKey);
+        Spatial scene = (Spatial) _assetManager.loadModel(blenderKey);
         rootNode.attachChild(scene);
         
         Spatial model = this.findNode(rootNode, "BaseMesh_01");

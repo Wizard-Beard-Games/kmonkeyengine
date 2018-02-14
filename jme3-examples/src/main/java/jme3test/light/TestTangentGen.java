@@ -87,7 +87,7 @@ public class TestTangentGen extends SimpleApplication {
         TangentBinormalGenerator.generate(mesh);
 
         Geometry testGeom = new Geometry(name, mesh);
-        Material mat = assetManager.loadMaterial("Textures/BumpMapTest/Tangent.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/BumpMapTest/Tangent.j3m");
         testGeom.setMaterial(mat);
         testGeom.getLocalTranslation().set(translation);
         rootNode.attachChild(testGeom);
@@ -96,7 +96,7 @@ public class TestTangentGen extends SimpleApplication {
                 "Debug " + name,
                 TangentBinormalGenerator.genTbnLines(mesh, 0.08f)
         );
-        Material debugMat = assetManager.loadMaterial("Common/Materials/VertexColor.j3m");
+        Material debugMat = _assetManager.loadMaterial("Common/Materials/VertexColor.j3m");
         debug.setMaterial(debugMat);
         debug.setCullHint(Spatial.CullHint.Never);
         debug.getLocalTranslation().set(translation);

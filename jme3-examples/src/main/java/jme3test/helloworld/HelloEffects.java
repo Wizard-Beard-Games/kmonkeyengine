@@ -51,9 +51,9 @@ public class HelloEffects extends SimpleApplication {
   public void simpleInitApp() {
     ParticleEmitter fire = 
             new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
-    Material mat_red = new Material(assetManager, 
+    Material mat_red = new Material(_assetManager,
             "Common/MatDefs/Misc/Particle.j3md");
-    mat_red.setTexture("Texture", assetManager.loadTexture(
+    mat_red.setTexture("Texture", _assetManager.loadTexture(
             "Effects/Explosion/flame.png"));
     fire.setMaterial(mat_red);
     fire.setImagesX(2); 
@@ -71,9 +71,9 @@ public class HelloEffects extends SimpleApplication {
 
     ParticleEmitter debris = 
             new ParticleEmitter("Debris", ParticleMesh.Type.Triangle, 10);
-    Material debris_mat = new Material(assetManager, 
+    Material debris_mat = new Material(_assetManager,
             "Common/MatDefs/Misc/Particle.j3md");
-    debris_mat.setTexture("Texture", assetManager.loadTexture(
+    debris_mat.setTexture("Texture", _assetManager.loadTexture(
             "Effects/Explosion/Debris.png"));
     debris.setMaterial(debris_mat);
     debris.setImagesX(3); 
@@ -89,9 +89,9 @@ public class HelloEffects extends SimpleApplication {
 
 //    ParticleEmitter water = 
 //            new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 20);
-//    Material mat_blue = new Material(assetManager, 
+//    Material mat_blue = new Material(_assetManager,
 //            "Common/MatDefs/Misc/Particle.j3md");
-//    mat_blue.setTexture("Texture", assetManager.loadTexture(
+//    mat_blue.setTexture("Texture", _assetManager.loadTexture(
 //            "Effects/Explosion/flame.png"));
 //    water.setMaterial(mat_blue);
 //    water.setImagesX(2); 

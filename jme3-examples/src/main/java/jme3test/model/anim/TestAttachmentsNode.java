@@ -77,7 +77,7 @@ public class TestAttachmentsNode extends SimpleApplication
         dl.setColor(ColorRGBA.White);
         rootNode.addLight(dl);
 
-        Spatial model = assetManager.loadModel("Models/Jaime/Jaime.j3o");
+        Spatial model = _assetManager.loadModel("Models/Jaime/Jaime.j3o");
         control = model.getControl(AnimControl.class);
         SkeletonControl skeletonControl = model.getControl(SkeletonControl.class);
 
@@ -91,7 +91,7 @@ public class TestAttachmentsNode extends SimpleApplication
         Box box = new Box(0.3f, 0.02f, 0.02f);
         Geometry saber = new Geometry("saber", box);
         saber.move(0.4f, 0.05f, 0.01f);
-        Material red = assetManager.loadMaterial("Common/Materials/RedColor.j3m");
+        Material red = _assetManager.loadMaterial("Common/Materials/RedColor.j3m");
         saber.setMaterial(red);
         Node n = skeletonControl.getAttachmentsNode("hand.R");
         n.attachChild(saber);

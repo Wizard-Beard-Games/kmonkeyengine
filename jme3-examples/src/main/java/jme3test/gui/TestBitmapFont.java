@@ -63,7 +63,7 @@ public class TestBitmapFont extends SimpleApplication {
         inputManager.addListener(keyListener, "WordWrap");
         inputManager.addRawInputListener(textListener);
 
-        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont fnt = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         txt = new BitmapText(fnt, false);
         txt.setBox(new Rectangle(0, 0, settings.getWidth(), settings.getHeight()));
         txt.setSize(fnt.getPreferredSize() * 2f);

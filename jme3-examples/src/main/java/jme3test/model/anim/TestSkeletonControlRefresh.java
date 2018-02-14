@@ -59,11 +59,10 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 import com.jme3.shadow.DirectionalLightShadowFilter;
-import com.jme3.shadow.DirectionalLightShadowRenderer;
+
 import java.util.ArrayList;
 import java.util.List;
-import jme3test.post.SSAOUI;
- 
+
 public class TestSkeletonControlRefresh extends SimpleApplication implements ActionListener{
  
     private AnimChannel channel;
@@ -91,13 +90,13 @@ public class TestSkeletonControlRefresh extends SimpleApplication implements Act
         dl.setDirection(new Vector3f(-0.1f, -0.7f, -1).normalizeLocal());
         dl.setColor(new ColorRGBA(1f, 1f, 1f, 1.0f));
         rootNode.addLight(dl);
-        Material m = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material m = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         TextureKey k = new TextureKey("Models/Oto/Oto.jpg", false);
-        m.setTexture("ColorMap", assetManager.loadTexture(k));        
+        m.setTexture("ColorMap", _assetManager.loadTexture(k));
  
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                Spatial model = (Spatial) assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+                Spatial model = (Spatial) _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
                 //setting a different material
                 model.setMaterial(m.clone());
                 model.setLocalScale(0.1f);
@@ -123,13 +122,13 @@ public class TestSkeletonControlRefresh extends SimpleApplication implements Act
         inputManager.addListener(this, "toggleHWS");
         inputManager.addMapping("toggleHWS", new KeyTrigger(KeyInput.KEY_SPACE));
         
-//        DirectionalLightShadowRenderer pssm = new DirectionalLightShadowRenderer(assetManager, 1024, 2);
+//        DirectionalLightShadowRenderer pssm = new DirectionalLightShadowRenderer(_assetManager, 1024, 2);
 //        pssm.setLight(dl);
 //        viewPort.addProcessor(pssm);
         
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         
-        DirectionalLightShadowFilter sf = new DirectionalLightShadowFilter(assetManager, 1024, 2);
+        DirectionalLightShadowFilter sf = new DirectionalLightShadowFilter(_assetManager, 1024, 2);
         sf.setLight(dl);
         fpp.addFilter(sf);
         fpp.addFilter(new SSAOFilter());
@@ -142,7 +141,7 @@ public class TestSkeletonControlRefresh extends SimpleApplication implements Act
         Quad q = new Quad(20, 20);
        q.scaleTextureCoordinates(Vector2f.UNIT_XY.mult(10));
        Geometry geom = new Geometry("floor", q);
-       Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+       Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
        mat.setColor("Color", ColorRGBA.White);       
        geom.setMaterial(mat);
 
@@ -166,7 +165,7 @@ public class TestSkeletonControlRefresh extends SimpleApplication implements Act
     }
  
     private void makeHudText() {
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         hwsText = new BitmapText(guiFont, false);
         hwsText.setSize(guiFont.getCharSet().getRenderedSize());
         hwsText.setText("HWS : "+ hwSkinningEnable);

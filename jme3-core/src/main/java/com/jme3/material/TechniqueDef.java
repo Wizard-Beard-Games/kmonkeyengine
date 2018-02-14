@@ -497,7 +497,7 @@ public class TechniqueDef implements Savable, Cloneable {
             ShaderGenerator shaderGenerator = assetManager.getShaderGenerator(rendererCaps);
             if (shaderGenerator == null) {
                 throw new UnsupportedOperationException("ShaderGenerator was not initialized, "
-                        + "make sure assetManager.getGenerator(caps) has been called");
+                        + "make sure _assetManager.getGenerator(caps) has been called");
             }
             shaderGenerator.initialize(this);
             shader = shaderGenerator.generateShader(definesSourceCode);

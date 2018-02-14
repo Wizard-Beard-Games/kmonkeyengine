@@ -78,14 +78,14 @@ public class TestPointDirectionalAndSpotLightShadows extends SimpleApplication {
         cam.setRotation(new Quaternion(4.3868728E-5f, 0.9999293f, -0.011230096f, 0.0039059948f));
 
 
-        Node scene = (Node) assetManager.loadModel("Models/Test/CornellBox.j3o");
+        Node scene = (Node) _assetManager.loadModel("Models/Test/CornellBox.j3o");
         scene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         rootNode.attachChild(scene);
         rootNode.getChild("Cube").setShadowMode(RenderQueue.ShadowMode.Receive);
         lightNode = (Node) rootNode.getChild("Lamp");
         Geometry lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
         //Geometry  lightMdl = new Geometry("Light", new Box(.1f,.1f,.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         lightMdl.setShadowMode(RenderQueue.ShadowMode.Off);
         lightNode.attachChild(lightMdl);
         //lightMdl.setLocalTranslation(lightNode.getLocalTranslation());
@@ -93,20 +93,20 @@ public class TestPointDirectionalAndSpotLightShadows extends SimpleApplication {
 
         Geometry box = new Geometry("box", new Box(0.2f, 0.2f, 0.2f));
         //Geometry  lightMdl = new Geometry("Light", new Box(.1f,.1f,.1f));
-        box.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        box.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         box.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         rootNode.attachChild(box);
         box.setLocalTranslation(-1f, 0.5f, -2);
 
         ((PointLight) scene.getLocalLightList().get(0)).setColor(ColorRGBA.Red);
         
-        plsr = new PointLightShadowRenderer(assetManager, SHADOWMAP_SIZE);
+        plsr = new PointLightShadowRenderer(_assetManager, SHADOWMAP_SIZE);
         plsr.setLight((PointLight) scene.getLocalLightList().get(0));
         plsr.setEdgeFilteringMode(EdgeFilteringMode.PCF4);
 
 
 
-        plsf = new PointLightShadowFilter(assetManager, SHADOWMAP_SIZE);
+        plsf = new PointLightShadowFilter(_assetManager, SHADOWMAP_SIZE);
         plsf.setLight((PointLight) scene.getLocalLightList().get(0));     
         plsf.setEdgeFilteringMode(EdgeFilteringMode.PCF4);
         plsf.setEnabled(useFilter);
@@ -116,11 +116,11 @@ public class TestPointDirectionalAndSpotLightShadows extends SimpleApplication {
         rootNode.addLight(directionalLight);
         directionalLight.setColor(ColorRGBA.Blue);
         directionalLight.setDirection(new Vector3f(-1f, -.2f, 0f));
-        dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE*2, 4);
+        dlsr = new DirectionalLightShadowRenderer(_assetManager, SHADOWMAP_SIZE*2, 4);
         dlsr.setLight(directionalLight);
         dlsr.setEdgeFilteringMode(EdgeFilteringMode.PCF4);
         
-        dlsf = new DirectionalLightShadowFilter(assetManager, SHADOWMAP_SIZE*2, 4);
+        dlsf = new DirectionalLightShadowFilter(_assetManager, SHADOWMAP_SIZE*2, 4);
         dlsf.setEdgeFilteringMode(EdgeFilteringMode.PCF4);
         dlsf.setLight(directionalLight);        
         dlsf.setEnabled(useFilter);
@@ -134,15 +134,15 @@ public class TestPointDirectionalAndSpotLightShadows extends SimpleApplication {
         Sphere sphere = new Sphere(8, 8, .1f);
         Geometry sphereGeometry = new Geometry("Sphere", sphere);
         sphereGeometry.setLocalTranslation(-1f, 3f, 0f);
-        sphereGeometry.setMaterial(assetManager.loadMaterial("Common/Materials/WhiteColor.j3m"));
+        sphereGeometry.setMaterial(_assetManager.loadMaterial("Common/Materials/WhiteColor.j3m"));
         rootNode.attachChild(sphereGeometry);
         rootNode.addLight(spotLight);
         
-        slsr = new SpotLightShadowRenderer(assetManager, SHADOWMAP_SIZE);
+        slsr = new SpotLightShadowRenderer(_assetManager, SHADOWMAP_SIZE);
         slsr.setLight(spotLight);
         slsr.setEdgeFilteringMode(EdgeFilteringMode.PCF4);
         
-        slsf = new SpotLightShadowFilter(assetManager, SHADOWMAP_SIZE);
+        slsf = new SpotLightShadowFilter(_assetManager, SHADOWMAP_SIZE);
         slsf.setLight(spotLight);
         slsf.setEdgeFilteringMode(EdgeFilteringMode.PCF4);
         slsf.setEnabled(useFilter);
@@ -153,16 +153,16 @@ public class TestPointDirectionalAndSpotLightShadows extends SimpleApplication {
         if (!useFilter)viewPort.addProcessor(plsr);
         if (!useFilter)viewPort.addProcessor(dlsr);
         
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         fpp.addFilter(plsf);
         fpp.addFilter(dlsf);
         fpp.addFilter(slsf);
         viewPort.addProcessor(fpp);
               
-        ShadowTestUIManager uiMan = new ShadowTestUIManager(assetManager, plsr, plsf, guiNode, inputManager, viewPort);
-        ShadowTestUIManager uiManPls = new ShadowTestUIManager(assetManager, plsr, plsf, guiNode, inputManager, viewPort);
-        ShadowTestUIManager uiManDls = new ShadowTestUIManager(assetManager, dlsr, dlsf, guiNode, inputManager, viewPort);
-        ShadowTestUIManager uiManSls = new ShadowTestUIManager(assetManager, slsr, slsf, guiNode, inputManager, viewPort);
+        ShadowTestUIManager uiMan = new ShadowTestUIManager(_assetManager, plsr, plsf, guiNode, inputManager, viewPort);
+        ShadowTestUIManager uiManPls = new ShadowTestUIManager(_assetManager, plsr, plsf, guiNode, inputManager, viewPort);
+        ShadowTestUIManager uiManDls = new ShadowTestUIManager(_assetManager, dlsr, dlsf, guiNode, inputManager, viewPort);
+        ShadowTestUIManager uiManSls = new ShadowTestUIManager(_assetManager, slsr, slsf, guiNode, inputManager, viewPort);
   
     }
 

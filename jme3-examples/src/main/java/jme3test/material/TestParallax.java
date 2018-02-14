@@ -57,7 +57,7 @@ public class TestParallax extends SimpleApplication {
     }
 
     public void setupSkyBox() {
-        rootNode.attachChild(SkyFactory.createSky(assetManager, "Scenes/Beach/FullskiesSunset0068.dds", SkyFactory.EnvMapType.CubeMap));
+        rootNode.attachChild(SkyFactory.createSky(_assetManager, "Scenes/Beach/FullskiesSunset0068.dds", SkyFactory.EnvMapType.CubeMap));
     }
     DirectionalLight dl;
 
@@ -71,7 +71,7 @@ public class TestParallax extends SimpleApplication {
     Material mat;
 
     public void setupFloor() {
-        mat = assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
+        mat = _assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
                 
         Node floorGeom = new Node("floorGeom");
         Quad q = new Quad(100, 100);
@@ -90,8 +90,8 @@ public class TestParallax extends SimpleApplication {
     }
 
     public void setupSignpost() {
-        Spatial signpost = assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
-        Material matSp = assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
+        Spatial signpost = _assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
+        Material matSp = _assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
         TangentBinormalGenerator.generate(signpost);
         signpost.setMaterial(matSp);
         signpost.rotate(0, FastMath.HALF_PI, 0);

@@ -81,15 +81,15 @@ public class TestRagdollCharacter extends SimpleApplication implements AnimEvent
         stateManager.attach(bulletAppState);
 
 
-//        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
-        PhysicsTestHelper.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
+//        bulletAppState.getPhysicsSpace().enableDebug(_assetManager);
+        PhysicsTestHelper.createPhysicsTestWorld(rootNode, _assetManager, bulletAppState.getPhysicsSpace());
         initWall(2,1,1);
         setupLight();
 
         cam.setLocation(new Vector3f(-8,0,-4));
         cam.lookAt(new Vector3f(4,0,-7), Vector3f.UNIT_Y);
 
-        model = (Node) assetManager.loadModel("Models/Sinbad/Sinbad.mesh.xml");
+        model = (Node) _assetManager.loadModel("Models/Sinbad/Sinbad.mesh.xml");
         model.lookAt(new Vector3f(0,0,-1), Vector3f.UNIT_Y);
         model.setLocalTranslation(4, 0, -7f);
 
@@ -141,10 +141,10 @@ public class TestRagdollCharacter extends SimpleApplication implements AnimEvent
     public void initWall(float bLength, float bWidth, float bHeight) {
         Box brick = new Box(bLength, bHeight, bWidth);
         brick.scaleTextureCoordinates(new Vector2f(1f, .5f));
-        Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat2 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         TextureKey key = new TextureKey("Textures/Terrain/BrickWall/BrickWall.jpg");
         key.setGenerateMips(true);
-        Texture tex = assetManager.loadTexture(key);
+        Texture tex = _assetManager.loadTexture(key);
         mat2.setTexture("ColorMap", tex);
         
         float startpt = bLength / 4;

@@ -170,7 +170,7 @@ public abstract class SimpleApplication extends LegacyApplication {
      *  and subsequently set as the font for the stats text.
      */
     protected BitmapFont loadGuiFont() {
-        return assetManager.loadFont("Interface/Fonts/Default.fnt");
+        return _assetManager.loadFont("Interface/Fonts/Default.fnt");
     }
 
     @Override

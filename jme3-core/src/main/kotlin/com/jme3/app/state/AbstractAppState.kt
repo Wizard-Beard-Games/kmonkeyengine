@@ -52,7 +52,7 @@ open class AbstractAppState : AppState {
     protected var initialized = false
     private var enabled = true
 
-    override fun initialize(stateManager: AppStateManager, app: Application) {
+    override fun initialize(stateManager: AppStateManager, app: Application?) {
         initialized = true
     }
 

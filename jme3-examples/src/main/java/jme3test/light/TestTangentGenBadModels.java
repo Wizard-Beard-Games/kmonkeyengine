@@ -34,28 +34,28 @@ public class TestTangentGenBadModels extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-//        assetManager.registerLocator("http://jme-glsl-shaders.googlecode.com/hg/assets/Models/LightBlow/", UrlLocator.class);
-//        assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/", UrlLocator.class);
+//        _assetManager.registerLocator("http://jme-glsl-shaders.googlecode.com/hg/assets/Models/LightBlow/", UrlLocator.class);
+//        _assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/", UrlLocator.class);
         
-        final Spatial badModel = assetManager.loadModel("Models/TangentBugs/test.blend");
+        final Spatial badModel = _assetManager.loadModel("Models/TangentBugs/test.blend");
 //        badModel.setLocalScale(1f);
         
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        mat.setTexture("NormalMap", assetManager.loadTexture("Models/TangentBugs/test_normal.png"));
-//        Material mat = assetManager.loadMaterial("Textures/BumpMapTest/Tangent.j3m");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        mat.setTexture("NormalMap", _assetManager.loadTexture("Models/TangentBugs/test_normal.png"));
+//        Material mat = _assetManager.loadMaterial("Textures/BumpMapTest/Tangent.j3m");
         badModel.setMaterial(mat);
         rootNode.attachChild(badModel);
         
         // TODO: For some reason blender loader fails to load this.
         // need to check it
-//        Spatial model = assetManager.loadModel("test.blend");
+//        Spatial model = _assetManager.loadModel("test.blend");
 //        rootNode.attachChild(model);
         
         final Node debugTangents = new Node("debug tangents");
         debugTangents.setCullHint(CullHint.Always);
         rootNode.attachChild(debugTangents);
 
-        final Material debugMat = assetManager.loadMaterial("Common/Materials/VertexColor.j3m");
+        final Material debugMat = _assetManager.loadMaterial("Common/Materials/VertexColor.j3m");
         
         badModel.depthFirstTraversal(new SceneGraphVisitorAdapter(){
             @Override
@@ -85,7 +85,7 @@ public class TestTangentGenBadModels extends SimpleApplication {
         rootNode.addLight(dl);
 
         lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         lightMdl.getMesh().setStatic();
         rootNode.attachChild(lightMdl);
 
@@ -109,11 +109,11 @@ public class TestTangentGenBadModels extends SimpleApplication {
                 if (isPressed) return;
                 Material mat;
                 if (isLit){
-                    mat = assetManager.loadMaterial("Textures/BumpMapTest/Tangent.j3m");
+                    mat = _assetManager.loadMaterial("Textures/BumpMapTest/Tangent.j3m");
                     debugTangents.setCullHint(CullHint.Inherit);
                 }else{
-                    mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-                    mat.setTexture("NormalMap", assetManager.loadTexture("Models/TangentBugs/test_normal.png"));
+                    mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
+                    mat.setTexture("NormalMap", _assetManager.loadTexture("Models/TangentBugs/test_normal.png"));
                     debugTangents.setCullHint(CullHint.Always);
                 }
                 isLit = !isLit;

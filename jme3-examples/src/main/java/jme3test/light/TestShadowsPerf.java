@@ -81,7 +81,7 @@ public class TestShadowsPerf extends SimpleApplication {
 //// 
         cam.setFrustumFar(500);
 
-        mat = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        mat = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
 
         Box b = new Box(800, 1, 700);
         b.scaleTextureCoordinates(new Vector2f(50, 50));
@@ -116,11 +116,11 @@ public class TestShadowsPerf extends SimpleApplication {
 
         createballs();
 
-        final DirectionalLightShadowRenderer pssmRenderer = new DirectionalLightShadowRenderer(assetManager, 1024, 4);
+        final DirectionalLightShadowRenderer pssmRenderer = new DirectionalLightShadowRenderer(_assetManager, 1024, 4);
         viewPort.addProcessor(pssmRenderer);
 //        
-//        final PssmShadowFilter pssmRenderer = new PssmShadowFilter(assetManager, 1024, 4);
-//        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);        
+//        final PssmShadowFilter pssmRenderer = new PssmShadowFilter(_assetManager, 1024, 4);
+//        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
 //        fpp.addFilter(pssmRenderer);
 //        viewPort.addProcessor(fpp);
                 

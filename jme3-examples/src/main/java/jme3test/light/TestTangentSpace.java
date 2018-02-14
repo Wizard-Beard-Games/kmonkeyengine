@@ -35,11 +35,11 @@ public class TestTangentSpace extends SimpleApplication {
         renderManager.setPreferredLightMode(TechniqueDef.LightMode.SinglePass);
         initView();
         
-        Spatial s = assetManager.loadModel("Models/Test/BasicCubeLow.obj");
+        Spatial s = _assetManager.loadModel("Models/Test/BasicCubeLow.obj");
         rootNode.attachChild(s);
 
-        Material m = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        m.setTexture("NormalMap", assetManager.loadTexture("Models/Test/Normal_pixel.png"));
+        Material m = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        m.setTexture("NormalMap", _assetManager.loadTexture("Models/Test/Normal_pixel.png"));
 
         Geometry g = (Geometry)s;
         Geometry g2 = (Geometry) g.deepClone();
@@ -91,7 +91,7 @@ public class TestTangentSpace extends SimpleApplication {
                 "Debug " + geom.getName(),
                 TangentBinormalGenerator.genTbnLines(geom.getMesh(), 0.8f)
         );
-        Material debugMat = assetManager.loadMaterial("Common/Materials/VertexColor.j3m");
+        Material debugMat = _assetManager.loadMaterial("Common/Materials/VertexColor.j3m");
         debug.setMaterial(debugMat);
         debug.setCullHint(Spatial.CullHint.Never);
         debug.getLocalTranslation().set(geom.getWorldTranslation());

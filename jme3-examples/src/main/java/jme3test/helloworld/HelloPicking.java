@@ -128,7 +128,7 @@ public class HelloPicking extends SimpleApplication {
     Box box = new Box(1, 1, 1);
     Geometry cube = new Geometry(name, box);
     cube.setLocalTranslation(x, y, z);
-    Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    Material mat1 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     mat1.setColor("Color", ColorRGBA.randomColor());
     cube.setMaterial(mat1);
     return cube;
@@ -139,7 +139,7 @@ public class HelloPicking extends SimpleApplication {
     Box box = new Box(15, .2f, 15);
     Geometry floor = new Geometry("the Floor", box);
     floor.setLocalTranslation(0, -4, -5);
-    Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    Material mat1 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     mat1.setColor("Color", ColorRGBA.Gray);
     floor.setMaterial(mat1);
     return floor;
@@ -149,7 +149,7 @@ public class HelloPicking extends SimpleApplication {
   protected void initMark() {
     Sphere sphere = new Sphere(30, 30, 0.2f);
     mark = new Geometry("BOOM!", sphere);
-    Material mark_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    Material mark_mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     mark_mat.setColor("Color", ColorRGBA.Red);
     mark.setMaterial(mark_mat);
   }
@@ -157,7 +157,7 @@ public class HelloPicking extends SimpleApplication {
   /** A centred plus sign to help the player aim. */
   protected void initCrossHairs() {
     setDisplayStatView(false);
-    guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+    guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
     BitmapText ch = new BitmapText(guiFont, false);
     ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
     ch.setText("+"); // crosshairs
@@ -168,7 +168,7 @@ public class HelloPicking extends SimpleApplication {
 
   protected Spatial makeCharacter() {
     // load a character from jme3test-test-data
-    Spatial golem = assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+    Spatial golem = _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
     golem.scale(0.5f);
     golem.setLocalTranslation(-1.0f, -1.5f, -0.6f);
 

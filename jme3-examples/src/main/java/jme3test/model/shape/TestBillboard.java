@@ -53,13 +53,13 @@ public class TestBillboard extends SimpleApplication {
 
         Quad q = new Quad(2, 2);
         Geometry g = new Geometry("Quad", q);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         g.setMaterial(mat);
 
         Quad q2 = new Quad(1, 1);
         Geometry g3 = new Geometry("Quad2", q2);
-        Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat2 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat2.setColor("Color", ColorRGBA.Yellow);
         g3.setMaterial(mat2);
         g3.setLocalTranslation(.5f, .5f, .01f);

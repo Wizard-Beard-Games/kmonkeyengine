@@ -30,7 +30,6 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.MeshCollisionShape;
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.debug.DebugTools;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -85,7 +84,7 @@ public class TestBetterCharacter extends SimpleApplication implements ActionList
         bulletAppState.setDebugEnabled(true);
 
         // init a physics test scene
-        PhysicsTestHelper.createPhysicsTestWorldSoccer(rootNode, assetManager, bulletAppState.getPhysicsSpace());
+        PhysicsTestHelper.createPhysicsTestWorldSoccer(rootNode, _assetManager, bulletAppState.getPhysicsSpace());
         PhysicsTestHelper.createBallShooter(this, rootNode, bulletAppState.getPhysicsSpace());
         setupPlanet();
 
@@ -100,7 +99,7 @@ public class TestBetterCharacter extends SimpleApplication implements ActionList
         getPhysicsSpace().add(physicsCharacter);
 
         // Load model, attach to character node
-        Node model = (Node) assetManager.loadModel("Models/Jaime/Jaime.j3o");
+        Node model = (Node) _assetManager.loadModel("Models/Jaime/Jaime.j3o");
         model.setLocalScale(1.50f);
         characterNode.attachChild(model);
 
@@ -164,8 +163,8 @@ public class TestBetterCharacter extends SimpleApplication implements ActionList
     }
 
     private void setupPlanet() {
-        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        material.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+        Material material = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        material.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
         //immovable sphere with mesh collision shape
         Sphere sphere = new Sphere(64, 64, 20);
         planet = new Geometry("Sphere", sphere);

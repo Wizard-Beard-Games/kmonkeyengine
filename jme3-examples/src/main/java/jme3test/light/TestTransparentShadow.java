@@ -69,7 +69,7 @@ public class TestTransparentShadow extends SimpleApplication {
         q.scaleTextureCoordinates(Vector2f.UNIT_XY.mult(10));
         TangentBinormalGenerator.generate(q);
         Geometry geom = new Geometry("floor", q);
-        Material mat = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
         geom.setMaterial(mat);
 
         geom.rotate(-FastMath.HALF_PI, 0, 0);
@@ -87,7 +87,7 @@ public class TestTransparentShadow extends SimpleApplication {
         rootNode.addLight(dl1);
         
         // create the geometry and attach it
-        Spatial tree = assetManager.loadModel("Models/Tree/Tree.mesh.j3o");
+        Spatial tree = _assetManager.loadModel("Models/Tree/Tree.mesh.j3o");
         tree.setQueueBucket(Bucket.Transparent);
         tree.setShadowMode(ShadowMode.CastAndReceive);
 
@@ -95,8 +95,8 @@ public class TestTransparentShadow extends SimpleApplication {
 
         // Uses Texture from jme3-test-data library!
         ParticleEmitter fire = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
-        Material mat_red = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat_red.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
+        Material mat_red = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat_red.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/flame.png"));
         fire.setShadowMode(ShadowMode.Cast);
         fire.setMaterial(mat_red);
         fire.setImagesX(2);
@@ -115,7 +115,7 @@ public class TestTransparentShadow extends SimpleApplication {
         fire.setQueueBucket(Bucket.Translucent);
         rootNode.attachChild(fire);
 
-        Material mat2 = assetManager.loadMaterial("Common/Materials/RedColor.j3m");
+        Material mat2 = _assetManager.loadMaterial("Common/Materials/RedColor.j3m");
 
         Geometry ball = new Geometry("sphere", new Sphere(16, 16, 0.5f));
         ball.setMaterial(mat2);
@@ -123,7 +123,7 @@ public class TestTransparentShadow extends SimpleApplication {
         rootNode.attachChild(ball);
         ball.setLocalTranslation(-1.0f, 1.5f, 1.0f);
 
-        final DirectionalLightShadowRenderer dlsRenderer = new DirectionalLightShadowRenderer(assetManager, 1024, 1);
+        final DirectionalLightShadowRenderer dlsRenderer = new DirectionalLightShadowRenderer(_assetManager, 1024, 1);
         dlsRenderer.setLight(dl1);
         dlsRenderer.setLambda(0.55f);
         dlsRenderer.setShadowIntensity(0.8f);

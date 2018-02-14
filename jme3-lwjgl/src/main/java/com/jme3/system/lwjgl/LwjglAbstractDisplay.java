@@ -77,7 +77,7 @@ public abstract class LwjglAbstractDisplay extends LwjglContext implements Runna
     public abstract void restart();
 
     /**
-     * Apply the settings, changing resolution, etc.
+     * Apply the _settings, changing resolution, etc.
      * @param settings
      */
     protected abstract void createContext(AppSettings settings) throws LWJGLException;

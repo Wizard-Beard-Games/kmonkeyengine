@@ -61,7 +61,7 @@ public class TestSplitScreen extends SimpleApplication implements ActionListener
         flyCam.setEnabled(false);
 
         Geometry blueBox = new Geometry("blue box", mesh);
-        Material blueMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material blueMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         blueMat.setColor("Color", ColorRGBA.Blue);
         blueBox.setMaterial(blueMat);
         rootNode.attachChild(blueBox);
@@ -75,7 +75,7 @@ public class TestSplitScreen extends SimpleApplication implements ActionListener
         rightView.attachScene(rootNode);
 
         Geometry redBox = new Geometry("red box", mesh);
-        Material redMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material redMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         redMat.setColor("Color", ColorRGBA.Red);
         redBox.setMaterial(redMat);
         leftScene.attachChild(redBox);

@@ -65,16 +65,16 @@ public class TestCameraNode extends SimpleApplication implements AnalogListener,
 
   public void simpleInitApp() {
     // load a teapot model 
-    teaGeom = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
-    Material mat = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
+    teaGeom = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
+    Material mat = new Material(_assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
     teaGeom.setMaterial(mat);
     //create a node to attach the geometry and the camera node
     teaNode = new Node("teaNode");
     teaNode.attachChild(teaGeom);
     rootNode.attachChild(teaNode);
     // create a floor
-    mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    mat.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+    mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    mat.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
     Geometry ground = new Geometry("ground", new Quad(50, 50));
     ground.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
     ground.setLocalTranslation(-25, -1, 25);

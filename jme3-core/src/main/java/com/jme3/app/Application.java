@@ -123,7 +123,7 @@
 //    /**
 //     * @return The {@link AssetManager asset manager} for this application.
 //     */
-//    public AssetManager getAssetManager();
+//    public AssetManager get_assetManager();
 //
 //    /**
 //     * @return the {@link InputManager input manager}.

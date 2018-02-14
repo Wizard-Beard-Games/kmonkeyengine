@@ -69,7 +69,7 @@ public class TestOgreAnim extends SimpleApplication
         dl.setColor(new ColorRGBA(1f, 1f, 1f, 1.0f));
         rootNode.addLight(dl);
 
-        Spatial model = (Spatial) assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+        Spatial model = (Spatial) _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
         model.center();
 
         control = model.getControl(AnimControl.class);
@@ -86,7 +86,7 @@ public class TestOgreAnim extends SimpleApplication
         Box b = new Box(.25f,3f,.25f);
         Geometry item = new Geometry("Item", b);
         item.move(0, 1.5f, 0);
-        item.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        item.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         Node n = skeletonControl.getAttachmentsNode("hand.right");
         n.attachChild(item);
 

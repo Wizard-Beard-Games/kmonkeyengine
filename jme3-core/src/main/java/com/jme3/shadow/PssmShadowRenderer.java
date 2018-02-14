@@ -512,7 +512,7 @@ public class PssmShadowRenderer implements SceneProcessor {
             //rendering the post shadow pass
             viewPort.getQueue().renderShadowQueue(lightReceivers, renderManager, cam, true);
 
-            //resetting renderManager settings
+            //resetting renderManager _settings
             renderManager.setForcedTechnique(null);
             renderManager.setForcedMaterial(null);
             renderManager.setCamera(cam, false);

@@ -104,14 +104,14 @@ public class WorldOfInception extends SimpleApplication implements AnalogListene
         //set far frustum only so we see the outer world longer
         cam.setFrustumFar(10000);
         cam.setLocation(Vector3f.ZERO);
-        debugTools = new DebugTools(assetManager);
+        debugTools = new DebugTools(_assetManager);
         rootNode.attachChild(debugTools.debugNode);
-        poiMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        poiMaterial.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+        poiMaterial = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        poiMaterial.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
         poiMesh = new Sphere(16, 16, 1f);
 
-        ballMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        ballMaterial.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+        ballMaterial = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        ballMaterial.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
         ballMaterial.setColor("Color", ColorRGBA.Red);
         ballMesh = new Sphere(16, 16, 1.0f);
 
@@ -155,7 +155,7 @@ public class WorldOfInception extends SimpleApplication implements AnalogListene
         // use fog to give more sense of depth
         FilterPostProcessor fpp;
         FogFilter fog;
-        fpp=new FilterPostProcessor(assetManager);
+        fpp=new FilterPostProcessor(_assetManager);
         fog=new FogFilter();
         fog.setFogColor(new ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f));
         fog.setFogDistance(poiRadius);

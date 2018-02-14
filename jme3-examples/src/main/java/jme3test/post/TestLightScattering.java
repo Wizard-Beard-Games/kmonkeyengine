@@ -64,8 +64,8 @@ public class TestLightScattering extends SimpleApplication {
 //        cam.setLocation(new Vector3f(0, 300, -500));
         //cam.setFrustumFar(1000);
         flyCam.setMoveSpeed(10);
-        Material mat = assetManager.loadMaterial("Textures/Terrain/Rocky/Rocky.j3m");
-        Spatial scene = assetManager.loadModel("Models/Terrain/Terrain.mesh.xml");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/Rocky/Rocky.j3m");
+        Spatial scene = _assetManager.loadModel("Models/Terrain/Terrain.mesh.xml");
         TangentBinormalGenerator.generate(((Geometry)((Node)scene).getChild(0)).getMesh());
         scene.setMaterial(mat);
         scene.setShadowMode(ShadowMode.CastAndReceive);
@@ -75,7 +75,7 @@ public class TestLightScattering extends SimpleApplication {
         rootNode.attachChild(scene);
 
         // load sky
-        rootNode.attachChild(SkyFactory.createSky(assetManager,
+        rootNode.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/FullskiesBlueClear03.dds", 
                 SkyFactory.EnvMapType.CubeMap));
 
@@ -86,7 +86,7 @@ public class TestLightScattering extends SimpleApplication {
         scene.addLight(sun);
 
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         int numSamples = getContext().getSettings().getSamples();
         if (numSamples > 0) {
             fpp.setNumSamples(numSamples);

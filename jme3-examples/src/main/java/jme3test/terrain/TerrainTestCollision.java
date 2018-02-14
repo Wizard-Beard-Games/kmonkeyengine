@@ -106,22 +106,22 @@ public class TerrainTestCollision extends SimpleApplication {
         bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
         stateManager.attach(bulletAppState);
         setupKeys();
-        matRock = new Material(assetManager, "Common/MatDefs/Terrain/Terrain.j3md");
-        matRock.setTexture("Alpha", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
-        Texture heightMapImage = assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        matRock = new Material(_assetManager, "Common/MatDefs/Terrain/Terrain.j3md");
+        matRock.setTexture("Alpha", _assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
+        Texture heightMapImage = _assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         matRock.setTexture("Tex1", grass);
         matRock.setFloat("Tex1Scale", 64f);
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         matRock.setTexture("Tex2", dirt);
         matRock.setFloat("Tex2Scale", 32f);
-        Texture rock = assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
+        Texture rock = _assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
         rock.setWrap(WrapMode.Repeat);
         matRock.setTexture("Tex3", rock);
         matRock.setFloat("Tex3Scale", 128f);
-        matWire = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matWire = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matWire.getAdditionalRenderState().setWireframe(true);
         matWire.setColor("Color", ColorRGBA.Green);
         AbstractHeightMap heightmap = null;
@@ -190,7 +190,7 @@ public class TerrainTestCollision extends SimpleApplication {
     }
 
     protected void initCrossHairs() {
-        //guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        //guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         BitmapText ch = new BitmapText(guiFont, false);
         ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
         ch.setText("+"); // crosshairs
@@ -231,7 +231,7 @@ public class TerrainTestCollision extends SimpleApplication {
         Sphere s = new Sphere(6, 6, 1);
         collisionMarker = new Geometry("collisionMarker");
         collisionMarker.setMesh(s);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Orange);
         collisionMarker.setMaterial(mat);
         rootNode.attachChild(collisionMarker);

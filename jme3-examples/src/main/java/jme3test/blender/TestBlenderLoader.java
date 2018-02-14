@@ -50,11 +50,11 @@ public class TestBlenderLoader extends SimpleApplication {
         viewPort.setBackgroundColor(ColorRGBA.DarkGray);
 
         //load model with packed images
-        Spatial ogre = assetManager.loadModel("Blender/2.4x/Sinbad.blend");
+        Spatial ogre = _assetManager.loadModel("Blender/2.4x/Sinbad.blend");
         rootNode.attachChild(ogre);
 
         //load model with referenced images
-        Spatial track = assetManager.loadModel("Blender/2.4x/MountainValley_Track.blend");
+        Spatial track = _assetManager.loadModel("Blender/2.4x/MountainValley_Track.blend");
         rootNode.attachChild(track);
         
         // sunset light

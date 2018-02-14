@@ -62,7 +62,7 @@ public class TestKinematicAddToPhysicsSpaceIssue extends SimpleApplication {
         stateManager.attach(bulletAppState);
         bulletAppState.setDebugEnabled(true);
         // Add a physics sphere to the world
-        Node physicsSphere = PhysicsTestHelper.createPhysicsTestNode(assetManager, new SphereCollisionShape(1), 1);
+        Node physicsSphere = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new SphereCollisionShape(1), 1);
         physicsSphere.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(3, 6, 0));
         rootNode.attachChild(physicsSphere);
 
@@ -74,7 +74,7 @@ public class TestKinematicAddToPhysicsSpaceIssue extends SimpleApplication {
         physicsSphere.getControl(RigidBodyControl.class).setKinematic(false);
 
         // Add a physics sphere to the world using the collision shape from sphere one
-        Node physicsSphere2 = PhysicsTestHelper.createPhysicsTestNode(assetManager, new SphereCollisionShape(1), 1);
+        Node physicsSphere2 = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new SphereCollisionShape(1), 1);
         physicsSphere2.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(5, 6, 0));
         rootNode.attachChild(physicsSphere2);
 
@@ -88,13 +88,13 @@ public class TestKinematicAddToPhysicsSpaceIssue extends SimpleApplication {
 
 
         // an obstacle mesh, does not move (mass=0)
-        Node node2 = PhysicsTestHelper.createPhysicsTestNode(assetManager, new MeshCollisionShape(new Sphere(16, 16, 1.2f)), 0);
+        Node node2 = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new MeshCollisionShape(new Sphere(16, 16, 1.2f)), 0);
         node2.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(2.5f, -4, 0f));
         rootNode.attachChild(node2);
         getPhysicsSpace().add(node2);
 
         // the floor mesh, does not move (mass=0)
-        Node node3 = PhysicsTestHelper.createPhysicsTestNode(assetManager, new PlaneCollisionShape(new Plane(new Vector3f(0, 1, 0), 0)), 0);
+        Node node3 = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new PlaneCollisionShape(new Plane(new Vector3f(0, 1, 0), 0)), 0);
         node3.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0f, -6, 0f));
         rootNode.attachChild(node3);
         getPhysicsSpace().add(node3);

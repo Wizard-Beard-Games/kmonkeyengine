@@ -46,7 +46,7 @@ public class TestManyLights extends SimpleApplication {
     public void simpleInitApp() {
         flyCam.setMoveSpeed(10);
 
-        Node scene = (Node) assetManager.loadModel("Scenes/ManyLights/Main.scene");
+        Node scene = (Node) _assetManager.loadModel("Scenes/ManyLights/Main.scene");
         rootNode.attachChild(scene);
 //        guiNode.setCullHint(CullHint.Always);
     }

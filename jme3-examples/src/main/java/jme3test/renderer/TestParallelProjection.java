@@ -51,7 +51,7 @@ public class TestParallelProjection  extends SimpleApplication implements Analog
     }
 
     public void simpleInitApp() {
-        Geometry teaGeom = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Geometry teaGeom = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
 
         DirectionalLight dl = new DirectionalLight();
         dl.setColor(ColorRGBA.White);

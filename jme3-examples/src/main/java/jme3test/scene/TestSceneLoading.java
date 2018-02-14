@@ -66,7 +66,7 @@ public class TestSceneLoading extends SimpleApplication {
         this.flyCam.setMoveSpeed(10);
 
         // load sky
-        rootNode.attachChild(SkyFactory.createSky(assetManager, 
+        rootNode.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/BrightSky.dds", 
                 SkyFactory.EnvMapType.CubeMap));
 
@@ -77,11 +77,11 @@ public class TestSceneLoading extends SimpleApplication {
         // create the geometry and attach it
         // load the level from zip or http zip
         if (useHttp) {
-            assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/wildhouse.zip", HttpZipLocator.class);
+            _assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/wildhouse.zip", HttpZipLocator.class);
         } else {
-            assetManager.registerLocator("wildhouse.zip", ZipLocator.class);
+            _assetManager.registerLocator("wildhouse.zip", ZipLocator.class);
         }
-        Spatial scene = assetManager.loadModel("main.scene");
+        Spatial scene = _assetManager.loadModel("main.scene");
 
         AmbientLight al = new AmbientLight();
         scene.addLight(al);

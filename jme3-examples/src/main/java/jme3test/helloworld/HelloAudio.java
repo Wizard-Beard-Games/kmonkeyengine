@@ -30,7 +30,7 @@ public class HelloAudio extends SimpleApplication {
     /** just a blue box floating in space */
     Box box1 = new Box(1, 1, 1);
     player = new Geometry("Player", box1);
-    Material mat1 = new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
+    Material mat1 = new Material(_assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
     mat1.setColor("Color", ColorRGBA.Blue);
     player.setMaterial(mat1);
     rootNode.attachChild(player);
@@ -43,7 +43,7 @@ public class HelloAudio extends SimpleApplication {
   /** We create two audio nodes. */
   private void initAudio() {
     /* gun shot sound is to be triggered by a mouse click. */
-    audio_gun = new AudioNode(assetManager, 
+    audio_gun = new AudioNode(_assetManager,
             "Sound/Effects/Gun.wav", DataType.Buffer);
     audio_gun.setPositional(false);
     audio_gun.setLooping(false);
@@ -51,7 +51,7 @@ public class HelloAudio extends SimpleApplication {
     rootNode.attachChild(audio_gun);
 
     /* nature sound - keeps playing in a loop. */
-    audio_nature = new AudioNode(assetManager, 
+    audio_nature = new AudioNode(_assetManager,
             "Sound/Environment/Ocean Waves.ogg", DataType.Stream);
     audio_nature.setLooping(true);  // activate continuous playing
     audio_nature.setPositional(true);   

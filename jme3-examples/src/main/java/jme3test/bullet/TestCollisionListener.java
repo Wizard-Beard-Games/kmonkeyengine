@@ -66,7 +66,7 @@ public class TestCollisionListener extends SimpleApplication implements PhysicsC
         bullet.setTextureMode(TextureMode.Projected);
         bulletCollisionShape = new SphereCollisionShape(0.4f);
 
-        PhysicsTestHelper.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
+        PhysicsTestHelper.createPhysicsTestWorld(rootNode, _assetManager, bulletAppState.getPhysicsSpace());
         PhysicsTestHelper.createBallShooter(this, rootNode, bulletAppState.getPhysicsSpace());
 
         // add ourselves as collision listener

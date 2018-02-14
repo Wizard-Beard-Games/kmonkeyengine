@@ -60,10 +60,10 @@ public class TestSSAO extends SimpleApplication {
 
         flyCam.setMoveSpeed(50);
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        Texture diff = assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Texture diff = _assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg");
         diff.setWrap(Texture.WrapMode.Repeat);
-        Texture norm = assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall_normal.jpg");
+        Texture norm = _assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall_normal.jpg");
         norm.setWrap(Texture.WrapMode.Repeat);
         mat.setTexture("DiffuseMap", diff);
         mat.setTexture("NormalMap", norm);
@@ -75,14 +75,14 @@ public class TestSSAO extends SimpleApplication {
 
         rootNode.addLight(al);
 
-        model = (Geometry) assetManager.loadModel("Models/Sponza/Sponza.j3o");
+        model = (Geometry) _assetManager.loadModel("Models/Sponza/Sponza.j3o");
         model.getMesh().scaleTextureCoordinates(new Vector2f(2, 2));
 
         model.setMaterial(mat);
 
         rootNode.attachChild(model);
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         SSAOFilter ssaoFilter = new SSAOFilter(2.9299974f,32.920483f,5.8100376f,0.091000035f);;
         ssaoFilter.setApproximateNormals(true);
         fpp.addFilter(ssaoFilter);

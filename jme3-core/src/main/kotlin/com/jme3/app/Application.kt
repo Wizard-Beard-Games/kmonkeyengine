@@ -106,47 +106,47 @@ interface Application {
     /**
      * @return The [asset manager][AssetManager] for this application.
      */
-    val assetManager: AssetManager
+    var _assetManager: AssetManager?
 
     /**
      * @return the [input manager][InputManager].
      */
-    val inputManager: InputManager
+    var inputManager: InputManager
 
     /**
      * @return the [app state manager][AppStateManager]
      */
-    val stateManager: AppStateManager
+    var stateManager: AppStateManager
 
     /**
      * @return the [render manager][RenderManager]
      */
-    val renderManager: RenderManager
+    var renderManager: RenderManager?
 
     /**
      * @return The [renderer][Renderer] for the application
      */
-    val renderer: Renderer
+    var renderer: Renderer
 
     /**
      * @return The [audio renderer][AudioRenderer] for the application
      */
-    val audioRenderer: AudioRenderer
+    var audioRenderer: AudioRenderer?
 
     /**
      * @return The [listener][Listener] object for audio
      */
-    val listener: Listener
+    var listener: Listener
 
     /**
      * @return The [display context][JmeContext] for the application
      */
-    val context: JmeContext
+    var context: JmeContext?
 
     /**
      * @return The main [camera][Camera] for the application
      */
-    val camera: Camera
+    var camera: Camera
 
     /**
      * Returns the current AppProfiler hook, or null if none is set.
@@ -162,9 +162,9 @@ interface Application {
      * @return The GUI viewport. Which is used for the on screen
      * statistics and FPS.
      */
-    val guiViewPort: ViewPort
+    var guiViewPort: ViewPort
 
-    val viewPort: ViewPort
+    var viewPort: ViewPort
 
     /**
      * Set the display settings to define the display created.
@@ -177,7 +177,7 @@ interface Application {
      *
      * @param settings The settings to set.
      */
-    fun setSettings(settings: AppSettings)
+    fun setSettings(settings: AppSettings?)
 
     /**
      * Starts the application.

@@ -85,7 +85,7 @@ public class TestSceneStress extends SimpleApplication {
  
         stateManager.getState(FlyCamAppState.class).getCamera().setMoveSpeed(10);
     
-        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
 
         // Create a deep, mostly static scene        

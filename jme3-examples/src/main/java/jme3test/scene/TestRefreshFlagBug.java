@@ -25,7 +25,7 @@ public class TestRefreshFlagBug extends SimpleApplication {
             
             Box b = new Box(1, 1, 1);
             Geometry geom = new Geometry("Box", b);
-            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
             geom.setMaterial(mat);
             
             inBetweenNode.attachChild(geom);

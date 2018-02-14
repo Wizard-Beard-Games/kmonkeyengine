@@ -89,15 +89,15 @@ public class TestQ3 extends SimpleApplication implements ActionListener {
 
         // load the level from zip or http zip
         if (useHttp) {
-            assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/quake3level.zip", HttpZipLocator.class);
+            _assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/quake3level.zip", HttpZipLocator.class);
         } else {
-            assetManager.registerLocator("quake3level.zip", ZipLocator.class);
+            _assetManager.registerLocator("quake3level.zip", ZipLocator.class);
         }
 
         // create the geometry and attach it
-        MaterialList matList = (MaterialList) assetManager.loadAsset("Scene.material");
+        MaterialList matList = (MaterialList) _assetManager.loadAsset("Scene.material");
         OgreMeshKey key = new OgreMeshKey("main.meshxml", matList);
-        gameLevel = (Node) assetManager.loadAsset(key);
+        gameLevel = (Node) _assetManager.loadAsset(key);
         gameLevel.setLocalScale(0.1f);
 
         // add a physics control, it will generate a MeshCollisionShape based on the gameLevel

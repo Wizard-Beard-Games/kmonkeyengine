@@ -59,7 +59,7 @@ public class PointLightShadowFilter extends AbstractShadowFilter<PointLightShado
     /**
      * Used for serialization.
      * Use PointLightShadowFilter#PointLightShadowFilter(AssetManager
-     * assetManager, int shadowMapSize)
+     * _assetManager, int shadowMapSize)
      * instead.
      */
     public PointLightShadowFilter() {

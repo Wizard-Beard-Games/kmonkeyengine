@@ -57,11 +57,11 @@ public class TestMonkeyHead extends SimpleApplication {
     public void simpleInitApp() {
         viewPort.setBackgroundColor(ColorRGBA.DarkGray);
 
-        Spatial bumpy = (Spatial) assetManager.loadModel("Models/MonkeyHead/MonkeyHead.mesh.xml");
+        Spatial bumpy = (Spatial) _assetManager.loadModel("Models/MonkeyHead/MonkeyHead.mesh.xml");
         rootNode.attachChild(bumpy);
 
         lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         rootNode.attachChild(lightMdl);
 
         // flourescent main light

@@ -78,11 +78,11 @@ public class TestPBRLighting extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        assetManager.registerLoader(KTXLoader.class, "ktx");
+        _assetManager.registerLoader(KTXLoader.class, "ktx");
 
         viewPort.setBackgroundColor(ColorRGBA.White);
         modelNode = (Node) new Node("modelNode");
-        model = (Geometry) assetManager.loadModel("Models/Tank/tank.j3o");
+        model = (Geometry) _assetManager.loadModel("Models/Tank/tank.j3o");
         MikktspaceTangentGenerator.generate(model);
         modelNode.attachChild(model);
 
@@ -93,19 +93,19 @@ public class TestPBRLighting extends SimpleApplication {
         rootNode.attachChild(modelNode);
 
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
 //        fpp.addFilter(new FXAAFilter());
         fpp.addFilter(new ToneMapFilter(Vector3f.UNIT_XYZ.mult(4.0f)));
 //        fpp.addFilter(new SSAOFilter(0.5f, 3, 0.2f, 0.2f));
         viewPort.addProcessor(fpp);
 
-        //Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/Sky_Cloudy.hdr", SkyFactory.EnvMapType.EquirectMap);
-        Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/Path.hdr", SkyFactory.EnvMapType.EquirectMap);
-        //Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", SkyFactory.EnvMapType.CubeMap);
-        //Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/road.hdr", SkyFactory.EnvMapType.EquirectMap);
+        //Spatial sky = SkyFactory.createSky(_assetManager, "Textures/Sky/Sky_Cloudy.hdr", SkyFactory.EnvMapType.EquirectMap);
+        Spatial sky = SkyFactory.createSky(_assetManager, "Textures/Sky/Path.hdr", SkyFactory.EnvMapType.EquirectMap);
+        //Spatial sky = SkyFactory.createSky(_assetManager, "Textures/Sky/Bright/BrightSky.dds", SkyFactory.EnvMapType.CubeMap);
+        //Spatial sky = SkyFactory.createSky(_assetManager, "Textures/Sky/road.hdr", SkyFactory.EnvMapType.EquirectMap);
         rootNode.attachChild(sky);
 
-        pbrMat = assetManager.loadMaterial("Models/Tank/tank.j3m");
+        pbrMat = _assetManager.loadMaterial("Models/Tank/tank.j3m");
         model.setMaterial(pbrMat);
 
 
@@ -202,7 +202,7 @@ public class TestPBRLighting extends SimpleApplication {
                 @Override
                 public void done(LightProbe result) {
                     System.err.println("Done rendering env maps");
-                    tex = EnvMapUtils.getCubeMapCrossDebugViewWithMipMaps(result.getPrefilteredEnvMap(), assetManager);
+                    tex = EnvMapUtils.getCubeMapCrossDebugViewWithMipMaps(result.getPrefilteredEnvMap(), _assetManager);
                 }
             });
             ((BoundingSphere) probe.getBounds()).setRadius(100);

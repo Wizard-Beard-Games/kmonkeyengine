@@ -83,7 +83,7 @@ public class TestWriteToTexture extends SimpleApplication implements AnalogListe
         
         tex = new Texture2D(settings.getWidth(), settings.getHeight(), 1, com.jme3.texture.Image.Format.RGBA8);
         Picture pic = new Picture("julia");
-        pic.setTexture(assetManager, tex, true);
+        pic.setTexture(_assetManager, tex, true);
         pic.setPosition(0, 0);
         pic.setWidth(settings.getWidth());
         pic.setHeight(settings.getHeight());
@@ -129,7 +129,7 @@ public class TestWriteToTexture extends SimpleApplication implements AnalogListe
         Program program = programCache.loadFromCache(cacheID);
         if (program == null) {
             LOG.info("Program not loaded from cache, create from sources instead");
-            program = clContext.createProgramFromSourceFiles(assetManager, "jme3test/opencl/JuliaSet.cl");
+            program = clContext.createProgramFromSourceFiles(_assetManager, "jme3test/opencl/JuliaSet.cl");
             program.build();
             programCache.saveToCache(cacheID, program);
         }

@@ -121,7 +121,7 @@ public class TestCustomAnim extends SimpleApplication {
 
         // Create model
         Geometry geom = new Geometry("box", box);
-        geom.setMaterial(assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m"));
+        geom.setMaterial(_assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m"));
         Node model = new Node("model");
         model.attachChild(geom);
 

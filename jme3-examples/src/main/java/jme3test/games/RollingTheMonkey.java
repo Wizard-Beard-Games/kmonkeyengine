@@ -135,29 +135,29 @@ public class RollingTheMonkey extends SimpleApplication implements ActionListene
         rootNode.addLight(sun); 
         
         // create materials
-        Material materialRed = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material materialRed = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         materialRed.setBoolean("UseMaterialColors",true);
         materialRed.setBoolean("HardwareShadows", true);
         materialRed.setColor("Diffuse", new ColorRGBA(0.9451f, 0.0078f, 0.0314f, 1.0f));
         materialRed.setColor("Specular", ColorRGBA.White);
         materialRed.setFloat("Shininess", 64.0f);
         
-        Material materialGreen = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material materialGreen = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         materialGreen.setBoolean("UseMaterialColors",true);
         materialGreen.setBoolean("HardwareShadows", true);
         materialGreen.setColor("Diffuse", new ColorRGBA(0.0431f, 0.7725f, 0.0078f, 1.0f));
         materialGreen.setColor("Specular", ColorRGBA.White);
         materialGreen.setFloat("Shininess", 64.0f);
         
-        Material logoMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material logoMaterial = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         logoMaterial.setBoolean("UseMaterialColors",true);
         logoMaterial.setBoolean("HardwareShadows", true);
-        logoMaterial.setTexture("DiffuseMap", assetManager.loadTexture("com/jme3/app/Monkey.png"));
+        logoMaterial.setTexture("DiffuseMap", _assetManager.loadTexture("com/jme3/app/Monkey.png"));
         logoMaterial.setColor("Diffuse", ColorRGBA.White);
         logoMaterial.setColor("Specular", ColorRGBA.White);
         logoMaterial.setFloat("Shininess", 32.0f);
         
-        Material materialYellow = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material materialYellow = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         materialYellow.setBoolean("UseMaterialColors",true);
         materialYellow.setBoolean("HardwareShadows", true);
         materialYellow.setColor("Diffuse", new ColorRGBA(0.9529f, 0.7843f, 0.0078f, 1.0f));
@@ -298,8 +298,8 @@ public class RollingTheMonkey extends SimpleApplication implements ActionListene
                 (cam.getHeight() - messageText.getLineHeight()) / 2, 0.0f);
         
         // init shadows
-        FilterPostProcessor processor = new FilterPostProcessor(assetManager);
-        DirectionalLightShadowFilter filter = new DirectionalLightShadowFilter(assetManager, 2048, 1);
+        FilterPostProcessor processor = new FilterPostProcessor(_assetManager);
+        DirectionalLightShadowFilter filter = new DirectionalLightShadowFilter(_assetManager, 2048, 1);
         filter.setLight(sun);
         processor.addFilter(filter);
         viewPort.addProcessor(processor);

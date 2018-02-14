@@ -92,7 +92,7 @@ public class CubeField extends SimpleApplication implements AnalogListener {
 
         Keys();
 
-        defaultFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        defaultFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         pressStart = new BitmapText(defaultFont, false);
         fpsScoreText = new BitmapText(defaultFont, false);
 
@@ -183,7 +183,7 @@ public class CubeField extends SimpleApplication implements AnalogListener {
 
 //        playerX+difficulty+30,playerX+difficulty+90
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         if (!solidBox){
             mat.getAdditionalRenderState().setWireframe(true);
         }
@@ -200,7 +200,7 @@ public class CubeField extends SimpleApplication implements AnalogListener {
         Box b = new Box(1, 1, 1);
         Geometry geom = new Geometry("Box", b);
         geom.setLocalTranslation(loc);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         geom.setMaterial(mat);
 
@@ -211,7 +211,7 @@ public class CubeField extends SimpleApplication implements AnalogListener {
         Dome b = new Dome(Vector3f.ZERO, 10, 100, 1);
         Geometry playerMesh = new Geometry("Box", b);
 
-        playerMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        playerMaterial = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         playerMaterial.setColor("Color", ColorRGBA.Red);
         playerMesh.setMaterial(playerMaterial);
         playerMesh.setName("player");
@@ -225,7 +225,7 @@ public class CubeField extends SimpleApplication implements AnalogListener {
 
         floorMesh.setLocalTranslation(translation);
 
-        floorMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        floorMaterial = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         floorMaterial.setColor("Color", ColorRGBA.LightGray);
         floorMesh.setMaterial(floorMaterial);
         floorMesh.setName("floor");
@@ -252,7 +252,7 @@ public class CubeField extends SimpleApplication implements AnalogListener {
     private void gameLogic(float tpf){
     	//Subtract difficulty level in accordance to speed every 10 seconds
     	if(timer.getTimeInSeconds()>=coreTime2){
-			coreTime2=timer.getTimeInSeconds()+10;
+			coreTime2= timer.getTimeInSeconds()+10;
 			if(difficulty<=lowCap){
 				difficulty=lowCap;
 			}

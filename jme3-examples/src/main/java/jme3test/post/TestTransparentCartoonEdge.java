@@ -35,7 +35,7 @@ public class TestTransparentCartoonEdge extends SimpleApplication {
         Quad q = new Quad(20, 20);
         q.scaleTextureCoordinates(Vector2f.UNIT_XY.mult(5));
         Geometry geom = new Geometry("floor", q);
-        Material mat = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
         geom.setMaterial(mat);
         
         geom.rotate(-FastMath.HALF_PI, 0, 0);
@@ -44,7 +44,7 @@ public class TestTransparentCartoonEdge extends SimpleApplication {
         rootNode.attachChild(geom);
 
         // create the geometry and attach it
-        Spatial teaGeom = assetManager.loadModel("Models/Tree/Tree.mesh.j3o");
+        Spatial teaGeom = _assetManager.loadModel("Models/Tree/Tree.mesh.j3o");
         teaGeom.setQueueBucket(Bucket.Transparent);
         teaGeom.setShadowMode(ShadowMode.Cast);
         makeToonish(teaGeom);
@@ -65,7 +65,7 @@ public class TestTransparentCartoonEdge extends SimpleApplication {
 
         rootNode.attachChild(teaGeom);
 
-        FilterPostProcessor fpp=new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp=new FilterPostProcessor(_assetManager);
         CartoonEdgeFilter toon=new CartoonEdgeFilter();
         toon.setEdgeWidth(0.5f);
         toon.setEdgeIntensity(1.0f);
@@ -83,7 +83,7 @@ public class TestTransparentCartoonEdge extends SimpleApplication {
             Geometry g = (Geometry) spatial;
             Material m = g.getMaterial();
             if (m.getMaterialDef().getName().equals("Phong Lighting")){
-                Texture t = assetManager.loadTexture("Textures/ColorRamp/toon.png");
+                Texture t = _assetManager.loadTexture("Textures/ColorRamp/toon.png");
 //                t.setMinFilter(Texture.MinFilter.NearestNoMipMaps);
 //                t.setMagFilter(Texture.MagFilter.Nearest);
                 m.setTexture("ColorRamp", t);

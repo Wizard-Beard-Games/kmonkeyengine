@@ -77,7 +77,7 @@ public class TestConeVSFrustum extends SimpleApplication {
         ShadowUtil.updateFrustumPoints2(frustumCam, points);
         WireFrustum frustumShape = new WireFrustum(points);
         Geometry frustum = new Geometry("frustum", frustumShape);
-        frustum.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        frustum.setMaterial(new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
         rootNode.attachChild(frustum);
 
         rootNode.addLight(new DirectionalLight());
@@ -87,7 +87,7 @@ public class TestConeVSFrustum extends SimpleApplication {
 
         Grid grid = new Grid(50, 50, 5);
         Geometry gridGeom = new Geometry("grid", grid);
-        gridGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        gridGeom.setMaterial(new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
         gridGeom.getMaterial().setColor("Color", ColorRGBA.Gray);
         rootNode.attachChild(gridGeom);
         gridGeom.setLocalTranslation(-125, -25, -125);
@@ -104,7 +104,7 @@ public class TestConeVSFrustum extends SimpleApplication {
 
         Cylinder cylinder = new Cylinder(5, 16, 0, radius, spotLight.getSpotRange(), true, false);
         geom = new Geometry("light", cylinder);
-        geom.setMaterial(new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md"));
+        geom.setMaterial(new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md"));
         geom.getMaterial().setColor("Diffuse", ColorRGBA.White);
         geom.getMaterial().setColor("Ambient", ColorRGBA.DarkGray);
         geom.getMaterial().setBoolean("UseMaterialColors", true);
@@ -214,8 +214,8 @@ public class TestConeVSFrustum extends SimpleApplication {
          */
         Box boxMesh = new Box(1f, 1f, 1f);
         boxGeo = new Geometry("A Textured Box", boxMesh);
-        Material boxMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        Texture monkeyTex = assetManager.loadTexture("Interface/Logo/Monkey.jpg");
+        Material boxMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Texture monkeyTex = _assetManager.loadTexture("Interface/Logo/Monkey.jpg");
         boxMat.setTexture("ColorMap", monkeyTex);
         boxGeo.setMaterial(boxMat);
 //        rootNode.attachChild(boxGeo);

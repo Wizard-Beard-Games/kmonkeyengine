@@ -1,7 +1,6 @@
 package jme3test.texture;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -40,7 +39,7 @@ public class TestAnisotropicFilter extends SimpleApplication implements ActionLi
         q.scaleTextureCoordinates(new Vector2f(1000, 1000));
         Geometry geom = new Geometry("quad", q);
         geom.rotate(-FastMath.HALF_PI, 0, 0);
-        geom.setMaterial(createCheckerBoardMaterial(assetManager));
+        geom.setMaterial(createCheckerBoardMaterial(_assetManager));
         rootNode.attachChild(geom);
 
         inputManager.addMapping("higher", new KeyTrigger(KeyInput.KEY_1));
@@ -51,7 +50,7 @@ public class TestAnisotropicFilter extends SimpleApplication implements ActionLi
     
     private static Material createCheckerBoardMaterial(AssetManager assetManager) {
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        Texture tex = createCheckerBoardTexture(); // assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.dds");
+        Texture tex = createCheckerBoardTexture(); // _assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.dds");
         tex.setMagFilter(Texture.MagFilter.Bilinear);
         tex.setMinFilter(Texture.MinFilter.Trilinear);
         tex.setWrap(Texture.WrapMode.Repeat);

@@ -57,29 +57,29 @@ public class HelloTerrain extends SimpleApplication {
     flyCam.setMoveSpeed(50);
 
     /** 1. Create terrain material and load four textures into it. */
-    mat_terrain = new Material(assetManager, 
+    mat_terrain = new Material(_assetManager,
             "Common/MatDefs/Terrain/Terrain.j3md");
 
     /** 1.1) Add ALPHA map (for red-blue-green coded splat textures) */
-    mat_terrain.setTexture("Alpha", assetManager.loadTexture(
+    mat_terrain.setTexture("Alpha", _assetManager.loadTexture(
             "Textures/Terrain/splat/alphamap.png"));
 
     /** 1.2) Add GRASS texture into the red layer (Tex1). */
-    Texture grass = assetManager.loadTexture(
+    Texture grass = _assetManager.loadTexture(
             "Textures/Terrain/splat/grass.jpg");
     grass.setWrap(WrapMode.Repeat);
     mat_terrain.setTexture("Tex1", grass);
     mat_terrain.setFloat("Tex1Scale", 64f);
 
     /** 1.3) Add DIRT texture into the green layer (Tex2) */
-    Texture dirt = assetManager.loadTexture(
+    Texture dirt = _assetManager.loadTexture(
             "Textures/Terrain/splat/dirt.jpg");
     dirt.setWrap(WrapMode.Repeat);
     mat_terrain.setTexture("Tex2", dirt);
     mat_terrain.setFloat("Tex2Scale", 32f);
 
     /** 1.4) Add ROAD texture into the blue layer (Tex3) */
-    Texture rock = assetManager.loadTexture(
+    Texture rock = _assetManager.loadTexture(
             "Textures/Terrain/splat/road.jpg");
     rock.setWrap(WrapMode.Repeat);
     mat_terrain.setTexture("Tex3", rock);
@@ -87,7 +87,7 @@ public class HelloTerrain extends SimpleApplication {
 
     /** 2.a Create a custom height map from an image */
     AbstractHeightMap heightmap = null;
-    Texture heightMapImage = assetManager.loadTexture(
+    Texture heightMapImage = _assetManager.loadTexture(
             "Textures/Terrain/splat/mountains512.png");
     heightmap = new ImageBasedHeightMap(heightMapImage.getImage());
     

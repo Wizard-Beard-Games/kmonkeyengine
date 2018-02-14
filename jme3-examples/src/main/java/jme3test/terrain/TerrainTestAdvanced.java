@@ -101,57 +101,57 @@ public class TerrainTestAdvanced extends SimpleApplication {
         // First, we load up our textures and the heightmap texture for the terrain
 
         // TERRAIN TEXTURE material
-        matTerrain = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+        matTerrain = new Material(_assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         matTerrain.setBoolean("useTriPlanarMapping", false);
         matTerrain.setFloat("Shininess", 0.0f);
 
         // ALPHA map (for splat textures)
-        matTerrain.setTexture("AlphaMap", assetManager.loadTexture("Textures/Terrain/splat/alpha1.png"));
-        matTerrain.setTexture("AlphaMap_1", assetManager.loadTexture("Textures/Terrain/splat/alpha2.png"));
+        matTerrain.setTexture("AlphaMap", _assetManager.loadTexture("Textures/Terrain/splat/alpha1.png"));
+        matTerrain.setTexture("AlphaMap_1", _assetManager.loadTexture("Textures/Terrain/splat/alpha2.png"));
         // this material also supports 'AlphaMap_2', so you can get up to 12 diffuse textures
         
         // HEIGHTMAP image (for the terrain heightmap)
         TextureKey hmKey = new TextureKey("Textures/Terrain/splat/mountains512.png", false);
-        Texture heightMapImage = assetManager.loadTexture(hmKey);
+        Texture heightMapImage = _assetManager.loadTexture(hmKey);
         
         // DIRT texture, Diffuse textures 0 to 3 use the first AlphaMap
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap", dirt);
         matTerrain.setFloat("DiffuseMap_0_scale", dirtScale);
         
         // DARK ROCK texture
-        Texture darkRock = assetManager.loadTexture("Textures/Terrain/Rock2/rock.jpg");
+        Texture darkRock = _assetManager.loadTexture("Textures/Terrain/Rock2/rock.jpg");
         darkRock.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap_1", darkRock);
         matTerrain.setFloat("DiffuseMap_1_scale", darkRockScale);
         
         // PINK ROCK texture
-        Texture pinkRock = assetManager.loadTexture("Textures/Terrain/Rock/Rock.PNG");
+        Texture pinkRock = _assetManager.loadTexture("Textures/Terrain/Rock/Rock.PNG");
         pinkRock.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap_2", pinkRock);
         matTerrain.setFloat("DiffuseMap_2_scale", pinkRockScale);
         
         // RIVER ROCK texture, this texture will use the next alphaMap: AlphaMap_1
-        Texture riverRock = assetManager.loadTexture("Textures/Terrain/Pond/Pond.jpg");
+        Texture riverRock = _assetManager.loadTexture("Textures/Terrain/Pond/Pond.jpg");
         riverRock.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap_3", riverRock);
         matTerrain.setFloat("DiffuseMap_3_scale", riverRockScale);
         
         // GRASS texture
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap_4", grass);
         matTerrain.setFloat("DiffuseMap_4_scale", grassScale);
 
         // BRICK texture
-        Texture brick = assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg");
+        Texture brick = _assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg");
         brick.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap_5", brick);
         matTerrain.setFloat("DiffuseMap_5_scale", brickScale);
         
         // ROAD texture
-        Texture road = assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
+        Texture road = _assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
         road.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap_6", road);
         matTerrain.setFloat("DiffuseMap_6_scale", roadScale);
@@ -163,13 +163,13 @@ public class TerrainTestAdvanced extends SimpleApplication {
 
         
         // NORMAL MAPS
-        Texture normalMapDirt = assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
+        Texture normalMapDirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
         normalMapDirt.setWrap(WrapMode.Repeat);
-        Texture normalMapPinkRock = assetManager.loadTexture("Textures/Terrain/Rock/Rock_normal.png");
+        Texture normalMapPinkRock = _assetManager.loadTexture("Textures/Terrain/Rock/Rock_normal.png");
         normalMapPinkRock.setWrap(WrapMode.Repeat);
-        Texture normalMapGrass = assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
+        Texture normalMapGrass = _assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
         normalMapGrass.setWrap(WrapMode.Repeat);
-        Texture normalMapRoad = assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
+        Texture normalMapRoad = _assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
         normalMapRoad.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("NormalMap", normalMapDirt);
         matTerrain.setTexture("NormalMap_1", normalMapPinkRock);
@@ -179,7 +179,7 @@ public class TerrainTestAdvanced extends SimpleApplication {
 
         
         // WIREFRAME material (used to debug the terrain, only useful for this test case)
-        matWire = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matWire = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matWire.getAdditionalRenderState().setWireframe(true);
         matWire.setColor("Color", ColorRGBA.Green);
         
@@ -216,7 +216,7 @@ public class TerrainTestAdvanced extends SimpleApplication {
         terrain.setLocalScale(1f, 1f, 1f);
         rootNode.attachChild(terrain);
         
-        //Material debugMat = assetManager.loadMaterial("Common/Materials/VertexColor.j3m");
+        //Material debugMat = _assetManager.loadMaterial("Common/Materials/VertexColor.j3m");
         //terrain.generateDebugTangents(debugMat);
 
         DirectionalLight light = new DirectionalLight();
@@ -301,28 +301,28 @@ public class TerrainTestAdvanced extends SimpleApplication {
     };
 
     private void createSky() {
-        Texture west = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_west.jpg");
-        Texture east = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_east.jpg");
-        Texture north = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_north.jpg");
-        Texture south = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_south.jpg");
-        Texture up = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_up.jpg");
-        Texture down = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_down.jpg");
+        Texture west = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_west.jpg");
+        Texture east = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_east.jpg");
+        Texture north = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_north.jpg");
+        Texture south = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_south.jpg");
+        Texture up = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_up.jpg");
+        Texture down = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_down.jpg");
 
-        Spatial sky = SkyFactory.createSky(assetManager, west, east, north, south, up, down);
+        Spatial sky = SkyFactory.createSky(_assetManager, west, east, north, south, up, down);
         rootNode.attachChild(sky);
     }
     
     protected Node createAxisMarker(float arrowSize) {
 
-        Material redMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material redMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         redMat.getAdditionalRenderState().setWireframe(true);
         redMat.setColor("Color", ColorRGBA.Red);
         
-        Material greenMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material greenMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         greenMat.getAdditionalRenderState().setWireframe(true);
         greenMat.setColor("Color", ColorRGBA.Green);
         
-        Material blueMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material blueMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         blueMat.getAdditionalRenderState().setWireframe(true);
         blueMat.setColor("Color", ColorRGBA.Blue);
 

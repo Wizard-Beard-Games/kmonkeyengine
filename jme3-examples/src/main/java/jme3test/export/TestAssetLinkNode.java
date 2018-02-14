@@ -70,7 +70,7 @@ public class TestAssetLinkNode extends SimpleApplication {
         AssetLinkNode loaderNode=new AssetLinkNode();
         loaderNode.addLinkedChild(new ModelKey("Models/MonkeyHead/MonkeyHead.mesh.xml"));
         //load/attach the children (happens automatically on load)
-//        loaderNode.attachLinkedChildren(assetManager);
+//        loaderNode.attachLinkedChildren(_assetManager);
 //        rootNode.attachChild(loaderNode);
 
         //save and load the loaderNode
@@ -81,7 +81,7 @@ public class TestAssetLinkNode extends SimpleApplication {
             //import from byte array, automatically loads the monkeyhead from file
             ByteArrayInputStream bin=new ByteArrayInputStream(bout.toByteArray());
             BinaryImporter imp=BinaryImporter.getInstance();
-            imp.setAssetManager(assetManager);
+            imp.setAssetManager(_assetManager);
             Node newLoaderNode=(Node)imp.load(bin);
             //attach to rootNode
             rootNode.attachChild(newLoaderNode);
@@ -93,7 +93,7 @@ public class TestAssetLinkNode extends SimpleApplication {
         rootNode.attachChild(loaderNode);
 
         lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-        lightMdl.setMaterial( (Material) assetManager.loadAsset(new AssetKey("Common/Materials/RedColor.j3m")));
+        lightMdl.setMaterial( (Material) _assetManager.loadAsset(new AssetKey("Common/Materials/RedColor.j3m")));
         rootNode.attachChild(lightMdl);
 
         // flourescent main light

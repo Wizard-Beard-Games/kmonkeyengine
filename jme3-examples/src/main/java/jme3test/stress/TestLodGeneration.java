@@ -32,7 +32,6 @@
 package jme3test.stress;
 
 import com.jme3.animation.AnimChannel;
-import com.jme3.animation.AnimControl;
 import com.jme3.animation.SkeletonControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
@@ -80,8 +79,8 @@ public class TestLodGeneration extends SimpleApplication {
         al.setColor(ColorRGBA.White.mult(0.6f));
         rootNode.addLight(al);
 
-       // model = (Node) assetManager.loadModel("Models/Sinbad/Sinbad.mesh.xml");
-       model = (Node) assetManager.loadModel("Models/Jaime/Jaime.j3o");
+       // model = (Node) _assetManager.loadModel("Models/Sinbad/Sinbad.mesh.xml");
+       model = (Node) _assetManager.loadModel("Models/Jaime/Jaime.j3o");
         BoundingBox b = ((BoundingBox) model.getWorldBound());
         model.setLocalScale(1.2f / (b.getYExtent() * 2));
         //  model.setLocalTranslation(0,-(b.getCenter().y - b.getYExtent())* model.getLocalScale().y, 0);
@@ -121,7 +120,7 @@ public class TestLodGeneration extends SimpleApplication {
 
 
 
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         hudText = new BitmapText(guiFont, false);
         hudText.setSize(guiFont.getCharSet().getRenderedSize());
         hudText.setText(computeNbTri() + " tris");

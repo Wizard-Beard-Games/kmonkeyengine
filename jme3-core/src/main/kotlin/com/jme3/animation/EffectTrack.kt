@@ -444,7 +444,7 @@ class EffectTrack : ClonableTrack {
     override fun read(im: JmeImporter) {
         val `in` = im.getCapsule(this)
         this.particlesPerSeconds = `in`.readFloat("particlesPerSeconds", 0f)
-        //reading the emitter even if the track will then reference its cloned counter part if it's loaded with the assetManager.
+        //reading the emitter even if the track will then reference its cloned counter part if it's loaded with the _assetManager.
         //This also avoid null pointer exception if the model is not loaded via the AssetManager.
         emitter = `in`.readSavable("emitter", null) as ParticleEmitter
         emitter!!.particlesPerSec = 0f

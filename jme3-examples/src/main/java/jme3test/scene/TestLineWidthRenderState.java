@@ -63,7 +63,7 @@ public class TestLineWidthRenderState extends SimpleApplication {
 
         Box b = new Box(1, 1, 1);
         Geometry geom = new Geometry("Box", b);
-        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         mat.getAdditionalRenderState().setWireframe(true);
         mat.getAdditionalRenderState().setLineWidth(2);

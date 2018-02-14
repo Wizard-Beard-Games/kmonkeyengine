@@ -309,7 +309,7 @@ public class JmeBatchRenderBackend implements BatchRenderBackend {
   }
 
   /**
-   * Whether or not to render textures with high quality settings. Usually, setting to true will result in slower
+   * Whether or not to render textures with high quality _settings. Usually, setting to true will result in slower
    * performance, but nicer looking textures, and vice versa. How high quality textures are rendered versus low quality
    * textures will vary depending on the {@link de.lessvoid.nifty.render.batch.spi.BatchRenderBackend} implementation.
    */

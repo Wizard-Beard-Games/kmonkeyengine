@@ -497,7 +497,7 @@ public class TextureHelper extends AbstractBlenderHelper {
             }
         } else {
             // This is a full path, try to truncate it until the file can be found
-            // this works as the assetManager root is most probably a part of the
+            // this works as the _assetManager root is most probably a part of the
             // image path. E.g. AssetManager has a locator at c:/Files/ and the
             // texture path is c:/Files/Textures/Models/Image.jpg.
             // For this we create a list with every possible full path name from

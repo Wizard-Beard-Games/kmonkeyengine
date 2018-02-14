@@ -46,7 +46,7 @@ import java.util.ArrayList
  * (ParticleEmitter for EffectTrack and AudioNode for AudioTrack)
  * It holds the list of tracks that are directly referencing the Spatial.
  *
- * This is used when loading a Track to find the cloned reference of a Spatial in the cloned model returned by the assetManager.
+ * This is used when loading a Track to find the cloned reference of a Spatial in the cloned model returned by the _assetManager.
  *
  * @author (kme) Ray Long
  * @author (jme) Nehon

@@ -21,7 +21,7 @@ public class TestTextureArrayCompressed extends SimpleApplication
    @Override
    public void simpleInitApp()
    {
-       Material mat = new Material(assetManager, "jme3test/texture/UnshadedArray.j3md");
+       Material mat = new Material(_assetManager, "jme3test/texture/UnshadedArray.j3md");
        
        for (Caps caps : renderManager.getRenderer().getCaps()) {
            System.out.println(caps.name());
@@ -31,8 +31,8 @@ public class TestTextureArrayCompressed extends SimpleApplication
        }
        
        
-       Texture tex1 = assetManager.loadTexture( "Textures/Terrain/Pond/Pond.dds");
-       Texture tex2 = assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.dds");
+       Texture tex1 = _assetManager.loadTexture( "Textures/Terrain/Pond/Pond.dds");
+       Texture tex2 = _assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.dds");
        List<Image> images = new ArrayList<Image>();
        images.add(tex1.getImage());
        images.add(tex2.getImage());

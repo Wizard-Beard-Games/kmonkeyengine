@@ -74,7 +74,7 @@ public class TestMultiPostWater extends SimpleApplication {
         cam.setRotation(new Quaternion().fromAngles(new float[]{FastMath.PI * 0.06f, FastMath.PI * 0.65f, 0}));
 
 
-        Spatial sky = SkyFactory.createSky(assetManager, 
+        Spatial sky = SkyFactory.createSky(_assetManager,
                 "Scenes/Beach/FullskiesSunset0068.dds", EnvMapType.CubeMap);
         sky.setLocalScale(350);
 
@@ -83,7 +83,7 @@ public class TestMultiPostWater extends SimpleApplication {
 
 
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
 
         water = new WaterFilter(rootNode, lightDir);
         water.setCenter(new Vector3f(9.628218f, -15.830074f, 199.23595f));
@@ -91,7 +91,7 @@ public class TestMultiPostWater extends SimpleApplication {
         water.setWaveScale(0.003f);
         water.setMaxAmplitude(2f);
         water.setFoamExistence(new Vector3f(1f, 4, 0.5f));
-        water.setFoamTexture((Texture2D) assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
+        water.setFoamTexture((Texture2D) _assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
         water.setRefractionStrength(0.2f);
         water.setWaterHeight(WATER_HEIGHT);
         fpp.addFilter(water);
@@ -123,7 +123,7 @@ public class TestMultiPostWater extends SimpleApplication {
         water3.setWaveScale(0.003f);
         water3.setMaxAmplitude(2f);
         water3.setFoamExistence(new Vector3f(1f, 4, 0.5f));
-        water3.setFoamTexture((Texture2D) assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
+        water3.setFoamTexture((Texture2D) _assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
         water3.setRefractionStrength(0.2f);
         water3.setDeepWaterColor(ColorRGBA.Red);
         water3.setWaterColor(ColorRGBA.Red.mult(2.0f));
@@ -136,28 +136,28 @@ public class TestMultiPostWater extends SimpleApplication {
     }
 
     private void createTerrain(Node rootNode) {
-        matRock = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+        matRock = new Material(_assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         matRock.setBoolean("useTriPlanarMapping", false);
         matRock.setBoolean("WardIso", true);
-        matRock.setTexture("AlphaMap", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
-        Texture heightMapImage = assetManager.loadTexture("Textures/Terrain/splat/pools.png");
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        matRock.setTexture("AlphaMap", _assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
+        Texture heightMapImage = _assetManager.loadTexture("Textures/Terrain/splat/pools.png");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap", grass);
         matRock.setFloat("DiffuseMap_0_scale", 64);
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap_1", dirt);
         matRock.setFloat("DiffuseMap_1_scale", 16);
-        Texture rock = assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
+        Texture rock = _assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
         rock.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap_2", rock);
         matRock.setFloat("DiffuseMap_2_scale", 128);
-        Texture normalMap0 = assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
+        Texture normalMap0 = _assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
         normalMap0.setWrap(WrapMode.Repeat);
-        Texture normalMap1 = assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
+        Texture normalMap1 = _assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
         normalMap1.setWrap(WrapMode.Repeat);
-        Texture normalMap2 = assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
+        Texture normalMap2 = _assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
         normalMap2.setWrap(WrapMode.Repeat);
         matRock.setTexture("NormalMap", normalMap0);
         matRock.setTexture("NormalMap_1", normalMap2);

@@ -91,7 +91,7 @@ public class TestContextSwitching extends SimpleApplication implements ScreenCon
         clContext = null;
         
         NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
-                assetManager,
+                _assetManager,
                 inputManager,
                 audioRenderer,
                 guiViewPort);

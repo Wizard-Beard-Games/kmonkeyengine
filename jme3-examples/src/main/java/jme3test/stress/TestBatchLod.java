@@ -57,16 +57,16 @@ public class TestBatchLod extends SimpleApplication {
         dl.setDirection(new Vector3f(-1, -1, -1).normalizeLocal());
         rootNode.addLight(dl);
 
-        Node teapotNode = (Node) assetManager.loadModel("Models/Teapot/Teapot.mesh.xml");
+        Node teapotNode = (Node) _assetManager.loadModel("Models/Teapot/Teapot.mesh.xml");
         Geometry teapot = (Geometry) teapotNode.getChild(0);
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setFloat("Shininess", 16f);
         mat.setBoolean("VertexLighting", true);
         teapot.setMaterial(mat);
 
         // show normals as material
-        //Material mat = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
+        //Material mat = new Material(_assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
         flyCam.setMoveSpeed(5);
         for (int y = -5; y < 5; y++) {
             for (int x = -5; x < 5; x++) {

@@ -44,7 +44,7 @@ public class TestUserData extends SimpleApplication {
     }
 
     public void simpleInitApp() {
-        Node scene = (Node) assetManager.loadModel("Scenes/DotScene/DotScene.scene");
+        Node scene = (Node) _assetManager.loadModel("Scenes/DotScene/DotScene.scene");
         System.out.println("Scene: " + scene);
 
         Spatial testNode = scene.getChild("TestNode");

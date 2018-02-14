@@ -25,13 +25,13 @@ public class TestShaderNodes extends SimpleApplication {
         Logger.getLogger("com.jme3").setLevel(Level.WARNING);
         Box boxshape1 = new Box(1f, 1f, 1f);
         Geometry cube_tex = new Geometry("A Textured Box", boxshape1);
-        Texture tex = assetManager.loadTexture("Interface/Logo/Monkey.jpg");
+        Texture tex = _assetManager.loadTexture("Interface/Logo/Monkey.jpg");
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/UnshadedNodes.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/UnshadedNodes.j3md");
         mat.selectTechnique(TechniqueDef.DEFAULT_TECHNIQUE_NAME, renderManager);
         Technique t = mat.getActiveTechnique();
 
-        for (Shader.ShaderSource shaderSource : t.getDef().getShader(assetManager, renderer.getCaps(), t.getDynamicDefines()).getSources()) {
+        for (Shader.ShaderSource shaderSource : t.getDef().getShader(_assetManager, renderer.getCaps(), t.getDynamicDefines()).getSources()) {
             System.out.println(shaderSource.getSource());
         }
         

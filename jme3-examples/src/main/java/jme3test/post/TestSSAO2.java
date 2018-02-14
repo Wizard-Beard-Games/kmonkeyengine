@@ -61,7 +61,7 @@ public class TestSSAO2 extends SimpleApplication {
 
         getStateManager().attach(new DetailedProfilerState());
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setFloat("Shininess", 16f);
         //mat.setBoolean("VertexLighting", true);
 
@@ -70,7 +70,7 @@ public class TestSSAO2 extends SimpleApplication {
         floor.setMaterial(mat);
         rootNode.attachChild(floor);
 
-        Node teapotNode = (Node) assetManager.loadModel("Models/Teapot/Teapot.mesh.xml");
+        Node teapotNode = (Node) _assetManager.loadModel("Models/Teapot/Teapot.mesh.xml");
         Geometry teapot = (Geometry) teapotNode.getChild(0);
         teapot.setMaterial(mat);
 //        Sphere sph = new Sphere(16, 16, 4);
@@ -79,7 +79,7 @@ public class TestSSAO2 extends SimpleApplication {
 
 
         // show normals as material
-        //Material mat = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
+        //Material mat = new Material(_assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
         for (int f = 10; f > 3; f--) {
             for (int y = -f; y < f; y++) {
                 for (int x = -f; x < f; x++) {
@@ -98,7 +98,7 @@ public class TestSSAO2 extends SimpleApplication {
         cam.setRotation(new Quaternion(-0.083419204f, 0.90370524f, -0.20599906f, -0.36595422f));
 
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         SSAOFilter ssaoFilter = new SSAOFilter(2.9299974f,25f,5.8100376f,0.091000035f);
         int numSamples = context.getSettings().getSamples();
         if (numSamples > 0) {

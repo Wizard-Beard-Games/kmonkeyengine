@@ -52,7 +52,7 @@ public class TestDebugShapes extends SimpleApplication {
 
     public Geometry putShape(Mesh shape, ColorRGBA color, float lineWidth){
         Geometry g = new Geometry("shape", shape);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.getAdditionalRenderState().setWireframe(true);
         mat.getAdditionalRenderState().setLineWidth(lineWidth);
         mat.setColor("Color", color);

@@ -47,7 +47,7 @@ public class TestImageRaster extends SimpleApplication {
         tex.setMagFilter(MagFilter.Nearest);
         tex.setMinFilter(MinFilter.NearestNoMipMaps);
         tex.setAnisotropicFilter(16);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setTexture("ColorMap", tex);
 
         Quad q = new Quad(5, 5);
@@ -56,7 +56,7 @@ public class TestImageRaster extends SimpleApplication {
         g.setMaterial(mat);
         rootNode.attachChild(g);
 
-        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont fnt = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         BitmapText txt = new BitmapText(fnt);
         txt.setBox(new Rectangle(0, 0, 5, 5));
         txt.setQueueBucket(RenderQueue.Bucket.Transparent);
@@ -93,8 +93,8 @@ public class TestImageRaster extends SimpleApplication {
         cam.setLocation(new Vector3f(16, 6, 36));
         flyCam.setMoveSpeed(10);
         
-        Texture tex = assetManager.loadTexture("com/jme3/app/Monkey.png");
-//        Texture tex = assetManager.loadTexture("Textures/HdrTest/Memorial.hdr");
+        Texture tex = _assetManager.loadTexture("com/jme3/app/Monkey.png");
+//        Texture tex = _assetManager.loadTexture("Textures/HdrTest/Memorial.hdr");
         Image originalImage = tex.getImage();
         
         Image image = convertImage(originalImage, Format.RGBA32F);

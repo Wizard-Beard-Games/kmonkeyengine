@@ -58,14 +58,14 @@ public class TestChaseCameraAppState extends SimpleApplication implements Analog
 
   public void simpleInitApp() {
     // Load a teapot model
-    teaGeom = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
-    Material mat_tea = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
+    teaGeom = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
+    Material mat_tea = new Material(_assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
     teaGeom.setMaterial(mat_tea);
     rootNode.attachChild(teaGeom);
 
     // Load a floor model
-    Material mat_ground = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    mat_ground.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+    Material mat_ground = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    mat_ground.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
     Geometry ground = new Geometry("ground", new Quad(50, 50));
     ground.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
     ground.setLocalTranslation(-25, -1, 25);

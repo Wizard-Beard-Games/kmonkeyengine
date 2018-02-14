@@ -75,7 +75,7 @@ public class DirectionalLightShadowRenderer extends AbstractShadowRenderer {
     /**
      * Used for serialization use
      * DirectionalLightShadowRenderer#DirectionalLightShadowRenderer(AssetManager
-     * assetManager, int shadowMapSize, int nbSplits)
+     * _assetManager, int shadowMapSize, int nbSplits)
      */
     public DirectionalLightShadowRenderer() {
         super();

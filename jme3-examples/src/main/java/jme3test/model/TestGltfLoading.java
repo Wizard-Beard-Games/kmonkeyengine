@@ -87,7 +87,7 @@ public class TestGltfLoading extends SimpleApplication {
         flyCam.setEnabled(false);
         viewPort.setBackgroundColor(new ColorRGBA().setAsSrgb(0.2f, 0.2f, 0.2f, 1.0f));
         rootNode.attachChild(autoRotate);
-        probeNode = (Node) assetManager.loadModel("Scenes/defaultProbe.j3o");
+        probeNode = (Node) _assetManager.loadModel("Scenes/defaultProbe.j3o");
         autoRotate.attachChild(probeNode);
 
 //        DirectionalLight dl = new DirectionalLight();
@@ -187,7 +187,7 @@ public class TestGltfLoading extends SimpleApplication {
     }
 
     private void loadModel(String path, Vector3f offset, float scale) {
-        Spatial s = assetManager.loadModel(path);
+        Spatial s = _assetManager.loadModel(path);
         s.scale(scale);
         s.move(offset);
         assets.add(s);

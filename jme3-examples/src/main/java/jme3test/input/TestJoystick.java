@@ -200,23 +200,23 @@ public class TestJoystick extends SimpleApplication {
             // be in that space because it's easier.
             int size = 512;
  
-            Material m = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            m.setTexture( "ColorMap", assetManager.loadTexture( "Interface/Joystick/gamepad-buttons.png" ) );
+            Material m = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            m.setTexture( "ColorMap", _assetManager.loadTexture( "Interface/Joystick/gamepad-buttons.png" ) );
             m.getAdditionalRenderState().setBlendMode( BlendMode.Alpha ); 
             Geometry buttonPanel = new Geometry( "buttons", new Quad(size, size) );
             buttonPanel.setLocalTranslation( 0, 0, -1 );
             buttonPanel.setMaterial(m);
             attachChild(buttonPanel);
         
-            m = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            m.setTexture( "ColorMap", assetManager.loadTexture( "Interface/Joystick/gamepad-frame.png" ) );
+            m = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            m.setTexture( "ColorMap", _assetManager.loadTexture( "Interface/Joystick/gamepad-frame.png" ) );
             m.getAdditionalRenderState().setBlendMode( BlendMode.Alpha ); 
             Geometry frame = new Geometry( "frame", new Quad(size, size) );
             frame.setMaterial(m);
             attachChild(frame);
             
-            m = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-            m.setTexture( "ColorMap", assetManager.loadTexture( "Interface/Joystick/gamepad-stick.png" ) );
+            m = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            m.setTexture( "ColorMap", _assetManager.loadTexture( "Interface/Joystick/gamepad-stick.png" ) );
             m.getAdditionalRenderState().setBlendMode( BlendMode.Alpha ); 
             leftStick = new Geometry( "leftStick", new Quad(64, 64) );
             leftStick.setMaterial(m);
@@ -381,7 +381,7 @@ public class TestJoystick extends SimpleApplication {
             super( "Button:" + name );
             setLocalTranslation( x, y, -0.5f );
             
-            material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            material = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
             material.setColor( "Color", hilite );
             material.getAdditionalRenderState().setBlendMode( BlendMode.Alpha ); 
 

@@ -57,7 +57,7 @@ public class HelloNode extends SimpleApplication {
         Box box1 = new Box(1,1,1);
         Geometry blue = new Geometry("Box", box1);
         blue.setLocalTranslation(new Vector3f(1,-1,1));
-        Material mat1 = new Material(assetManager, 
+        Material mat1 = new Material(_assetManager,
                 "Common/MatDefs/Misc/Unshaded.j3md");
         mat1.setColor("Color", ColorRGBA.Blue);
         blue.setMaterial(mat1);
@@ -66,7 +66,7 @@ public class HelloNode extends SimpleApplication {
         Box box2 = new Box(1,1,1);      
         Geometry red = new Geometry("Box", box2);
         red.setLocalTranslation(new Vector3f(1,3,1));
-        Material mat2 = new Material(assetManager, 
+        Material mat2 = new Material(_assetManager,
                 "Common/MatDefs/Misc/Unshaded.j3md");
         mat2.setColor("Color", ColorRGBA.Red);
         red.setMaterial(mat2);

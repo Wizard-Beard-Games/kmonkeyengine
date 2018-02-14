@@ -74,7 +74,7 @@ public class TestCrossHatch extends SimpleApplication {
         //cam.setFrustumFar(1000);
 
 
-        Material mat = new Material(assetManager,"Common/MatDefs/Light/Lighting.j3md");
+        Material mat = new Material(_assetManager,"Common/MatDefs/Light/Lighting.j3md");
         mat.setFloat("Shininess", 15f);
         mat.setBoolean("UseMaterialColors", true);
         mat.setColor("Ambient", ColorRGBA.Yellow.mult(0.2f));
@@ -84,7 +84,7 @@ public class TestCrossHatch extends SimpleApplication {
     
 
 
-        Material matSoil = new Material(assetManager,"Common/MatDefs/Light/Lighting.j3md");
+        Material matSoil = new Material(_assetManager,"Common/MatDefs/Light/Lighting.j3md");
         matSoil.setFloat("Shininess", 15f);
         matSoil.setBoolean("UseMaterialColors", true);
         matSoil.setColor("Ambient", ColorRGBA.Gray);
@@ -93,7 +93,7 @@ public class TestCrossHatch extends SimpleApplication {
        
 
 
-        teapot = assetManager.loadModel("Models/Teapot/Teapot.obj");
+        teapot = _assetManager.loadModel("Models/Teapot/Teapot.obj");
         teapot.setLocalTranslation(0,0,10);
 
         teapot.setMaterial(mat);
@@ -115,13 +115,13 @@ public class TestCrossHatch extends SimpleApplication {
         rootNode.addLight(light);
 
         // load sky
-        Spatial sky = SkyFactory.createSky(assetManager, 
+        Spatial sky = SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/FullskiesBlueClear03.dds",
                 EnvMapType.CubeMap);
         sky.setCullHint(Spatial.CullHint.Never);
         rootNode.attachChild(sky);
 
-        fpp=new FilterPostProcessor(assetManager);
+        fpp=new FilterPostProcessor(_assetManager);
         
         int numSamples = getContext().getSettings().getSamples();
         if( numSamples > 0 ) {

@@ -964,7 +964,7 @@ public class ShaderNodeLoaderDelegate {
     }
 
     /**
-     * sets the assetManager
+     * sets the _assetManager
      *
      * @param assetManager
      */

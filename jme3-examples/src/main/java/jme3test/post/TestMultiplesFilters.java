@@ -72,18 +72,18 @@ public class TestMultiplesFilters extends SimpleApplication {
         cam.setRotation(new Quaternion(0.0016069f, 0.9810479f, -0.008143323f, 0.19358753f));
 
         // load sky
-        rootNode.attachChild(SkyFactory.createSky(assetManager, 
+        rootNode.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/BrightSky.dds", 
                 SkyFactory.EnvMapType.CubeMap));
 
         // create the geometry and attach it
         // load the level from zip or http zip
         if (useHttp) {
-            assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/wildhouse.zip", HttpZipLocator.class);
+            _assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/wildhouse.zip", HttpZipLocator.class);
         } else {
-            assetManager.registerLocator("wildhouse.zip", ZipLocator.class);
+            _assetManager.registerLocator("wildhouse.zip", ZipLocator.class);
         }
-        Spatial scene = assetManager.loadModel("main.scene");
+        Spatial scene = _assetManager.loadModel("main.scene");
 
 
         DirectionalLight sun = new DirectionalLight();
@@ -91,7 +91,7 @@ public class TestMultiplesFilters extends SimpleApplication {
         sun.setColor(ColorRGBA.White.clone().multLocal(2));
         scene.addLight(sun);
 
-        fpp = new FilterPostProcessor(assetManager);
+        fpp = new FilterPostProcessor(_assetManager);
       //  fpp.setNumSamples(4);
         ssaoFilter = new SSAOFilter(0.92f, 2.2f, 0.46f, 0.2f);
         final WaterFilter water=new WaterFilter(rootNode,new Vector3f(-0.4790551f, -0.39247334f, -0.7851566f));

@@ -98,14 +98,14 @@ public class TestPhysicsCharacter extends SimpleApplication implements ActionLis
     stateManager.attach(bulletAppState);
 
     // init a physical test scene
-    PhysicsTestHelper.createPhysicsTestWorldSoccer(rootNode, assetManager, bulletAppState.getPhysicsSpace());
+    PhysicsTestHelper.createPhysicsTestWorldSoccer(rootNode, _assetManager, bulletAppState.getPhysicsSpace());
     setupKeys();
 
     // Add a physics character to the world
     physicsCharacter = new CharacterControl(new CapsuleCollisionShape(0.5f, 1.8f), .1f);
     physicsCharacter.setPhysicsLocation(new Vector3f(0, 1, 0));
     characterNode = new Node("character node");
-    Spatial model = assetManager.loadModel("Models/Sinbad/Sinbad.mesh.xml");
+    Spatial model = _assetManager.loadModel("Models/Sinbad/Sinbad.mesh.xml");
     model.scale(0.25f);
     characterNode.addControl(physicsCharacter);
     getPhysicsSpace().add(physicsCharacter);

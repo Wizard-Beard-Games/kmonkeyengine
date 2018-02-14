@@ -41,9 +41,9 @@ public class RefEnv extends SimpleApplication {
 //        cam.setRotation(new Quaternion(-0.038261678f, 0.9578362f, -0.15233073f, -0.24058504f));
         flyCam.setDragToRotate(true);
         flyCam.setMoveSpeed(5);
-        Spatial sc = assetManager.loadModel("Scenes/PBR/ref/scene.gltf");
+        Spatial sc = _assetManager.loadModel("Scenes/PBR/ref/scene.gltf");
         rootNode.attachChild(sc);
-        Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/Path.hdr", SkyFactory.EnvMapType.EquirectMap);
+        Spatial sky = SkyFactory.createSky(_assetManager, "Textures/Sky/Path.hdr", SkyFactory.EnvMapType.EquirectMap);
         rootNode.attachChild(sky);
         rootNode.getChild(0).setCullHint(Spatial.CullHint.Always);
 
@@ -51,7 +51,7 @@ public class RefEnv extends SimpleApplication {
         refImg = new Picture("refImg");
         refImg.setHeight(cam.getHeight());
         refImg.setWidth(cam.getWidth());
-        refImg.setImage(assetManager, "jme3test/light/pbr/ref.png", false);
+        refImg.setImage(_assetManager, "jme3test/light/pbr/ref.png", false);
 
         ref.attachChild(refImg);
 
@@ -66,7 +66,7 @@ public class RefEnv extends SimpleApplication {
             public void onAction(String name, boolean isPressed, float tpf) {
                 if (name.equals("tex") && isPressed) {
                     if (tex == null) {
-                        tex = EnvMapUtils.getCubeMapCrossDebugViewWithMipMaps(stateManager.getState(EnvironmentCamera.class).debugEnv, assetManager);
+                        tex = EnvMapUtils.getCubeMapCrossDebugViewWithMipMaps(stateManager.getState(EnvironmentCamera.class).debugEnv, _assetManager);
                     }
                     if (tex.getParent() == null) {
                         guiNode.attachChild(tex);
@@ -123,7 +123,7 @@ public class RefEnv extends SimpleApplication {
                 @Override
                 public void done(LightProbe result) {
                     System.err.println("Done rendering env maps");
-                    tex = EnvMapUtils.getCubeMapCrossDebugViewWithMipMaps(result.getPrefilteredEnvMap(), assetManager);
+                    tex = EnvMapUtils.getCubeMapCrossDebugViewWithMipMaps(result.getPrefilteredEnvMap(), _assetManager);
                     rootNode.getChild(0).setCullHint(Spatial.CullHint.Dynamic);
                 }
             });

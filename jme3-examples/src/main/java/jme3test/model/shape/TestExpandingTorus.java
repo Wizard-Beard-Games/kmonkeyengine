@@ -52,7 +52,7 @@ public class TestExpandingTorus extends SimpleApplication {
     public void simpleInitApp() {
         torus = new Torus(30, 10, .5f, 1f);
         geom = new Geometry("Torus", torus);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         geom.setMaterial(mat);
         rootNode.attachChild(geom);
     }

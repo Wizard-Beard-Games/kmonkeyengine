@@ -84,9 +84,9 @@ public class TestBatchNode extends SimpleApplication {
          */
         Box boxshape4 = new Box(1f, 1f, 1f);
         cube = new Geometry("cube1", boxshape4);
-        Material mat = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
         cube.setMaterial(mat);
-//        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");        
+//        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
 //        mat.setColor("Diffuse", ColorRGBA.Blue);
 //        mat.setBoolean("UseMaterialColors", true);
         /**
@@ -116,7 +116,7 @@ public class TestBatchNode extends SimpleApplication {
         frustum = new WireFrustum(points);
         frustumMdl = new Geometry("f", frustum);
         frustumMdl.setCullHint(Spatial.CullHint.Never);
-        frustumMdl.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        frustumMdl.setMaterial(new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
         frustumMdl.getMaterial().getAdditionalRenderState().setWireframe(true);
         frustumMdl.getMaterial().setColor("Color", ColorRGBA.Red);
         rootNode.attachChild(frustumMdl);

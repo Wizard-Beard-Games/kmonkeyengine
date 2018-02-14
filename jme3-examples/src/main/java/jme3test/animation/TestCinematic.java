@@ -91,7 +91,7 @@ public class TestCinematic extends SimpleApplication {
         nifty = niftyDisplay.getNifty();
         nifty.fromXmlWithoutStartScreen("Interface/Nifty/CinematicTest.xml");
         getGuiViewPort().addProcessor(niftyDisplay);
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         final BitmapText text = new BitmapText(guiFont, false);
         text.setSize(guiFont.getCharSet().getRenderedSize());
         text.setText("Press enter to play/pause cinematic");
@@ -202,21 +202,21 @@ public class TestCinematic extends SimpleApplication {
 
     private void createScene() {
 
-        model = (Spatial) assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+        model = (Spatial) _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
         model.center();
         model.setShadowMode(ShadowMode.CastAndReceive);
         rootNode.attachChild(model);
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Cyan);
 
-        teapot = assetManager.loadModel("Models/Teapot/Teapot.obj");
+        teapot = _assetManager.loadModel("Models/Teapot/Teapot.obj");
         teapot.setLocalTranslation(10, 0, 10);
         teapot.setMaterial(mat);
         teapot.setShadowMode(ShadowMode.CastAndReceive);
         rootNode.attachChild(teapot);
 
-        Material matSoil = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material matSoil = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         matSoil.setBoolean("UseMaterialColors", true);
         matSoil.setColor("Ambient", ColorRGBA.Gray);
         matSoil.setColor("Diffuse", ColorRGBA.Green);
@@ -232,13 +232,13 @@ public class TestCinematic extends SimpleApplication {
         light.setColor(ColorRGBA.White.mult(1.5f));
         rootNode.addLight(light);
 
-        fpp = new FilterPostProcessor(assetManager);
+        fpp = new FilterPostProcessor(_assetManager);
         fade = new FadeFilter();
         fpp.addFilter(fade);
 
         if (renderer.getCaps().contains(Caps.GLSL100)) {
             DirectionalLightShadowRenderer dlsr
-                    = new DirectionalLightShadowRenderer(assetManager, 512, 1);
+                    = new DirectionalLightShadowRenderer(_assetManager, 512, 1);
             dlsr.setLight(light);
             dlsr.setShadowIntensity(0.4f);
             viewPort.addProcessor(dlsr);

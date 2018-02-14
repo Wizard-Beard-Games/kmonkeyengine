@@ -63,7 +63,7 @@ public class TestLightRadius extends SimpleApplication {
         g.center();
 //        g.move(0, 1, 0);
         
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setFloat("Shininess", 32f);
         mat.setBoolean("UseMaterialColors", true);
         mat.setColor("Ambient",  ColorRGBA.Black);
@@ -76,7 +76,7 @@ public class TestLightRadius extends SimpleApplication {
         rootNode.attachChild(g);
 
         lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         rootNode.attachChild(lightMdl);
 
         pl = new PointLight();

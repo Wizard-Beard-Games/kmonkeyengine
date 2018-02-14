@@ -89,7 +89,7 @@ public class TestTexture3D extends SimpleApplication {
         sphere.setBuffer(uvCoordsBuffer);
         //create geometry, and apply material and our 3D texture
         Geometry g = new Geometry("sphere", sphere);
-        Material material = new Material(assetManager, "jme3test/texture/tex3D.j3md");
+        Material material = new Material(_assetManager, "jme3test/texture/tex3D.j3md");
         try {
             Texture texture = this.getTexture();
             material.setTexture("Texture", texture);

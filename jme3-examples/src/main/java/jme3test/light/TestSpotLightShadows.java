@@ -49,7 +49,6 @@ import com.jme3.shadow.EdgeFilteringMode;
 import com.jme3.shadow.SpotLightShadowFilter;
 import com.jme3.shadow.SpotLightShadowRenderer;
 import com.jme3.texture.Texture.WrapMode;
-import com.jme3.util.MaterialDebugAppState;
 import com.jme3.util.TangentBinormalGenerator;
 
 public class TestSpotLightShadows extends SimpleApplication {
@@ -87,7 +86,7 @@ public class TestSpotLightShadows extends SimpleApplication {
 //      pl.setColor(ColorRGBA.White.mult(2));
 //      rootNode.addLight(pl);
         lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         lightMdl.setLocalTranslation(new Vector3f(77.70334f, 34.013165f, 27.1017f));
         lightMdl.setLocalScale(5);
         rootNode.attachChild(lightMdl);
@@ -98,7 +97,7 @@ public class TestSpotLightShadows extends SimpleApplication {
 //        rootNode.addLight(dl);
 
 
-        final SpotLightShadowRenderer slsr = new SpotLightShadowRenderer(assetManager, 512);
+        final SpotLightShadowRenderer slsr = new SpotLightShadowRenderer(_assetManager, 512);
         slsr.setLight(spot);       
         slsr.setShadowIntensity(0.5f);
         slsr.setShadowZExtend(100);
@@ -106,7 +105,7 @@ public class TestSpotLightShadows extends SimpleApplication {
         slsr.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);   
         viewPort.addProcessor(slsr);
 
-        SpotLightShadowFilter slsf = new SpotLightShadowFilter(assetManager, 512);
+        SpotLightShadowFilter slsf = new SpotLightShadowFilter(_assetManager, 512);
         slsf.setLight(spot);    
         slsf.setShadowIntensity(0.5f);
         slsf.setShadowZExtend(100);
@@ -114,11 +113,11 @@ public class TestSpotLightShadows extends SimpleApplication {
         slsf.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);  
         slsf.setEnabled(false);
         
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         fpp.addFilter(slsf);
         viewPort.addProcessor(fpp);
         
-        ShadowTestUIManager uiMan = new ShadowTestUIManager(assetManager, slsr, slsf, guiNode, inputManager, viewPort);
+        ShadowTestUIManager uiMan = new ShadowTestUIManager(_assetManager, slsr, slsf, guiNode, inputManager, viewPort);
 
         inputManager.addListener(new ActionListener() {
             public void onAction(String name, boolean isPressed, float tpf) {
@@ -136,7 +135,7 @@ public class TestSpotLightShadows extends SimpleApplication {
     }
 
     public void setupFloor() {
-        Material mat = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
         mat.getTextureParam("DiffuseMap").getTextureValue().setWrap(WrapMode.Repeat);
         mat.getTextureParam("NormalMap").getTextureValue().setWrap(WrapMode.Repeat);
         mat.setBoolean("UseMaterialColors", true);
@@ -158,8 +157,8 @@ public class TestSpotLightShadows extends SimpleApplication {
     }
 
     public void setupSignpost() {
-        Spatial signpost = assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
-        Material mat = assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
+        Spatial signpost = _assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
+        Material mat = _assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
         //   mat.setBoolean("VertexLighting", true);
         signpost.setMaterial(mat);
         signpost.rotate(0, FastMath.HALF_PI, 0);

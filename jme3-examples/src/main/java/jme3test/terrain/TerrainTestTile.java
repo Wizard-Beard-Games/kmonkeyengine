@@ -89,7 +89,7 @@ public class TerrainTestTile extends SimpleApplication {
         setupKeys();
 
         // WIREFRAME material
-        matWire = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matWire = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matWire.getAdditionalRenderState().setWireframe(true);
         matWire.setColor("Color", ColorRGBA.Green);
         
@@ -111,7 +111,7 @@ public class TerrainTestTile extends SimpleApplication {
         Sphere s = new Sphere(12, 12, 3);
         Geometry g = new Geometry("marker");
         g.setMesh(s);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Red);
         g.setMaterial(mat);
         g.setLocalTranslation(0, -100, 0);
@@ -176,13 +176,13 @@ public class TerrainTestTile extends SimpleApplication {
         
         TiledTerrain() {
             // TERRAIN TEXTURE material
-            matTerrain = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+            matTerrain = new Material(_assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
             matTerrain.setBoolean("useTriPlanarMapping", false);
             matTerrain.setBoolean("WardIso", true);
             matTerrain.setFloat("Shininess", 0);
 
             // GRASS texture
-            Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+            Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
             grass.setWrap(WrapMode.Repeat);
             matTerrain.setTexture("DiffuseMap", grass);
             matTerrain.setFloat("DiffuseMap_0_scale", grassScale);

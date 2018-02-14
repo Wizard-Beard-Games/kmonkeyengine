@@ -59,7 +59,7 @@ public class HelloInput extends SimpleApplication {
   public void simpleInitApp() {
       Box b = new Box(1, 1, 1);
     player = new Geometry("Player", b);
-    Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     mat.setColor("Color", ColorRGBA.Blue);
     player.setMaterial(mat);
     rootNode.attachChild(player);

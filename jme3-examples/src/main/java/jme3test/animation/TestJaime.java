@@ -98,7 +98,7 @@ public class TestJaime  extends SimpleApplication {
     }
     
     public Node LoadModel() {
-        Node jaime = (Node)assetManager.loadModel("Models/Jaime/Jaime.j3o");
+        Node jaime = (Node) _assetManager.loadModel("Models/Jaime/Jaime.j3o");
         jaime.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         rootNode.attachChild(jaime);
         return jaime;
@@ -124,14 +124,14 @@ public class TestJaime  extends SimpleApplication {
         pl.setRadius(2);
         rootNode.addLight(pl);
         
-        SpotLightShadowRenderer shadows = new SpotLightShadowRenderer(assetManager, 1024);
+        SpotLightShadowRenderer shadows = new SpotLightShadowRenderer(_assetManager, 1024);
         shadows.setLight(sl);
         shadows.setShadowIntensity(0.3f);
         shadows.setEdgeFilteringMode(EdgeFilteringMode.PCF8);
         viewPort.addProcessor(shadows);
 
         
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         SSAOFilter filter = new SSAOFilter(0.10997847f,0.440001f,0.39999998f,-0.008000026f);;
         fpp.addFilter(filter);
         fpp.addFilter(new FXAAFilter());
@@ -174,7 +174,7 @@ public class TestJaime  extends SimpleApplication {
         path.addWayPoint(new Vector3f(1.1f, 1.2f, 2.9f));
         path.addWayPoint(new Vector3f(0f, 1.2f, 3.0f));
         path.addWayPoint(new Vector3f(-1.1f, 1.2f, 2.9f));        
-        path.enableDebugShape(assetManager, rootNode);
+        path.enableDebugShape(_assetManager, rootNode);
         path.setCurveTension(0.8f);
         
         MotionEvent camMotion = new MotionEvent(camNode, path,6);
@@ -194,7 +194,7 @@ public class TestJaime  extends SimpleApplication {
         Quad q = new Quad(20, 20);
        q.scaleTextureCoordinates(Vector2f.UNIT_XY.mult(10));
        Geometry geom = new Geometry("floor", q);
-       Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+       Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
        mat.setColor("Diffuse", ColorRGBA.White);
        mat.setColor("Specular", ColorRGBA.White);
        mat.setColor("Ambient", ColorRGBA.Black);

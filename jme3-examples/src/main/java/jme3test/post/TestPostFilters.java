@@ -44,11 +44,8 @@ import com.jme3.renderer.Caps;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.shape.Box;
-import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
-import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 import com.jme3.util.SkyFactory.EnvMapType;
 import com.jme3.util.TangentBinormalGenerator;
@@ -69,7 +66,7 @@ public class TestPostFilters extends SimpleApplication implements ActionListener
 
     public void setupFilters() {
         if (renderer.getCaps().contains(Caps.GLSL100)) {
-            fpp = new FilterPostProcessor(assetManager);
+            fpp = new FilterPostProcessor(_assetManager);
             //     fpp.setNumSamples(4);
             // fpp.setNumSamples(4);
             //fpp.addFilter(new ColorOverlayFilter(ColorRGBA.LightGray));
@@ -85,11 +82,11 @@ public class TestPostFilters extends SimpleApplication implements ActionListener
     public void setupSkyBox() {
         Texture envMap;
         if (renderer.getCaps().contains(Caps.FloatTexture)) {
-            envMap = assetManager.loadTexture("Textures/Sky/St Peters/StPeters.hdr");
+            envMap = _assetManager.loadTexture("Textures/Sky/St Peters/StPeters.hdr");
         } else {
-            envMap = assetManager.loadTexture("Textures/Sky/St Peters/StPeters.jpg");
+            envMap = _assetManager.loadTexture("Textures/Sky/St Peters/StPeters.jpg");
         }
-        Spatial sky = SkyFactory.createSky(assetManager, envMap, 
+        Spatial sky = SkyFactory.createSky(_assetManager, envMap,
                 new Vector3f(-1f, -1f, -1f), EnvMapType.SphereMap);
         rootNode.attachChild(sky);
     }
@@ -112,7 +109,7 @@ public class TestPostFilters extends SimpleApplication implements ActionListener
     }
 
     public void setupFloor() {
-        Material mat = assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
         Box floor = new Box(50, 1f, 50);
         TangentBinormalGenerator.generate(floor);
         floor.scaleTextureCoordinates(new Vector2f(5, 5));
@@ -123,8 +120,8 @@ public class TestPostFilters extends SimpleApplication implements ActionListener
     }
 
     public void setupSignpost() {
-        Spatial signpost = assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
-        Material mat = assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
+        Spatial signpost = _assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
+        Material mat = _assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
         signpost.setMaterial(mat);
         signpost.rotate(0, FastMath.HALF_PI, 0);
         signpost.setLocalTranslation(12, 3.5f, 30);

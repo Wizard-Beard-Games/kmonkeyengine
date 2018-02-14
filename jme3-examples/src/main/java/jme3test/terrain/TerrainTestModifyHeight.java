@@ -136,7 +136,7 @@ public class TerrainTestModifyHeight extends SimpleApplication {
         createMarker();
 
         // WIREFRAME material
-        matWire = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matWire = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matWire.getAdditionalRenderState().setWireframe(true);
         matWire.setColor("Color", ColorRGBA.Green);
         
@@ -277,34 +277,34 @@ public class TerrainTestModifyHeight extends SimpleApplication {
         // First, we load up our textures and the heightmap texture for the terrain
 
         // TERRAIN TEXTURE material
-        matTerrain = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+        matTerrain = new Material(_assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         matTerrain.setBoolean("useTriPlanarMapping", false);
         matTerrain.setBoolean("WardIso", true);
         matTerrain.setFloat("Shininess", 0);
 
         // ALPHA map (for splat textures)
-        matTerrain.setTexture("AlphaMap", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
+        matTerrain.setTexture("AlphaMap", _assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
 
         // GRASS texture
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap", grass);
         matTerrain.setFloat("DiffuseMap_0_scale", grassScale);
 
         // DIRT texture
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap_1", dirt);
         matTerrain.setFloat("DiffuseMap_1_scale", dirtScale);
 
         // ROCK texture
-        Texture rock = assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
+        Texture rock = _assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
         rock.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("DiffuseMap_2", rock);
         matTerrain.setFloat("DiffuseMap_2_scale", rockScale);
 
         // HEIGHTMAP image (for the terrain heightmap)
-        Texture heightMapImage = assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
+        Texture heightMapImage = _assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
         AbstractHeightMap heightmap = null;
         try {
             heightmap = new ImageBasedHeightMap(heightMapImage.getImage(), 0.5f);
@@ -329,7 +329,7 @@ public class TerrainTestModifyHeight extends SimpleApplication {
     private void createTerrainGrid() {
         
         // TERRAIN TEXTURE material
-        matTerrain = new Material(this.assetManager, "Common/MatDefs/Terrain/HeightBasedTerrain.j3md");
+        matTerrain = new Material(this._assetManager, "Common/MatDefs/Terrain/HeightBasedTerrain.j3md");
 
         // Parameters to material:
         // regionXColorMap: X = 1..4 the texture that should be appliad to state X
@@ -342,19 +342,19 @@ public class TerrainTestModifyHeight extends SimpleApplication {
         // slopeTileFactor: the texture scale for slopes
         // terrainSize: the total size of the terrain (used for scaling the texture)
         // GRASS texture
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("region1ColorMap", grass);
         matTerrain.setVector3("region1", new Vector3f(88, 200, this.grassScale));
 
         // DIRT texture
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("region2ColorMap", dirt);
         matTerrain.setVector3("region2", new Vector3f(0, 90, this.dirtScale));
 
         // ROCK texture
-        Texture rock = assetManager.loadTexture("Textures/Terrain/Rock2/rock.jpg");
+        Texture rock = _assetManager.loadTexture("Textures/Terrain/Rock2/rock.jpg");
         rock.setWrap(WrapMode.Repeat);
         matTerrain.setTexture("region3ColorMap", rock);
         matTerrain.setVector3("region3", new Vector3f(198, 260, this.rockScale));
@@ -421,7 +421,7 @@ public class TerrainTestModifyHeight extends SimpleApplication {
         marker = new Geometry("Marker");
         marker.setMesh(sphere);
         
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", new ColorRGBA(251f/255f, 130f/255f, 0f, 0.6f));
         mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         

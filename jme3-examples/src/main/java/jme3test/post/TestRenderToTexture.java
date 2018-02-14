@@ -94,7 +94,7 @@ public class TestRenderToTexture extends SimpleApplication implements ActionList
 
         // setup framebuffer's scene
         Box boxMesh = new Box(1, 1, 1);
-        Material material = assetManager.loadMaterial("Interface/Logo/Logo.j3m");
+        Material material = _assetManager.loadMaterial("Interface/Logo/Logo.j3m");
         offBox = new Geometry("box", boxMesh);
         offBox.setMaterial(material);
 
@@ -114,7 +114,7 @@ public class TestRenderToTexture extends SimpleApplication implements ActionList
 
         Texture offTex = setupOffscreenView();
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setTexture("ColorMap", offTex);
         quad.setMaterial(mat);
         rootNode.attachChild(quad);

@@ -57,7 +57,7 @@ public class TestMultiViewsFilters extends SimpleApplication {
 
     public void simpleInitApp() {
         // create the geometry and attach it
-        Geometry teaGeom = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Geometry teaGeom = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
         teaGeom.scale(3);
         teaGeom.getMaterial().setColor("GlowColor", ColorRGBA.Green);
 
@@ -116,7 +116,7 @@ public class TestMultiViewsFilters extends SimpleApplication {
 //          1046,1266,112,332
         Camera cam5 = cam.clone();
         cam5.setName("cam5");
-        cam5.setViewPort(1046f/settings.getWidth(), 1266f/settings.getWidth(), 112f/settings.getHeight(), 332f/settings.getHeight());
+        cam5.setViewPort(1046f/ settings.getWidth(), 1266f/ settings.getWidth(), 112f/ settings.getHeight(), 332f/ settings.getHeight());
         cam5.setLocation(new Vector3f(0.2846221f, 6.4271426f, 0.23380789f));
         cam5.setRotation(new Quaternion(0.004381671f, 0.72363687f, -0.69015175f, 0.0045953835f));
 
@@ -126,15 +126,15 @@ public class TestMultiViewsFilters extends SimpleApplication {
 
         
         
-        rootNode.attachChild(SkyFactory.createSky(assetManager, 
+        rootNode.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/BrightSky.dds", 
                 SkyFactory.EnvMapType.CubeMap));
 
-        final FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-        final FilterPostProcessor fpp2 = new FilterPostProcessor(assetManager);
-        final FilterPostProcessor fpp3 = new FilterPostProcessor(assetManager);
-        final FilterPostProcessor fpp4 = new FilterPostProcessor(assetManager);
-        final FilterPostProcessor fpp5 = new FilterPostProcessor(assetManager);
+        final FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
+        final FilterPostProcessor fpp2 = new FilterPostProcessor(_assetManager);
+        final FilterPostProcessor fpp3 = new FilterPostProcessor(_assetManager);
+        final FilterPostProcessor fpp4 = new FilterPostProcessor(_assetManager);
+        final FilterPostProcessor fpp5 = new FilterPostProcessor(_assetManager);
 
 
         //  fpp.addFilter(new WaterFilter(rootNode, Vector3f.UNIT_Y.mult(-1)));

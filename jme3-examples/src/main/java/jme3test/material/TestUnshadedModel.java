@@ -25,7 +25,7 @@ public class TestUnshadedModel extends SimpleApplication {
         TangentBinormalGenerator.generate(sphMesh);
 
         Geometry sphere = new Geometry("Rock Ball", sphMesh);
-        Material mat = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
         mat.setColor("Ambient", ColorRGBA.DarkGray);
         mat.setColor("Diffuse", ColorRGBA.White);
         mat.setBoolean("UseMaterialColors", true);

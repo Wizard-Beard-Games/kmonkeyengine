@@ -110,7 +110,7 @@ interface AppState {
      * @param stateManager The state manager
      * @param app The application
      */
-    fun initialize(stateManager: AppStateManager, app: Application)
+    fun initialize(stateManager: AppStateManager, app: Application?)
 
     /**
      * Called by [AppStateManager.attach]

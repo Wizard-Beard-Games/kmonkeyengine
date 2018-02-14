@@ -60,7 +60,7 @@ public class TestModelExportingCloning extends SimpleApplication {
         AnimControl control;
         AnimChannel channel;
         
-        Spatial originalModel = assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+        Spatial originalModel = _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
         control = originalModel.getControl(AnimControl.class);
         channel = control.createChannel();
         channel.setAnim("Walk");
@@ -73,7 +73,7 @@ public class TestModelExportingCloning extends SimpleApplication {
         channel.setAnim("push");
         rootNode.attachChild(clonedModel);
         
-        Spatial exportedModel = BinaryExporter.saveAndLoad(assetManager, originalModel);
+        Spatial exportedModel = BinaryExporter.saveAndLoad(_assetManager, originalModel);
         exportedModel.move(20, 0, 0);
         control = exportedModel.getControl(AnimControl.class);
         channel = control.createChannel();

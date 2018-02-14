@@ -100,7 +100,7 @@ public class TestRenderToCubemap  extends SimpleApplication {
  
         // setup framebuffer's scene
         Box boxMesh = new Box( 1,1,1);
-        Material material = assetManager.loadMaterial("Interface/Logo/Logo.j3m");
+        Material material = _assetManager.loadMaterial("Interface/Logo/Logo.j3m");
         offBox = new Geometry("box", boxMesh);
         offBox.setMaterial(material);
  
@@ -116,7 +116,7 @@ public class TestRenderToCubemap  extends SimpleApplication {
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
  
         Texture offTex = setupOffscreenView();
-        Spatial sky = SkyFactory.createSky(assetManager, offTex, 
+        Spatial sky = SkyFactory.createSky(_assetManager, offTex,
                 EnvMapType.CubeMap);
         rootNode.attachChild(sky);
     }

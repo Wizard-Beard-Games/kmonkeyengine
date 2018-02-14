@@ -64,12 +64,12 @@ public class TestAppStates extends LegacyApplication {
         viewPort.attachScene(state.getRootNode());
         stateManager.attach(state);
 
-        Spatial model = assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Spatial model = _assetManager.loadModel("Models/Teapot/Teapot.obj");
         model.scale(3);
-        model.setMaterial(assetManager.loadMaterial("Interface/Logo/Logo.j3m"));
+        model.setMaterial(_assetManager.loadMaterial("Interface/Logo/Logo.j3m"));
         state.getRootNode().attachChild(model);
 
-        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,
+        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(_assetManager,
                                                            inputManager,
                                                            audioRenderer,
                                                            guiViewPort);

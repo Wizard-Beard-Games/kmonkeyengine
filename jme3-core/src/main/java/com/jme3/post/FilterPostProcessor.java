@@ -89,14 +89,14 @@ public class FilterPostProcessor implements SceneProcessor, Savable {
     
     /**
      * Create a FilterProcessor 
-     * @param assetManager the assetManager
+     * @param assetManager the _assetManager
      */
     public FilterPostProcessor(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
 
     /**
-     * Don't use this constructor, use {@link #FilterPostProcessor(AssetManager assetManager)}<br>
+     * Don't use this constructor, use {@link #FilterPostProcessor(AssetManager _assetManager)}<br>
      * This constructor is used for serialization only
      */
     public FilterPostProcessor() {

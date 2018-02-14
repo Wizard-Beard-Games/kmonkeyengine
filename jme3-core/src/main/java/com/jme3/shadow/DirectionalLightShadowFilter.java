@@ -59,7 +59,7 @@ public class DirectionalLightShadowFilter extends AbstractShadowFilter<Direction
     /**
      * Used for serialzation.
      * Use DirectionalLightShadowFilter#DirectionalLightShadowFilter
-     * (AssetManager assetManager, int shadowMapSize, int nbSplits)
+     * (AssetManager _assetManager, int shadowMapSize, int nbSplits)
      * instead.
      */
     public DirectionalLightShadowFilter() {

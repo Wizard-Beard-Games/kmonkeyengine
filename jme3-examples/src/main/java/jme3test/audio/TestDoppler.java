@@ -64,10 +64,10 @@ public class TestDoppler extends SimpleApplication {
         g.rotate(-FastMath.HALF_PI, 0, 0);
         g.center();
 
-        g.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        g.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
 //        rootNode.attachChild(g);
 
-        ufoNode = new AudioNode(assetManager, "Sound/Effects/Beep.ogg", AudioData.DataType.Buffer);
+        ufoNode = new AudioNode(_assetManager, "Sound/Effects/Beep.ogg", AudioData.DataType.Buffer);
         ufoNode.setLooping(true);
         ufoNode.setPitch(0.5f);
         ufoNode.setRefDistance(1);
@@ -76,7 +76,7 @@ public class TestDoppler extends SimpleApplication {
         ufoNode.play();
 
         Geometry ball = new Geometry("Beeper", new Sphere(10, 10, 0.1f));
-        ball.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        ball.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         ufoNode.attachChild(ball);
 
         rootNode.attachChild(ufoNode);

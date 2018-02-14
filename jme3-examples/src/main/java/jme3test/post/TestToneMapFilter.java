@@ -67,8 +67,8 @@ public class TestToneMapFilter extends SimpleApplication {
     public Geometry createHDRBox(){
         Box boxMesh = new Box(1, 1, 1);
         Geometry box = new Geometry("Box", boxMesh);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setTexture("ColorMap", assetManager.loadTexture("Textures/HdrTest/Memorial.hdr"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setTexture("ColorMap", _assetManager.loadTexture("Textures/HdrTest/Memorial.hdr"));
         box.setMaterial(mat);
         return box;
     }
@@ -80,7 +80,7 @@ public class TestToneMapFilter extends SimpleApplication {
         System.out.println(" Y:\tIncrease white-point");
         System.out.println(" H:\tDecrease white-point");
         
-        fpp = new FilterPostProcessor(assetManager);
+        fpp = new FilterPostProcessor(_assetManager);
         toneMapFilter = new ToneMapFilter();
         fpp.addFilter(toneMapFilter);
         viewPort.addProcessor(fpp);

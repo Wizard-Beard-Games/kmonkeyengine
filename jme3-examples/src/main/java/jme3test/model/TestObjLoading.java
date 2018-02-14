@@ -48,10 +48,10 @@ public class TestObjLoading extends SimpleApplication {
 
     public void simpleInitApp() {
         // create the geometry and attach it
-        Geometry teaGeom = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Geometry teaGeom = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
         
         // show normals as material
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
         teaGeom.setMaterial(mat);
 
         rootNode.attachChild(teaGeom);

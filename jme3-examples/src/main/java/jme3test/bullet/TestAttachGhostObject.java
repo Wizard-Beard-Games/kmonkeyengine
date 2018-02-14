@@ -95,18 +95,18 @@ public class TestAttachGhostObject extends SimpleApplication implements AnalogLi
     }
 
     public void setupJoint() {
-        Node holderNode = PhysicsTestHelper.createPhysicsTestNode(assetManager, new BoxCollisionShape(new Vector3f(.1f, .1f, .1f)), 0);
+        Node holderNode = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new BoxCollisionShape(new Vector3f(.1f, .1f, .1f)), 0);
         holderNode.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0f, 0, 0f));
         rootNode.attachChild(holderNode);
         getPhysicsSpace().add(holderNode);
 
-        Node hammerNode = PhysicsTestHelper.createPhysicsTestNode(assetManager, new BoxCollisionShape(new Vector3f(.3f, .3f, .3f)), 1);
+        Node hammerNode = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new BoxCollisionShape(new Vector3f(.3f, .3f, .3f)), 1);
         hammerNode.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0f, -1, 0f));
         rootNode.attachChild(hammerNode);
         getPhysicsSpace().add(hammerNode);
 
         //immovable
-        collisionNode = PhysicsTestHelper.createPhysicsTestNode(assetManager, new BoxCollisionShape(new Vector3f(.3f, .3f, .3f)), 0);
+        collisionNode = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new BoxCollisionShape(new Vector3f(.3f, .3f, .3f)), 0);
         collisionNode.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(1.8f, 0, 0f));
         rootNode.attachChild(collisionNode);
         getPhysicsSpace().add(collisionNode);

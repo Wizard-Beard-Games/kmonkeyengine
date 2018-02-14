@@ -55,7 +55,7 @@ public class TestOgreConvert extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        Spatial ogreModel = assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+        Spatial ogreModel = _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
 
         DirectionalLight dl = new DirectionalLight();
         dl.setColor(ColorRGBA.White);
@@ -69,7 +69,7 @@ public class TestOgreConvert extends SimpleApplication {
 
             ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
             BinaryImporter imp = new BinaryImporter();
-            imp.setAssetManager(assetManager);
+            imp.setAssetManager(_assetManager);
             Node ogreModelReloaded = (Node) imp.load(bais, null, null);
             
             AnimControl control = ogreModelReloaded.getControl(AnimControl.class);

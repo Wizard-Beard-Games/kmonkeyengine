@@ -66,7 +66,7 @@ public class TestSceneWater extends SimpleApplication {
         cam.setRotation(new Quaternion(0.03f, 0.9f, 0f, 0.4f));
 
         // load sky
-        mainScene.attachChild(SkyFactory.createSky(assetManager, 
+        mainScene.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/BrightSky.dds", 
                 SkyFactory.EnvMapType.CubeMap));
 
@@ -78,11 +78,11 @@ public class TestSceneWater extends SimpleApplication {
         // create the geometry and attach it
         // load the level from zip or http zip
         if (useHttp) {
-            assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/wildhouse.zip", HttpZipLocator.class);
+            _assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/wildhouse.zip", HttpZipLocator.class);
         } else {
-            assetManager.registerLocator("wildhouse.zip", ZipLocator.class);
+            _assetManager.registerLocator("wildhouse.zip", ZipLocator.class);
         }
-        Spatial scene = assetManager.loadModel("main.scene");
+        Spatial scene = _assetManager.loadModel("main.scene");
 
         DirectionalLight sun = new DirectionalLight();
         Vector3f lightDir=new Vector3f(-0.37352666f, -0.50444174f, -0.7784704f);
@@ -90,8 +90,8 @@ public class TestSceneWater extends SimpleApplication {
         sun.setColor(ColorRGBA.White.clone().multLocal(2));
         scene.addLight(sun);
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
            //add lightPos Geometry
         Sphere lite=new Sphere(8, 8, 3.0f);
         Geometry lightSphere=new Geometry("lightsphere", lite);
@@ -101,7 +101,7 @@ public class TestSceneWater extends SimpleApplication {
         rootNode.attachChild(lightSphere);
 
 
-        SimpleWaterProcessor waterProcessor = new SimpleWaterProcessor(assetManager);
+        SimpleWaterProcessor waterProcessor = new SimpleWaterProcessor(_assetManager);
         waterProcessor.setReflectionScene(mainScene);
         waterProcessor.setDebug(false);
         waterProcessor.setLightPosition(lightPos);

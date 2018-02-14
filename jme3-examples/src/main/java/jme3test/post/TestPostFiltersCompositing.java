@@ -32,19 +32,14 @@
 package jme3test.post;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.plugins.HttpZipLocator;
 import com.jme3.light.DirectionalLight;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.ColorOverlayFilter;
 import com.jme3.post.filters.ComposeFilter;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
-import com.jme3.system.AppSettings;
 import com.jme3.texture.FrameBuffer;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture2D;
@@ -75,7 +70,7 @@ public class TestPostFiltersCompositing extends SimpleApplication {
         makeScene();
 
         //Creating the main view port post processor
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         fpp.addFilter(new ColorOverlayFilter(ColorRGBA.Blue));
         viewPort.addProcessor(fpp);
 
@@ -87,7 +82,7 @@ public class TestPostFiltersCompositing extends SimpleApplication {
         viewPort.setOutputFrameBuffer(mainVPFrameBuffer);
 
         //creating the post processor for the gui viewport
-        final FilterPostProcessor guifpp = new FilterPostProcessor(assetManager);
+        final FilterPostProcessor guifpp = new FilterPostProcessor(_assetManager);
         guifpp.setFrameBufferFormat(Image.Format.RGBA8);
         guifpp.addFilter(new ColorOverlayFilter(ColorRGBA.Red));
         //this will compose the main viewport texture with the guiviewport back buffer.
@@ -106,9 +101,9 @@ public class TestPostFiltersCompositing extends SimpleApplication {
 
     private void makeScene() {
         // load sky
-        rootNode.attachChild(SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", SkyFactory.EnvMapType.CubeMap));
-        //assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/wildhouse.zip", HttpZipLocator.class);
-        Spatial scene = assetManager.loadModel("Models/Test/CornellBox.j3o");
+        rootNode.attachChild(SkyFactory.createSky(_assetManager, "Textures/Sky/Bright/BrightSky.dds", SkyFactory.EnvMapType.CubeMap));
+        //_assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/wildhouse.zip", HttpZipLocator.class);
+        Spatial scene = _assetManager.loadModel("Models/Test/CornellBox.j3o");
         DirectionalLight sun = new DirectionalLight();
         sun.setDirection(new Vector3f(-0.4790551f, -0.39247334f, -0.7851566f));
         scene.addLight(sun);

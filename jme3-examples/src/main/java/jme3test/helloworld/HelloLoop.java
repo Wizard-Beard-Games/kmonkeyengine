@@ -55,7 +55,7 @@ public class HelloLoop extends SimpleApplication {
         /** this blue box is our player character */
         Box b = new Box(1, 1, 1);
         player = new Geometry("blue cube", b);
-        Material mat = new Material(assetManager,
+        Material mat = new Material(_assetManager,
           "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         player.setMaterial(mat);

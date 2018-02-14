@@ -48,7 +48,7 @@ public class TestReverb extends SimpleApplication {
 
   @Override
   public void simpleInitApp() {
-    audioSource = new AudioNode(assetManager, "Sound/Effects/Bang.wav",
+    audioSource = new AudioNode(_assetManager, "Sound/Effects/Bang.wav",
             AudioData.DataType.Buffer);
 
     float[] eax = new float[]{15, 38.0f, 0.300f, -1000, -3300, 0,

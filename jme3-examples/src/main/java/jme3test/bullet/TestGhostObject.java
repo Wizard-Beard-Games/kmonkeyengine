@@ -69,26 +69,26 @@ public class TestGhostObject extends SimpleApplication {
         // CollisionShape to be shared across several boxes.
         CollisionShape shape = new BoxCollisionShape(new Vector3f(1, 1, 1));
 
-        Node physicsBox = PhysicsTestHelper.createPhysicsTestNode(assetManager, shape, 1);
+        Node physicsBox = PhysicsTestHelper.createPhysicsTestNode(_assetManager, shape, 1);
         physicsBox.setName("box0");
         physicsBox.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(.6f, 4, .5f));
         rootNode.attachChild(physicsBox);
         getPhysicsSpace().add(physicsBox);
 
-        Node physicsBox1 = PhysicsTestHelper.createPhysicsTestNode(assetManager, shape, 1);
+        Node physicsBox1 = PhysicsTestHelper.createPhysicsTestNode(_assetManager, shape, 1);
         physicsBox1.setName("box1");
         physicsBox1.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0, 40, 0));
         rootNode.attachChild(physicsBox1);
         getPhysicsSpace().add(physicsBox1);
 
-        Node physicsBox2 = PhysicsTestHelper.createPhysicsTestNode(assetManager, new BoxCollisionShape(new Vector3f(1, 1, 1)), 1);
+        Node physicsBox2 = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new BoxCollisionShape(new Vector3f(1, 1, 1)), 1);
         physicsBox2.setName("box0");
         physicsBox2.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(.5f, 80, -.8f));
         rootNode.attachChild(physicsBox2);
         getPhysicsSpace().add(physicsBox2);
 
         // the floor, does not move (mass=0)
-        Node node = PhysicsTestHelper.createPhysicsTestNode(assetManager, new BoxCollisionShape(new Vector3f(100, 1, 100)), 0);
+        Node node = PhysicsTestHelper.createPhysicsTestNode(_assetManager, new BoxCollisionShape(new Vector3f(100, 1, 100)), 0);
         node.setName("floor");
         node.getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(0f, -6, 0f));
         rootNode.attachChild(node);

@@ -33,8 +33,6 @@
 package jme3test.post;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.plugins.HttpZipLocator;
-import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
@@ -49,13 +47,12 @@ import com.jme3.post.filters.FogFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 import com.jme3.terrain.heightmap.AbstractHeightMap;
 import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
-import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +74,7 @@ public class TestFog extends SimpleApplication {
         cam.setRotation(new Quaternion(0.023536969f, 0.9361278f, -0.016098259f, -0.35050195f));
 
         // load sky
-        mainScene.attachChild(SkyFactory.createSky(assetManager, 
+        mainScene.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/BrightSky.dds", 
                 SkyFactory.EnvMapType.CubeMap));
         createTerrain(mainScene);
@@ -92,7 +89,7 @@ public class TestFog extends SimpleApplication {
 
         rootNode.attachChild(mainScene);
 
-        fpp=new FilterPostProcessor(assetManager);
+        fpp=new FilterPostProcessor(_assetManager);
         //fpp.setNumSamples(4);
         int numSamples = getContext().getSettings().getSamples();
         if( numSamples > 0 ) {
@@ -160,28 +157,28 @@ public class TestFog extends SimpleApplication {
      }
 
     private void createTerrain(Node rootNode) {
-        Material matRock = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+        Material matRock = new Material(_assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         matRock.setBoolean("useTriPlanarMapping", false);
         matRock.setBoolean("WardIso", true);
-        matRock.setTexture("AlphaMap", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
-        Texture heightMapImage = assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        matRock.setTexture("AlphaMap", _assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
+        Texture heightMapImage = _assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(Texture.WrapMode.Repeat);
         matRock.setTexture("DiffuseMap", grass);
         matRock.setFloat("DiffuseMap_0_scale", 64);
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(Texture.WrapMode.Repeat);
         matRock.setTexture("DiffuseMap_1", dirt);
         matRock.setFloat("DiffuseMap_1_scale", 16);
-        Texture rock = assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
+        Texture rock = _assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
         rock.setWrap(Texture.WrapMode.Repeat);
         matRock.setTexture("DiffuseMap_2", rock);
         matRock.setFloat("DiffuseMap_2_scale", 128);
-        Texture normalMap0 = assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
+        Texture normalMap0 = _assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
         normalMap0.setWrap(Texture.WrapMode.Repeat);
-        Texture normalMap1 = assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
+        Texture normalMap1 = _assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
         normalMap1.setWrap(Texture.WrapMode.Repeat);
-        Texture normalMap2 = assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
+        Texture normalMap2 = _assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
         normalMap2.setWrap(Texture.WrapMode.Repeat);
         matRock.setTexture("NormalMap", normalMap0);
         matRock.setTexture("NormalMap_1", normalMap2);

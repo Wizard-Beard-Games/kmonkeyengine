@@ -69,7 +69,7 @@ public class TestMatParamOverride extends SimpleApplication {
 
     private void createBox(float location, ColorRGBA color) {
         Geometry geom = new Geometry("Box", box);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", color);
         geom.setMaterial(mat);
         geom.move(location, 0, 0);

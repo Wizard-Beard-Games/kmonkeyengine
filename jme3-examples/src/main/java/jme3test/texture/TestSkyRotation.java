@@ -87,7 +87,7 @@ public class TestSkyRotation extends SimpleApplication implements ActionListener
         /*
          * Attach a cube-mapped sky to the scene graph.
          */
-        sky = SkyFactory.createSky(assetManager,
+        sky = SkyFactory.createSky(_assetManager,
                 "Scenes/Beach/FullskiesSunset0068.dds",
                 SkyFactory.EnvMapType.CubeMap);
         rootNode.attachChild(sky);
@@ -96,10 +96,10 @@ public class TestSkyRotation extends SimpleApplication implements ActionListener
          */
         Mesh floorMesh = new Box(10f, 0.1f, 10f);
         floor = new Geometry("floor", floorMesh);
-        Material floorMaterial = new Material(assetManager,
+        Material floorMaterial = new Material(_assetManager,
                 "Common/MatDefs/Misc/Unshaded.j3md");
         floorMaterial.setTexture("ColorMap",
-                assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+                _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
         floor.setMaterial(floorMaterial);
         rootNode.attachChild(floor);
         /*

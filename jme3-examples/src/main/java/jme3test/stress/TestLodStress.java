@@ -55,19 +55,19 @@ public class TestLodStress extends SimpleApplication {
         dl.setDirection(new Vector3f(-1,-1,-1).normalizeLocal());
         rootNode.addLight(dl);
 
-        Node teapotNode = (Node) assetManager.loadModel("Models/Teapot/Teapot.mesh.xml");
+        Node teapotNode = (Node) _assetManager.loadModel("Models/Teapot/Teapot.mesh.xml");
         Geometry teapot = (Geometry) teapotNode.getChild(0);
         
 //        Sphere sph = new Sphere(16, 16, 4);
 //        Geometry teapot = new Geometry("teapot", sph);
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setFloat("Shininess", 16f);
         mat.setBoolean("VertexLighting", true);
         teapot.setMaterial(mat);
         
        // show normals as material
-        //Material mat = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
+        //Material mat = new Material(_assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
 
         for (int y = -10; y < 10; y++){
             for (int x = -10; x < 10; x++){

@@ -76,7 +76,7 @@ public class TestDepthStencil extends SimpleApplication {
 
         // setup framebuffer's scene
         Sphere sphMesh = new Sphere(20, 20, 1);
-        Material solidColor = assetManager.loadMaterial("Common/Materials/RedColor.j3m");
+        Material solidColor = _assetManager.loadMaterial("Common/Materials/RedColor.j3m");
 
         final Geometry sphere = new Geometry("sphere", sphMesh);
         sphere.setMaterial(solidColor);
@@ -104,7 +104,7 @@ public class TestDepthStencil extends SimpleApplication {
         p.setPosition(0, 0);
         p.setWidth(w);
         p.setHeight(h);
-        p.setTexture(assetManager, fbTex, false);
+        p.setTexture(_assetManager, fbTex, false);
 
         rootNode.attachChild(p);
         

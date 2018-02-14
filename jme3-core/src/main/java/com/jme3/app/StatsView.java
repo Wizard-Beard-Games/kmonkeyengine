@@ -56,7 +56,7 @@ import com.jme3.util.clone.JmeCloneable;
  * the <code>StatsView</code> to the scene graph.<br/>
  * <code><br/>
  * Statistics stats = renderer.getStatistics();<br/>
- * StatsView statsView = new StatsView("MyStats", assetManager, stats);<br/>
+ * StatsView statsView = new StatsView("MyStats", _assetManager, stats);<br/>
  * rootNode.attachChild(statsView);<br/>
  * </code>
  */

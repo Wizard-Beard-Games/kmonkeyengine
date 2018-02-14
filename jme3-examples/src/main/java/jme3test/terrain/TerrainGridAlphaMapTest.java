@@ -75,9 +75,9 @@ public class TerrainGridAlphaMapTest extends SimpleApplication {
 
         File file = new File("TerrainGridTestData.zip");
         if (!file.exists()) {
-            assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/TerrainGridTestData.zip", HttpZipLocator.class);
+            _assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/TerrainGridTestData.zip", HttpZipLocator.class);
         } else {
-            assetManager.registerLocator("TerrainGridTestData.zip", ZipLocator.class);
+            _assetManager.registerLocator("TerrainGridTestData.zip", ZipLocator.class);
         }
 
         this.flyCam.setMoveSpeed(100f);
@@ -85,31 +85,31 @@ public class TerrainGridAlphaMapTest extends SimpleApplication {
         this.stateManager.attach(state);
 
         // TERRAIN TEXTURE material
-        material = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+        material = new Material(_assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         material.setBoolean("useTriPlanarMapping", false);
         //material.setBoolean("isTerrainGrid", true);
         material.setFloat("Shininess", 0.0f);
 
         // GRASS texture
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         material.setTexture("DiffuseMap", grass);
         material.setFloat("DiffuseMap_0_scale", grassScale);
 
         // DIRT texture
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         material.setTexture("DiffuseMap_1", dirt);
         material.setFloat("DiffuseMap_1_scale", dirtScale);
 
         // ROCK texture
-        Texture rock = assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
+        Texture rock = _assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
         rock.setWrap(WrapMode.Repeat);
         material.setTexture("DiffuseMap_2", rock);
         material.setFloat("DiffuseMap_2_scale", rockScale);
 
         // WIREFRAME material
-        matWire = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matWire = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matWire.getAdditionalRenderState().setWireframe(true);
         matWire.setColor("Color", ColorRGBA.Green);
 
@@ -188,9 +188,9 @@ public class TerrainGridAlphaMapTest extends SimpleApplication {
             public void tileAttached(Vector3f cell, TerrainQuad quad) {
                 Texture alpha = null;
                 try {
-                    alpha = assetManager.loadTexture("TerrainAlphaTest/alpha_" + (int)cell.x+ "_" + (int)cell.z + ".png");
+                    alpha = _assetManager.loadTexture("TerrainAlphaTest/alpha_" + (int)cell.x+ "_" + (int)cell.z + ".png");
                 } catch (Exception e) {
-                    alpha = assetManager.loadTexture("TerrainAlphaTest/alpha_default.png");
+                    alpha = _assetManager.loadTexture("TerrainAlphaTest/alpha_default.png");
                 }
                 quad.getMaterial().setTexture("AlphaMap", alpha);
                 if (usePhysics) {
@@ -326,15 +326,15 @@ public class TerrainGridAlphaMapTest extends SimpleApplication {
     
     protected Node createAxisMarker(float arrowSize) {
 
-        Material redMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material redMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         redMat.getAdditionalRenderState().setWireframe(true);
         redMat.setColor("Color", ColorRGBA.Red);
         
-        Material greenMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material greenMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         greenMat.getAdditionalRenderState().setWireframe(true);
         greenMat.setColor("Color", ColorRGBA.Green);
         
-        Material blueMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material blueMat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         blueMat.getAdditionalRenderState().setWireframe(true);
         blueMat.setColor("Color", ColorRGBA.Blue);
 

@@ -56,14 +56,14 @@ public class TestAmbient extends SimpleApplication {
     Environment env = new Environment(eax);
     audioRenderer.setEnvironment(env);
 
-    waves = new AudioNode(assetManager, "Sound/Environment/Ocean Waves.ogg",
+    waves = new AudioNode(_assetManager, "Sound/Environment/Ocean Waves.ogg",
             DataType.Buffer);
     waves.setPositional(true);
     waves.setLocalTranslation(new Vector3f(0, 0,0));
     waves.setMaxDistance(100);
     waves.setRefDistance(5);
 
-    nature = new AudioNode(assetManager, "Sound/Environment/Nature.ogg",
+    nature = new AudioNode(_assetManager, "Sound/Environment/Nature.ogg",
             DataType.Stream);
     nature.setPositional(false);
     nature.setVolume(3);
@@ -74,7 +74,7 @@ public class TestAmbient extends SimpleApplication {
     // just a blue box to mark the spot
     Box box1 = new Box(.5f, .5f, .5f);
     Geometry player = new Geometry("Player", box1);
-    Material mat1 = new Material(assetManager,
+    Material mat1 = new Material(_assetManager,
             "Common/MatDefs/Misc/Unshaded.j3md");
     mat1.setColor("Color", ColorRGBA.Blue);
     player.setMaterial(mat1);

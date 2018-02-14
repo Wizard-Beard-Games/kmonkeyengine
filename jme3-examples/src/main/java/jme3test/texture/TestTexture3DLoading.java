@@ -57,12 +57,12 @@ public class TestTexture3DLoading extends SimpleApplication {
         Quad q = new Quad(10, 10);
 
         Geometry geom = new Geometry("Quad", q);
-        Material material = new Material(assetManager, "jme3test/texture/tex3DThumb.j3md");
+        Material material = new Material(_assetManager, "jme3test/texture/tex3DThumb.j3md");
         TextureKey key = new TextureKey("Textures/3D/flame.dds");
         key.setGenerateMips(true);
         key.setTextureTypeHint(Texture.Type.ThreeDimensional);
 
-        Texture t = assetManager.loadTexture(key);
+        Texture t = _assetManager.loadTexture(key);
 
         int rows = 4;//4 * 4
 

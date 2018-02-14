@@ -1,6 +1,5 @@
 package jme3test.stress;
 
-import com.jme3.app.BasicProfilerState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -34,10 +33,10 @@ public class TestShaderNodesStress extends SimpleApplication {
         cam.setLocation(new Vector3f(0.0f, 0.0f, 0.40647888f));
         cam.setRotation(new Quaternion(0.0f, 1.0f, 0.0f, 0.0f));
 
-        Texture tex = assetManager.loadTexture("Interface/Logo/Monkey.jpg");
+        Texture tex = _assetManager.loadTexture("Interface/Logo/Monkey.jpg");
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/UnshadedNodes.j3md");
-      //Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/UnshadedNodes.j3md");
+      //Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 
         mat.setColor("Color", ColorRGBA.Yellow);
         mat.setTexture("ColorMap", tex);

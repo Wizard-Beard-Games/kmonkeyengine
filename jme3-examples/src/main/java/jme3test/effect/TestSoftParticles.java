@@ -78,21 +78,21 @@ public class TestSoftParticles extends SimpleApplication {
         // -------- floor
         Box b = new Box(10, 0.1f, 10);
         Geometry geom = new Geometry("Box", b);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Gray);
-        mat.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+        mat.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
         geom.setMaterial(mat);
         rootNode.attachChild(geom);
 
         Box b2 = new Box(1, 1, 1);
         Geometry geom2 = new Geometry("Box", b2);
-        Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat2 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat2.setColor("Color", ColorRGBA.DarkGray);
         geom2.setMaterial(mat2);
         rootNode.attachChild(geom2);
         geom2.setLocalScale(0.1f, 0.2f, 1);
 
-        fpp = new FilterPostProcessor(assetManager);        
+        fpp = new FilterPostProcessor(_assetManager);
         tbf = new TranslucentBucketFilter(true);
         fpp.addFilter(tbf);
         int samples = context.getSettings().getSamples();
@@ -139,8 +139,8 @@ public class TestSoftParticles extends SimpleApplication {
 
     private void createParticles() {
         
-        Material material = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        material.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
+        Material material = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        material.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/flame.png"));
         material.setFloat("Softness", 3f); // 
         
         //Fire

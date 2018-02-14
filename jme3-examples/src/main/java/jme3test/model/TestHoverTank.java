@@ -57,7 +57,7 @@ public class TestHoverTank extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        Node tank = (Node) assetManager.loadModel("Models/HoverTank/Tank2.mesh.xml");
+        Node tank = (Node) _assetManager.loadModel("Models/HoverTank/Tank2.mesh.xml");
 
         flyCam.setEnabled(false);
         ChaseCamera chaseCam = new ChaseCamera(cam, tank, inputManager);
@@ -85,7 +85,7 @@ public class TestHoverTank extends SimpleApplication {
         rootNode.addLight(dl2);
         rootNode.attachChild(tank);
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         BloomFilter bf = new BloomFilter(BloomFilter.GlowMode.Objects);
         bf.setBloomIntensity(2.0f);
         bf.setExposurePower(1.3f);

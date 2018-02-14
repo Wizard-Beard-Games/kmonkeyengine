@@ -95,7 +95,7 @@ public class TestPostWater extends SimpleApplication {
 
 
 
-        Spatial sky = SkyFactory.createSky(assetManager, 
+        Spatial sky = SkyFactory.createSky(_assetManager,
                 "Scenes/Beach/FullskiesSunset0068.dds", EnvMapType.CubeMap);
         sky.setLocalScale(350);
 
@@ -117,7 +117,7 @@ public class TestPostWater extends SimpleApplication {
         water.setCausticsIntensity(0.4f);        
         water.setWaveScale(0.003f);
         water.setMaxAmplitude(2f);
-        water.setFoamTexture((Texture2D) assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
+        water.setFoamTexture((Texture2D) _assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
         water.setRefractionStrength(0.2f);
         water.setWaterHeight(initialWaterHeight);
         
@@ -135,7 +135,7 @@ public class TestPostWater extends SimpleApplication {
         dof.setFocusDistance(0);
         dof.setFocusRange(100);
         
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         
         fpp.addFilter(water);
         fpp.addFilter(bloom);
@@ -152,7 +152,7 @@ public class TestPostWater extends SimpleApplication {
         
         uw = cam.getLocation().y < waterHeight;
 
-        waves = new AudioNode(assetManager, "Sound/Environment/Ocean Waves.ogg",
+        waves = new AudioNode(_assetManager, "Sound/Environment/Ocean Waves.ogg",
                 DataType.Buffer);
         waves.setLooping(true);
         waves.setReverbEnabled(true);
@@ -169,13 +169,13 @@ public class TestPostWater extends SimpleApplication {
             public void onAction(String name, boolean isPressed, float tpf) {
                 if (isPressed) {
                     if (name.equals("foam1")) {
-                        water.setFoamTexture((Texture2D) assetManager.loadTexture("Common/MatDefs/Water/Textures/foam.jpg"));
+                        water.setFoamTexture((Texture2D) _assetManager.loadTexture("Common/MatDefs/Water/Textures/foam.jpg"));
                     }
                     if (name.equals("foam2")) {
-                        water.setFoamTexture((Texture2D) assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
+                        water.setFoamTexture((Texture2D) _assetManager.loadTexture("Common/MatDefs/Water/Textures/foam2.jpg"));
                     }
                     if (name.equals("foam3")) {
-                        water.setFoamTexture((Texture2D) assetManager.loadTexture("Common/MatDefs/Water/Textures/foam3.jpg"));
+                        water.setFoamTexture((Texture2D) _assetManager.loadTexture("Common/MatDefs/Water/Textures/foam3.jpg"));
                     }
 
                     if (name.equals("upRM")) {
@@ -202,7 +202,7 @@ public class TestPostWater extends SimpleApplication {
     private void createBox() {
         //creating a transluscent box
         box = new Geometry("box", new Box(50, 50, 50));
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", new ColorRGBA(1.0f, 0, 0, 0.3f));
         mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         //mat.getAdditionalRenderState().setDepthWrite(false);
@@ -230,8 +230,8 @@ public class TestPostWater extends SimpleApplication {
          * Uses Texture from jme3-test-data library!
          */
         ParticleEmitter fire = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
-        Material mat_red = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat_red.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
+        Material mat_red = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat_red.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/flame.png"));
 
         fire.setMaterial(mat_red);
         fire.setImagesX(2);
@@ -252,28 +252,28 @@ public class TestPostWater extends SimpleApplication {
     }
 
     private void createTerrain(Node rootNode) {
-        matRock = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+        matRock = new Material(_assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         matRock.setBoolean("useTriPlanarMapping", false);
         matRock.setBoolean("WardIso", true);
-        matRock.setTexture("AlphaMap", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
-        Texture heightMapImage = assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        matRock.setTexture("AlphaMap", _assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
+        Texture heightMapImage = _assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap", grass);
         matRock.setFloat("DiffuseMap_0_scale", 64);
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap_1", dirt);
         matRock.setFloat("DiffuseMap_1_scale", 16);
-        Texture rock = assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
+        Texture rock = _assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
         rock.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap_2", rock);
         matRock.setFloat("DiffuseMap_2_scale", 128);
-        Texture normalMap0 = assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
+        Texture normalMap0 = _assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
         normalMap0.setWrap(WrapMode.Repeat);
-        Texture normalMap1 = assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
+        Texture normalMap1 = _assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
         normalMap1.setWrap(WrapMode.Repeat);
-        Texture normalMap2 = assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
+        Texture normalMap2 = _assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
         normalMap2.setWrap(WrapMode.Repeat);
         matRock.setTexture("NormalMap", normalMap0);
         matRock.setTexture("NormalMap_1", normalMap2);

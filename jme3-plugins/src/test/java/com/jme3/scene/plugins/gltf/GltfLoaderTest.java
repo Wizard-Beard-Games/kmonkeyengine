@@ -30,7 +30,7 @@ public class GltfLoaderTest {
     public void testLoad() {
         Spatial scene = assetManager.loadModel("gltf/box/box.gltf");
         dumpScene(scene, 0);
-//        scene = assetManager.loadModel("gltf/hornet/scene.gltf");
+//        scene = _assetManager.loadModel("gltf/hornet/scene.gltf");
 //        dumpScene(scene, 0);
     }
 

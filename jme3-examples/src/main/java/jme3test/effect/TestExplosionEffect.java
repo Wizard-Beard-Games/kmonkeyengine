@@ -79,8 +79,8 @@ public class TestExplosionEffect extends SimpleApplication {
         flame.getParticleInfluencer().setVelocityVariation(1f);
         flame.setImagesX(2);
         flame.setImagesY(2);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/flame.png"));
         mat.setBoolean("PointSprite", POINT_SPRITE);
         flame.setMaterial(mat);
         explosionEffect.attachChild(flame);
@@ -103,8 +103,8 @@ public class TestExplosionEffect extends SimpleApplication {
         flash.getParticleInfluencer().setVelocityVariation(1);
         flash.setImagesX(2);
         flash.setImagesY(2);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flash.png"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/flash.png"));
         mat.setBoolean("PointSprite", POINT_SPRITE);
         flash.setMaterial(mat);
         explosionEffect.attachChild(flash);
@@ -126,8 +126,8 @@ public class TestExplosionEffect extends SimpleApplication {
         roundspark.getParticleInfluencer().setVelocityVariation(.5f);
         roundspark.setImagesX(1);
         roundspark.setImagesY(1);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/roundspark.png"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/roundspark.png"));
         mat.setBoolean("PointSprite", POINT_SPRITE);
         roundspark.setMaterial(mat);
         explosionEffect.attachChild(roundspark);
@@ -148,8 +148,8 @@ public class TestExplosionEffect extends SimpleApplication {
         spark.getParticleInfluencer().setVelocityVariation(1);
         spark.setImagesX(1);
         spark.setImagesY(1);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/spark.png"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/spark.png"));
         spark.setMaterial(mat);
         explosionEffect.attachChild(spark);
     }
@@ -172,8 +172,8 @@ public class TestExplosionEffect extends SimpleApplication {
         smoketrail.getParticleInfluencer().setVelocityVariation(1);
         smoketrail.setImagesX(1);
         smoketrail.setImagesY(3);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/smoketrail.png"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/smoketrail.png"));
         smoketrail.setMaterial(mat);
         explosionEffect.attachChild(smoketrail);
     }
@@ -198,8 +198,8 @@ public class TestExplosionEffect extends SimpleApplication {
         debris.getParticleInfluencer().setVelocityVariation(.60f);
         debris.setImagesX(3);
         debris.setImagesY(3);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/Debris.png"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/Debris.png"));
         debris.setMaterial(mat);
         explosionEffect.attachChild(debris);
     }
@@ -223,8 +223,8 @@ public class TestExplosionEffect extends SimpleApplication {
         shockwave.getParticleInfluencer().setVelocityVariation(0f);
         shockwave.setImagesX(1);
         shockwave.setImagesY(1);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/shockwave.png"));
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        mat.setTexture("Texture", _assetManager.loadTexture("Effects/Explosion/shockwave.png"));
         shockwave.setMaterial(mat);
         explosionEffect.attachChild(shockwave);
     }

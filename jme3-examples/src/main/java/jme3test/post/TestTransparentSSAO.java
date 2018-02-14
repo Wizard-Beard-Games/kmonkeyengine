@@ -34,7 +34,7 @@ public class TestTransparentSSAO extends SimpleApplication {
         Quad q = new Quad(20, 20);
         q.scaleTextureCoordinates(Vector2f.UNIT_XY.mult(5));
         Geometry geom = new Geometry("floor", q);
-        Material mat = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
         geom.setMaterial(mat);
 
         geom.rotate(-FastMath.HALF_PI, 0, 0);
@@ -44,7 +44,7 @@ public class TestTransparentSSAO extends SimpleApplication {
         rootNode.attachChild(geom);
 
         // create the geometry and attach it
-        Spatial teaGeom = assetManager.loadModel("Models/Tree/Tree.mesh.j3o");
+        Spatial teaGeom = _assetManager.loadModel("Models/Tree/Tree.mesh.j3o");
         teaGeom.setQueueBucket(Bucket.Transparent);
         teaGeom.setShadowMode(ShadowMode.Cast);
 
@@ -64,7 +64,7 @@ public class TestTransparentSSAO extends SimpleApplication {
 
         rootNode.attachChild(teaGeom);
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
 
         SSAOFilter ssao = new SSAOFilter();//0.49997783f, 42.598858f, 35.999966f, 0.39299846f
         fpp.addFilter(ssao);

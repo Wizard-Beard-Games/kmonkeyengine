@@ -78,7 +78,7 @@ public class TestManyLightsSingle extends SimpleApplication {
 
         flyCam.setMoveSpeed(10);
 
-        Node scene = (Node) assetManager.loadModel("Scenes/ManyLights/Main.scene");
+        Node scene = (Node) _assetManager.loadModel("Scenes/ManyLights/Main.scene");
         rootNode.attachChild(scene);
         Node n = (Node) rootNode.getChild(0);
         final LightList lightList = n.getWorldLightList();
@@ -216,7 +216,7 @@ public class TestManyLightsSingle extends SimpleApplication {
          * Write text on the screen (HUD)
          */
         guiNode.detachAllChildren();
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         helloText = new BitmapText(guiFont, false);
         helloText.setSize(guiFont.getCharSet().getRenderedSize());
         helloText.setText("(Single pass) nb lights per batch : " + renderManager.getSinglePassLightBatchSize());

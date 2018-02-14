@@ -47,7 +47,6 @@ import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.texture.Texture;
-import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 import com.jme3.util.TangentBinormalGenerator;
 
@@ -66,7 +65,7 @@ public class TestEverything extends SimpleApplication {
         if (renderer.getCaps().contains(Caps.GLSL100)){
             toneMapFilter = new ToneMapFilter();
             toneMapFilter.setWhitePoint(new Vector3f(3f, 3f, 3f));
-            FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+            FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
             fpp.addFilter(toneMapFilter);
             viewPort.addProcessor(fpp);
 
@@ -76,7 +75,7 @@ public class TestEverything extends SimpleApplication {
 
     public void setupBasicShadow(){
         if (renderer.getCaps().contains(Caps.GLSL100)){
-            dlsr = new DirectionalLightShadowRenderer(assetManager, 1024, 1);
+            dlsr = new DirectionalLightShadowRenderer(_assetManager, 1024, 1);
             viewPort.addProcessor(dlsr);
         }
     }
@@ -84,11 +83,11 @@ public class TestEverything extends SimpleApplication {
     public void setupSkyBox(){
         Texture envMap;
         if (renderer.getCaps().contains(Caps.FloatTexture)){
-            envMap = assetManager.loadTexture("Textures/Sky/St Peters/StPeters.hdr");
+            envMap = _assetManager.loadTexture("Textures/Sky/St Peters/StPeters.hdr");
         }else{
-            envMap = assetManager.loadTexture("Textures/Sky/St Peters/StPeters.jpg");
+            envMap = _assetManager.loadTexture("Textures/Sky/St Peters/StPeters.jpg");
         }
-        rootNode.attachChild(SkyFactory.createSky(assetManager, envMap, 
+        rootNode.attachChild(SkyFactory.createSky(_assetManager, envMap,
                 new Vector3f(-1,-1,-1), SkyFactory.EnvMapType.SphereMap));
     }
 
@@ -121,7 +120,7 @@ public class TestEverything extends SimpleApplication {
     }
 
     public void setupFloor(){
-        Material mat = assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
         Box floor = new Box(50, 1f, 50);
         TangentBinormalGenerator.generate(floor);
         floor.scaleTextureCoordinates(new Vector2f(5, 5));
@@ -153,8 +152,8 @@ public class TestEverything extends SimpleApplication {
 //    }
 
     public void setupRobotGuy(){
-        Node model = (Node) assetManager.loadModel("Models/Oto/Oto.mesh.xml");
-        Material mat = assetManager.loadMaterial("Models/Oto/Oto.j3m");
+        Node model = (Node) _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+        Material mat = _assetManager.loadMaterial("Models/Oto/Oto.j3m");
         model.getChild(0).setMaterial(mat);
 //        model.setAnimation("Walk");
         model.setLocalTranslation(30, 10.5f, 30);
@@ -164,8 +163,8 @@ public class TestEverything extends SimpleApplication {
     }
 
     public void setupSignpost(){
-        Spatial signpost = assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
-        Material mat = assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
+        Spatial signpost = _assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
+        Material mat = _assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
         signpost.setMaterial(mat);
         signpost.rotate(0, FastMath.HALF_PI, 0);
         signpost.setLocalTranslation(12, 3.5f, 30);

@@ -502,7 +502,7 @@ public abstract class AbstractShadowRendererVR implements SceneProcessor, Savabl
             //rendering the post shadow pass
             viewPort.getQueue().renderShadowQueue(lightReceivers, renderManager, cam, false);
 
-            //resetting renderManager settings
+            //resetting renderManager _settings
             renderManager.setForcedTechnique(null);
             renderManager.setForcedMaterial(null);
             renderManager.setCamera(cam, false);

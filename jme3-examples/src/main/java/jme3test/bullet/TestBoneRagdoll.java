@@ -97,11 +97,11 @@ public class TestBoneRagdoll extends SimpleApplication implements RagdollCollisi
         bullet.setTextureMode(TextureMode.Projected);
         bulletCollisionShape = new SphereCollisionShape(1.0f);
 
-//        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
-        PhysicsTestHelper.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
+//        bulletAppState.getPhysicsSpace().enableDebug(_assetManager);
+        PhysicsTestHelper.createPhysicsTestWorld(rootNode, _assetManager, bulletAppState.getPhysicsSpace());
         setupLight();
 
-        model = (Node) assetManager.loadModel("Models/Sinbad/Sinbad.mesh.xml");
+        model = (Node) _assetManager.loadModel("Models/Sinbad/Sinbad.mesh.xml");
 
         //  model.setLocalRotation(new Quaternion().fromAngleAxis(FastMath.HALF_PI, Vector3f.UNIT_X));
 
@@ -197,7 +197,7 @@ public class TestBoneRagdoll extends SimpleApplication implements RagdollCollisi
                     bulletg.setLocalTranslation(cam.getLocation());
                     bulletg.setLocalScale(bulletSize);
                     bulletCollisionShape = new SphereCollisionShape(bulletSize);
-                    BombControl bulletNode = new BombControl(assetManager, bulletCollisionShape, 1);
+                    BombControl bulletNode = new BombControl(_assetManager, bulletCollisionShape, 1);
                     bulletNode.setForceFactor(8);
                     bulletNode.setExplosionRadius(20);
                     bulletNode.setCcdMotionThreshold(0.001f);
@@ -235,15 +235,15 @@ public class TestBoneRagdoll extends SimpleApplication implements RagdollCollisi
 
     public void initMaterial() {
 
-        matBullet = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matBullet = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         TextureKey key2 = new TextureKey("Textures/Terrain/Rock/Rock.PNG");
         key2.setGenerateMips(true);
-        Texture tex2 = assetManager.loadTexture(key2);
+        Texture tex2 = _assetManager.loadTexture(key2);
         matBullet.setTexture("ColorMap", tex2);
     }
 
     protected void initCrossHairs() {
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         BitmapText ch = new BitmapText(guiFont, false);
         ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
         ch.setText("+"); // crosshairs

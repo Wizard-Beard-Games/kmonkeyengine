@@ -58,7 +58,7 @@ public class SpotLightShadowFilter extends AbstractShadowFilter<SpotLightShadowR
 
     /**
      * Used for serialization.
-     * Use SpotLightShadowFilter#SpotLightShadowFilter(AssetManager assetManager,
+     * Use SpotLightShadowFilter#SpotLightShadowFilter(AssetManager _assetManager,
      * int shadowMapSize)
      * instead.
      */

@@ -85,7 +85,7 @@ public class AssetLinkNode extends Node {
     }
 
     /**
-     * Add a "linked" child. These are loaded from the assetManager when the
+     * Add a "linked" child. These are loaded from the _assetManager when the
      * AssetLinkNode is loaded from a binary file.
      * @param key
      */

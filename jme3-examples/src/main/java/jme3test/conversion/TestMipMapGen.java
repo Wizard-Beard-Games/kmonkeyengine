@@ -66,7 +66,7 @@ public class TestMipMapGen extends SimpleApplication {
         Geometry quad1 = new Geometry("Textured Quad", quadMesh);
         Geometry quad2 = new Geometry("Textured Quad 2", quadMesh);
 
-        Texture tex = assetManager.loadTexture("Interface/Logo/Monkey.png");
+        Texture tex = _assetManager.loadTexture("Interface/Logo/Monkey.png");
         tex.setMinFilter(Texture.MinFilter.Trilinear);
 
         Texture texCustomMip = tex.clone();
@@ -74,10 +74,10 @@ public class TestMipMapGen extends SimpleApplication {
         MipMapGenerator.generateMipMaps(imageCustomMip);
         texCustomMip.setImage(imageCustomMip);
 
-        Material mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat1 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat1.setTexture("ColorMap", tex);
 
-        Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat2 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat2.setTexture("ColorMap", texCustomMip);
 
         quad1.setMaterial(mat1);

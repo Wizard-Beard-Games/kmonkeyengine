@@ -47,7 +47,7 @@ public class TestNiftyExamples extends SimpleApplication {
     }
 
     public void simpleInitApp() {
-        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,
+        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(_assetManager,
                                                           inputManager,
                                                           audioRenderer,
                                                           guiViewPort);

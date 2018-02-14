@@ -263,8 +263,8 @@ public class VREnvironment {
 	}
     
 	/**
-	 * Get the {@link AppSettings settings} attached to this environment.
-	 * @return the {@link AppSettings settings} attached to this environment.
+	 * Get the {@link AppSettings _settings} attached to this environment.
+	 * @return the {@link AppSettings _settings} attached to this environment.
 	 * @see #setSettings(AppSettings)
 	 */
 	public AppSettings getSettings(){
@@ -272,8 +272,8 @@ public class VREnvironment {
 	}
 	
 	/**
-	 * Set the {@link AppSettings settings} attached to this environment.
-	 * @param settings the {@link AppSettings settings} attached to this environment.
+	 * Set the {@link AppSettings _settings} attached to this environment.
+	 * @param settings the {@link AppSettings _settings} attached to this environment.
 	 * @see #getSettings()
 	 */
 	public void setSettings(AppSettings settings){

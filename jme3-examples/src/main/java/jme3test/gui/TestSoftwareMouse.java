@@ -92,10 +92,10 @@ public class TestSoftwareMouse extends SimpleApplication {
         flyCam.setEnabled(false);
 //        inputManager.setCursorVisible(false);
 
-        Texture tex = assetManager.loadTexture("Interface/Logo/Cursor.png");
+        Texture tex = _assetManager.loadTexture("Interface/Logo/Cursor.png");
 
         cursor = new Picture("cursor");
-        cursor.setTexture(assetManager, (Texture2D) tex, true);
+        cursor.setTexture(_assetManager, (Texture2D) tex, true);
         cursor.setWidth(64);
         cursor.setHeight(64);
         guiNode.attachChild(cursor);

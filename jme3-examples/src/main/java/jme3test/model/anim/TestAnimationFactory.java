@@ -33,13 +33,13 @@ public class TestAnimationFactory extends SimpleApplication {
         // Create model
         Box box = new Box(1, 1, 1);
         Geometry geom = new Geometry("box", box);
-        geom.setMaterial(assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m"));
+        geom.setMaterial(_assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m"));
         Node model = new Node("model");
         model.attachChild(geom);
 
         Box child = new Box(0.5f, 0.5f, 0.5f);
         Geometry childGeom = new Geometry("box", child);
-        childGeom.setMaterial(assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m"));
+        childGeom.setMaterial(_assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m"));
         Node childModel = new Node("childmodel");
         childModel.setLocalTranslation(2, 2, 2);
         childModel.attachChild(childGeom);

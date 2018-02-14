@@ -63,7 +63,7 @@ import java.util.logging.Logger;
 /**
  * A JMonkey app state dedicated to Virtual Reality. 
  * An application that want to use VR devices (HTC vive, ...) has to use this app state.<br>
- * As this app state and the main {@link Application application} have to share {@link AppSettings application settings}, 
+ * As this app state and the main {@link Application application} have to share {@link AppSettings application settings},
  * the common way to use this app state is:<br>
  * <ul>
  * <li>To create {@link AppSettings application settings} and set the VR related settings (see {@link VRConstants}).

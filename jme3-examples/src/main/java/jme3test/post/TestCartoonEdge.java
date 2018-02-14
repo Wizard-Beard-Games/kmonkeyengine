@@ -59,7 +59,7 @@ public class TestCartoonEdge extends SimpleApplication {
 
     public void setupFilters(){
         if (renderer.getCaps().contains(Caps.GLSL100)){
-            fpp=new FilterPostProcessor(assetManager);
+            fpp=new FilterPostProcessor(_assetManager);
             //fpp.setNumSamples(4);
             int numSamples = getContext().getSettings().getSamples();
             if( numSamples > 0 ) {
@@ -81,7 +81,7 @@ public class TestCartoonEdge extends SimpleApplication {
             Geometry g = (Geometry) spatial;
             Material m = g.getMaterial();
             if (m.getMaterialDef().getMaterialParam("UseMaterialColors") != null) {
-                Texture t = assetManager.loadTexture("Textures/ColorRamp/toon.png");
+                Texture t = _assetManager.loadTexture("Textures/ColorRamp/toon.png");
 //                t.setMinFilter(Texture.MinFilter.NearestNoMipMaps);
 //                t.setMagFilter(Texture.MagFilter.Nearest);
                 m.setTexture("ColorRamp", t);
@@ -103,7 +103,7 @@ public class TestCartoonEdge extends SimpleApplication {
     }
 
     public void setupModel(){
-        Spatial model = assetManager.loadModel("Models/MonkeyHead/MonkeyHead.mesh.xml");
+        Spatial model = _assetManager.loadModel("Models/MonkeyHead/MonkeyHead.mesh.xml");
         makeToonish(model);
         model.rotate(0, FastMath.PI, 0);
 //        signpost.setLocalTranslation(12, 3.5f, 30);

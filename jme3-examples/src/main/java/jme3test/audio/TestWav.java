@@ -55,7 +55,7 @@ public class TestWav extends SimpleApplication {
 
   @Override
   public void simpleInitApp() {
-    audioSource = new AudioNode(assetManager, "Sound/Effects/Gun.wav",
+    audioSource = new AudioNode(_assetManager, "Sound/Effects/Gun.wav",
             AudioData.DataType.Buffer);
     audioSource.setLooping(false);
   }

@@ -31,7 +31,6 @@
  */
 package jme3test.bullet;
 
-import com.jme3.app.SettingsDialog;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
@@ -51,7 +50,6 @@ import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.system.AppSettings;
 
 public class TestFancyCar extends SimpleApplication implements ActionListener {
 
@@ -88,12 +86,12 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
     public void simpleInitApp() {
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
-//        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+//        bulletAppState.getPhysicsSpace().enableDebug(_assetManager);
         cam.setFrustumFar(150f);
         flyCam.setMoveSpeed(10);
 
         setupKeys();
-        PhysicsTestHelper.createPhysicsTestWorld(rootNode, assetManager, bulletAppState.getPhysicsSpace());
+        PhysicsTestHelper.createPhysicsTestWorld(rootNode, _assetManager, bulletAppState.getPhysicsSpace());
 //        setupFloor();
         buildPlayer();
 
@@ -111,7 +109,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
     }
 
 //    public void setupFloor() {
-//        Material mat = assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
+//        Material mat = _assetManager.loadMaterial("Textures/Terrain/BrickWall/BrickWall.j3m");
 //        mat.getTextureParam("DiffuseMap").getTextureValue().setWrap(WrapMode.Repeat);
 ////        mat.getTextureParam("NormalMap").getTextureValue().setWrap(WrapMode.Repeat);
 ////        mat.getTextureParam("ParallaxMap").getTextureValue().setWrap(WrapMode.Repeat);
@@ -124,7 +122,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
 //
 //        PhysicsNode tb = new PhysicsNode(floorGeom, new MeshCollisionShape(floorGeom.getMesh()), 0);
 //        tb.setLocalTranslation(new Vector3f(0f, -6, 0f));
-////        tb.attachDebugShape(assetManager);
+////        tb.attachDebugShape(_assetManager);
 //        rootNode.attachChild(tb);
 //        getPhysicsSpace().add(tb);
 //    }
@@ -154,7 +152,7 @@ public class TestFancyCar extends SimpleApplication implements ActionListener {
         final float mass = 400;
 
         //Load model and get chassis Geometry
-        carNode = (Node)assetManager.loadModel("Models/Ferrari/Car.scene");
+        carNode = (Node) _assetManager.loadModel("Models/Ferrari/Car.scene");
         carNode.setShadowMode(ShadowMode.Cast);
         Geometry chasis = findGeom(carNode, "Car");
         BoundingBox box = (BoundingBox) chasis.getModelBound();

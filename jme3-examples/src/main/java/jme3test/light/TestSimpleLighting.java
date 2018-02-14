@@ -58,18 +58,18 @@ public class TestSimpleLighting extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        Geometry teapot = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Geometry teapot = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
         TangentBinormalGenerator.generate(teapot.getMesh(), true);
 
         teapot.setLocalScale(2f);
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
 //        mat.selectTechnique("GBuf");
         mat.setFloat("Shininess", 25);
         mat.setBoolean("UseMaterialColors", true);
         cam.setLocation(new Vector3f(0.015041917f, 0.4572918f, 5.2874837f));
         cam.setRotation(new Quaternion(-1.8875003E-4f, 0.99882424f, 0.04832061f, 0.0039016632f));
 
-//        mat.setTexture("ColorRamp", assetManager.loadTexture("Textures/ColorRamp/cloudy.png"));
+//        mat.setTexture("ColorRamp", _assetManager.loadTexture("Textures/ColorRamp/cloudy.png"));
 //
 //        mat.setBoolean("VTangent", true);
 //        mat.setBoolean("Minnaert", true);
@@ -86,7 +86,7 @@ public class TestSimpleLighting extends SimpleApplication {
         rootNode.attachChild(teapot);
 
         lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         lightMdl.getMesh().setStatic();
         rootNode.attachChild(lightMdl);
 

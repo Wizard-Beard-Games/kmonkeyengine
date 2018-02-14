@@ -49,7 +49,7 @@ public class TestMultiViews extends SimpleApplication {
 
     public void simpleInitApp() {
         // create the geometry and attach it
-        Geometry teaGeom = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Geometry teaGeom = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
         teaGeom.scale(3);
 
         DirectionalLight dl = new DirectionalLight();

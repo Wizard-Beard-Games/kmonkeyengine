@@ -60,13 +60,13 @@ public class TestUrlLoading extends SimpleApplication {
 
         Geometry quad = new Geometry("Textured Quad", quadMesh);
 
-        assetManager.registerLocator("https://raw.githubusercontent.com/jMonkeyEngine/BookSamples/master/assets/Textures/",
+        _assetManager.registerLocator("https://raw.githubusercontent.com/jMonkeyEngine/BookSamples/master/assets/Textures/",
                                 UrlLocator.class);
         TextureKey key = new TextureKey("mucha-window.png", false);
         key.setGenerateMips(true);
-        Texture tex = assetManager.loadTexture(key);
+        Texture tex = _assetManager.loadTexture(key);
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setTexture("ColorMap", tex);
         quad.setMaterial(mat);
 

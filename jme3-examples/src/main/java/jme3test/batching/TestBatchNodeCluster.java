@@ -105,26 +105,26 @@ public class TestBatchNodeCluster extends SimpleApplication {
         yPosition.add(0);
         zPosition.add(0);
 
-        mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat1 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat1.setColor("Color", ColorRGBA.White);
         mat1.setColor("GlowColor", ColorRGBA.Blue.mult(10));
 
-        mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat2 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat2.setColor("Color", ColorRGBA.White);
         mat2.setColor("GlowColor", ColorRGBA.Red.mult(10));
 
-        mat3 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat3 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat3.setColor("Color", ColorRGBA.White);
         mat3.setColor("GlowColor", ColorRGBA.Yellow.mult(10));
 
-        mat4 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat4 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat4.setColor("Color", ColorRGBA.White);
         mat4.setColor("GlowColor", ColorRGBA.Orange.mult(10));
 
         randomGenerator();
 
         //rootNode.attachChild(SkyFactory.createSky(
-        //  assetManager, "Textures/SKY02.zip", false));
+        //  _assetManager, "Textures/SKY02.zip", false));
         inputManager.addMapping("Start Game", new KeyTrigger(KeyInput.KEY_J));
         inputManager.addListener(al, new String[]{"Start Game"});
 
@@ -149,13 +149,13 @@ public class TestBatchNodeCluster extends SimpleApplication {
         Arrow a = new Arrow(new Vector3f(0, 50, 0));
         Geometry g = new Geometry("a", a);
         g.setLocalTranslation(terrain.getLocalTranslation());
-        Material m = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material m = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         m.setColor("Color", ColorRGBA.Blue);
         g.setMaterial(m);
 
 
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         fpp.addFilter(new BloomFilter(BloomFilter.GlowMode.Objects));
 //        SSAOFilter ssao = new SSAOFilter(8.630104f,22.970434f,2.9299977f,0.2999997f);    
 //        fpp.addFilter(ssao);

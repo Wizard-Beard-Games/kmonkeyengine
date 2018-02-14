@@ -74,7 +74,7 @@ public class TestHWSkinning extends SimpleApplication implements ActionListener{
 
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                Spatial model = (Spatial) assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+                Spatial model = (Spatial) _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
                 model.setLocalScale(0.1f);
                 model.setLocalTranslation(i - SIZE / 2, 0, j - SIZE / 2);
                 control = model.getControl(AnimControl.class);
@@ -104,7 +104,7 @@ public class TestHWSkinning extends SimpleApplication implements ActionListener{
     }
 
     private void makeHudText() {
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         hwsText = new BitmapText(guiFont, false);
         hwsText.setSize(guiFont.getCharSet().getRenderedSize());
         hwsText.setText("HWS : "+ hwSkinningEnable);

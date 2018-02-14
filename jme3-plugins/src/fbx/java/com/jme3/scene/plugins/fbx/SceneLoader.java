@@ -62,7 +62,7 @@ public class SceneLoader implements AssetLoader {
 	public AssetManager assetManager;
 	public AssetInfo currentAssetInfo;
 	
-	// Scene global settings
+	// Scene global _settings
 	private float animFrameRate;
 	public float unitSize;
 	public int xAxis = 1;
@@ -431,7 +431,7 @@ public class SceneLoader implements AssetLoader {
 	}
 	
 	private void releaseObjects() {
-		// Reset settings
+		// Reset _settings
 		unitSize = 1;
 		animFrameRate = 30;
 		xAxis = 1;

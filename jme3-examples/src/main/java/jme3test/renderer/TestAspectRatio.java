@@ -53,7 +53,7 @@ public class TestAspectRatio extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         Geometry cube = new Geometry("blue cube", new Box(1, 1, 1));
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         cube.setMaterial(mat);
 

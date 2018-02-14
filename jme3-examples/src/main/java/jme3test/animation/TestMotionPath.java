@@ -31,11 +31,9 @@
  */
 package jme3test.animation;
 
-import com.jme3.animation.LoopMode;
 import com.jme3.app.SimpleApplication;
 import com.jme3.cinematic.MotionPath;
 import com.jme3.cinematic.MotionPathListener;
-import com.jme3.cinematic.events.MotionEvent;
 import com.jme3.cinematic.events.MotionEvent;
 import com.jme3.font.BitmapText;
 import com.jme3.input.ChaseCamera;
@@ -79,14 +77,14 @@ public class TestMotionPath extends SimpleApplication {
         path.addWayPoint(new Vector3f(10, 8, 0));
         path.addWayPoint(new Vector3f(10, 8, 10));
         path.addWayPoint(new Vector3f(15, 8, 10));
-        path.enableDebugShape(assetManager, rootNode);
+        path.enableDebugShape(_assetManager, rootNode);
 
         motionControl = new MotionEvent(teapot,path);
         motionControl.setDirectionType(MotionEvent.Direction.PathAndRotation);
         motionControl.setRotation(new Quaternion().fromAngleNormalAxis(-FastMath.HALF_PI, Vector3f.UNIT_Y));
         motionControl.setInitialDuration(10f);
         motionControl.setSpeed(2f);       
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         final BitmapText wayPointsText = new BitmapText(guiFont, false);
         wayPointsText.setSize(guiFont.getCharSet().getRenderedSize());
 
@@ -118,18 +116,18 @@ public class TestMotionPath extends SimpleApplication {
     }
 
     private void createScene() {
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setFloat("Shininess", 1f);
         mat.setBoolean("UseMaterialColors", true);
         mat.setColor("Ambient", ColorRGBA.Black);
         mat.setColor("Diffuse", ColorRGBA.DarkGray);
         mat.setColor("Specular", ColorRGBA.White.mult(0.6f));
-        Material matSoil = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material matSoil = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         matSoil.setBoolean("UseMaterialColors", true);
         matSoil.setColor("Ambient", ColorRGBA.Black);
         matSoil.setColor("Diffuse", ColorRGBA.Black);
         matSoil.setColor("Specular", ColorRGBA.Black);
-        teapot = assetManager.loadModel("Models/Teapot/Teapot.obj");
+        teapot = _assetManager.loadModel("Models/Teapot/Teapot.obj");
         teapot.setName("Teapot");
         teapot.setLocalScale(3);
         teapot.setMaterial(mat);
@@ -162,7 +160,7 @@ public class TestMotionPath extends SimpleApplication {
                         path.disableDebugShape();
                     } else {
                         active = true;
-                        path.enableDebugShape(assetManager, rootNode);
+                        path.enableDebugShape(_assetManager, rootNode);
                     }
                 }
                 if (name.equals("play_stop") && keyPressed) {

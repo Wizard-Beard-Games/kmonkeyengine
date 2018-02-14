@@ -37,8 +37,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.util.BufferUtils;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class TestUseAfterFree extends SimpleApplication {
 
@@ -55,8 +53,8 @@ public class TestUseAfterFree extends SimpleApplication {
     public void simpleInitApp() {
         Box box = new Box(1, 1, 1);
         Geometry geom = new Geometry("Box", box);
-        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+        mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
         geom.setMaterial(mat);
         rootNode.attachChild(geom);
     }
@@ -74,7 +72,7 @@ public class TestUseAfterFree extends SimpleApplication {
         if (time > 5) {
             System.out.println("Assiging texture to deleted object!");
             
-            deletedTex = assetManager.loadTexture("Interface/Logo/Monkey.png");
+            deletedTex = _assetManager.loadTexture("Interface/Logo/Monkey.png");
             BufferUtils.destroyDirectBuffer(deletedTex.getImage().getData(0));
             mat.setTexture("ColorMap", deletedTex);
             

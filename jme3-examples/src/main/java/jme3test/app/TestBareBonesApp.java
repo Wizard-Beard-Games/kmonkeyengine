@@ -33,7 +33,6 @@
 package jme3test.app;
 
 import com.jme3.app.LegacyApplication;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 
@@ -59,7 +58,7 @@ public class TestBareBonesApp extends LegacyApplication {
         boxGeom = new Geometry("Box", new Box(2, 2, 2));
 
         // load some default material
-        boxGeom.setMaterial(assetManager.loadMaterial("Interface/Logo/Logo.j3m"));
+        boxGeom.setMaterial(_assetManager.loadMaterial("Interface/Logo/Logo.j3m"));
 
         // attach box to display in primary viewport
         viewPort.attachScene(boxGeom);

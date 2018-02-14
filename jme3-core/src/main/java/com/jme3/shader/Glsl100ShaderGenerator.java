@@ -56,7 +56,7 @@ public class Glsl100ShaderGenerator extends ShaderGenerator {
 
     /**
      * creates a Glsl100ShaderGenerator
-     * @param assetManager the assetManager
+     * @param assetManager the _assetManager
      */
     public Glsl100ShaderGenerator(AssetManager assetManager) {
         super(assetManager);

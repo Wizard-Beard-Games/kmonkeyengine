@@ -98,8 +98,8 @@ public class TestAnimBlendBug extends SimpleApplication implements ActionListene
         dl.setColor(new ColorRGBA(1f, 1f, 1f, 1.0f));
         rootNode.addLight(dl);
 
-        Node model1 = (Node) assetManager.loadModel("Models/Ninja/Ninja.mesh.xml");
-        Node model2 = (Node) assetManager.loadModel("Models/Ninja/Ninja.mesh.xml");
+        Node model1 = (Node) _assetManager.loadModel("Models/Ninja/Ninja.mesh.xml");
+        Node model2 = (Node) _assetManager.loadModel("Models/Ninja/Ninja.mesh.xml");
 //        Node model2 = model1.clone();
 
         model1.setLocalTranslation(-60, 0, 0);
@@ -113,7 +113,7 @@ public class TestAnimBlendBug extends SimpleApplication implements ActionListene
         channel2 = control2.createChannel();
 
         SkeletonDebugger skeletonDebug = new SkeletonDebugger("skeleton1", control1.getSkeleton());
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.getAdditionalRenderState().setWireframe(true);
         mat.setColor("Color", ColorRGBA.Red);
         mat.setFloat("PointSize", 7f);

@@ -27,7 +27,7 @@ public class TestInstanceNodeWithLight extends SimpleApplication {
         rootNode.attachChild(instancedNode);
 
         box = new Geometry("Box", new Box(0.5f, 0.5f, 0.5f));
-        Material material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material material = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         material.setBoolean("UseInstancing", true);
         material.setColor("Diffuse", ColorRGBA.Red);
         material.setBoolean("UseMaterialColors", true);

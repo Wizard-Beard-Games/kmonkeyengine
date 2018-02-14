@@ -33,12 +33,9 @@
 package jme3test.asset;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.TextureKey;
 import com.jme3.asset.plugins.HttpZipLocator;
-import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
-import com.jme3.texture.Texture;
 import com.jme3.ui.Picture;
 
 /**
@@ -60,9 +57,9 @@ public class TestOnlineJar extends SimpleApplication {
 
         Geometry quad = new Geometry("Textured Quad", quadMesh);
         
-        assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/town.zip", 
+        _assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/town.zip",
                                      HttpZipLocator.class);
-        assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/wildhouse.zip", 
+        _assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/wildhouse.zip",
                                      HttpZipLocator.class);
 
         Picture pic1 = new Picture("Picture1");
@@ -70,7 +67,7 @@ public class TestOnlineJar extends SimpleApplication {
         pic1.setPosition(0, 0);
         pic1.setWidth(128);
         pic1.setHeight(128);
-        pic1.setImage(assetManager, "grass.jpg", false);
+        pic1.setImage(_assetManager, "grass.jpg", false);
         guiNode.attachChild(pic1);
         
         Picture pic2 = new Picture("Picture1");
@@ -78,7 +75,7 @@ public class TestOnlineJar extends SimpleApplication {
         pic2.setPosition(128, 0);
         pic2.setWidth(128);
         pic2.setHeight(128);
-        pic2.setImage(assetManager, "glasstile2.png", false);
+        pic2.setImage(_assetManager, "glasstile2.png", false);
         guiNode.attachChild(pic2);
     }
 

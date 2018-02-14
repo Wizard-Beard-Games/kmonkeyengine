@@ -159,7 +159,7 @@ public class BoundingSphereDebug extends Mesh {
     
     /**
      * Convenience factory method that creates a debuging bounding sphere geometry
-     * @param assetManager the assetManager
+     * @param assetManager the _assetManager
      * @return the bounding sphere debug geometry.
      */
     public static Geometry createDebugSphere(AssetManager assetManager) {

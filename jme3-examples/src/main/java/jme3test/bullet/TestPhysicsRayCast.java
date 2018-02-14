@@ -28,7 +28,7 @@ public class TestPhysicsRayCast extends SimpleApplication {
         stateManager.attach(bulletAppState);
         initCrossHair();
 
-        Spatial s = assetManager.loadModel("Models/Elephant/Elephant.mesh.xml");
+        Spatial s = _assetManager.loadModel("Models/Elephant/Elephant.mesh.xml");
         s.setLocalScale(0.1f);
 
         CollisionShape collisionShape = CollisionShapeFactory.createMeshShape(s);

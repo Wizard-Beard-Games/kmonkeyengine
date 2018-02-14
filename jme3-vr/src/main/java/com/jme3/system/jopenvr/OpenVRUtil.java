@@ -351,7 +351,7 @@ public class OpenVRUtil {
 			str="Not available to watchdog apps"; 
 			break;
 		case EVRInitError.EVRInitError_VRInitError_Init_WatchdogDisabledInSettings: 
-			str="Watchdog disabled in settings"; 
+			str="Watchdog disabled in settings";
 			break;
 		case EVRInitError.EVRInitError_VRInitError_Init_VRDashboardNotFound: 
 			str="VR dashboard not found"; 

@@ -58,7 +58,7 @@ public class TestCustomAppSettings {
         settings.putInteger("TestInt", 123);
         settings.putString("TestStr", "HelloWorld");
         settings.putFloat("TestFloat", 123.567f);
-        settings.put("TestObj", new Mesh()); // Objects not supported by file settings
+        settings.put("TestObj", new Mesh()); // Objects not supported by file _settings
         
         try {
             settings.save(baos);

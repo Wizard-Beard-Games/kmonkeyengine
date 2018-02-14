@@ -67,9 +67,9 @@ public class TestPointSprite extends SimpleApplication {
         emit.setSelectRandomImage(true);
         emit.emitAllParticles();
         
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Particle.j3md");
         mat.setBoolean("PointSprite", true);
-        mat.setTexture("Texture", assetManager.loadTexture("Effects/Smoke/Smoke.png"));
+        mat.setTexture("Texture", _assetManager.loadTexture("Effects/Smoke/Smoke.png"));
         emit.setMaterial(mat);
 
         rootNode.attachChild(emit);

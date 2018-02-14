@@ -56,7 +56,7 @@ public class TestRayCasting extends SimpleApplication {
 //        flyCam.setEnabled(false);
 
         // load material
-        Material mat = (Material) assetManager.loadMaterial("Interface/Logo/Logo.j3m");
+        Material mat = (Material) _assetManager.loadMaterial("Interface/Logo/Logo.j3m");
 
         Mesh q = new Mesh();
         q.setBuffer(Type.Position, 3, new float[]
@@ -71,7 +71,7 @@ public class TestRayCasting extends SimpleApplication {
         q.updateBound();
 //        Geometry teapot = new Geometry("MyGeom", q);
 
-        teapot = assetManager.loadModel("Models/Teapot/Teapot.mesh.xml");
+        teapot = _assetManager.loadModel("Models/Teapot/Teapot.mesh.xml");
 //        teapot.scale(2f, 2f, 2f);
 //        teapot.move(2f, 2f, -.5f);
         teapot.rotate(FastMath.HALF_PI, FastMath.HALF_PI, FastMath.HALF_PI);

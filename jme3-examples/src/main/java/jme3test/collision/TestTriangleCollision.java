@@ -64,13 +64,13 @@ public class TestTriangleCollision extends SimpleApplication {
         Mesh mesh1 = new Box(0.5f, 0.5f, 0.5f);
         geom1 = new Geometry("Box", mesh1);
         geom1.move(2, 2, -.5f);
-        Material m1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material m1 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         m1.setColor("Color", ColorRGBA.Blue);
         geom1.setMaterial(m1);
         rootNode.attachChild(geom1);
 
         // load a character from jme3test-test-data
-        golem = assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+        golem = _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
         golem.scale(0.5f);
         golem.setLocalTranslation(-1.0f, -1.5f, -0.6f);
 

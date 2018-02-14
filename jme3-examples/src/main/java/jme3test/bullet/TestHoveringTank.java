@@ -56,7 +56,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.shadow.EdgeFilteringMode;
-import com.jme3.system.AppSettings;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 import com.jme3.terrain.heightmap.AbstractHeightMap;
@@ -111,13 +110,13 @@ public class TestHoveringTank extends SimpleApplication implements AnalogListene
         bulletAppState = new BulletAppState();
         bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
         stateManager.attach(bulletAppState);
-//        bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+//        bulletAppState.getPhysicsSpace().enableDebug(_assetManager);
         bulletAppState.getPhysicsSpace().setAccuracy(1f/30f);
-        rootNode.attachChild(SkyFactory.createSky(assetManager, 
+        rootNode.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/BrightSky.dds", EnvMapType.CubeMap));
 
         DirectionalLightShadowRenderer dlsr 
-                = new DirectionalLightShadowRenderer(assetManager, 2048, 3);
+                = new DirectionalLightShadowRenderer(_assetManager, 2048, 3);
         dlsr.setLambda(0.55f);
         dlsr.setShadowIntensity(0.6f);
         dlsr.setEdgeFilteringMode(EdgeFilteringMode.Bilinear);
@@ -141,7 +140,7 @@ public class TestHoveringTank extends SimpleApplication implements AnalogListene
     }
 
     private void buildPlayer() {
-        spaceCraft = assetManager.loadModel("Models/HoverTank/Tank2.mesh.xml");
+        spaceCraft = _assetManager.loadModel("Models/HoverTank/Tank2.mesh.xml");
         CollisionShape colShape = CollisionShapeFactory.createDynamicMeshShape(spaceCraft);
         spaceCraft.setShadowMode(ShadowMode.CastAndReceive);
         spaceCraft.setLocalTranslation(new Vector3f(-140, 50, -23));
@@ -167,7 +166,7 @@ public class TestHoveringTank extends SimpleApplication implements AnalogListene
         Quaternion rot = spaceCraft.getWorldRotation();
         Vector3f dir = rot.getRotationColumn(2);
 
-        Spatial missile = assetManager.loadModel("Models/SpaceCraft/Rocket.mesh.xml");
+        Spatial missile = _assetManager.loadModel("Models/SpaceCraft/Rocket.mesh.xml");
         missile.scale(0.5f);
         missile.rotate(0, FastMath.PI, 0);
         missile.updateGeometricState();
@@ -182,7 +181,7 @@ public class TestHoveringTank extends SimpleApplication implements AnalogListene
         missile.setLocalTranslation(pos.addLocal(0, extent.y * 4.5f, 0));
         missile.setLocalRotation(hoverControl.getPhysicsRotation());
         missile.setShadowMode(ShadowMode.Cast);
-        RigidBodyControl control = new BombControl(assetManager, boxShape, 20);
+        RigidBodyControl control = new BombControl(_assetManager, boxShape, 20);
         control.setLinearVelocity(dir.mult(100));
         control.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_03);
         missile.addControl(control);
@@ -249,28 +248,28 @@ public class TestHoveringTank extends SimpleApplication implements AnalogListene
     }
 
     private void createTerrain() {
-        matRock = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
+        matRock = new Material(_assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         matRock.setBoolean("useTriPlanarMapping", false);
         matRock.setBoolean("WardIso", true);
-        matRock.setTexture("AlphaMap", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
-        Texture heightMapImage = assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
-        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        matRock.setTexture("AlphaMap", _assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
+        Texture heightMapImage = _assetManager.loadTexture("Textures/Terrain/splat/mountains512.png");
+        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap", grass);
         matRock.setFloat("DiffuseMap_0_scale", 64);
-        Texture dirt = assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = _assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap_1", dirt);
         matRock.setFloat("DiffuseMap_1_scale", 16);
-        Texture rock = assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
+        Texture rock = _assetManager.loadTexture("Textures/Terrain/splat/road.jpg");
         rock.setWrap(WrapMode.Repeat);
         matRock.setTexture("DiffuseMap_2", rock);
         matRock.setFloat("DiffuseMap_2_scale", 128);
-        Texture normalMap0 = assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
+        Texture normalMap0 = _assetManager.loadTexture("Textures/Terrain/splat/grass_normal.jpg");
         normalMap0.setWrap(WrapMode.Repeat);
-        Texture normalMap1 = assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
+        Texture normalMap1 = _assetManager.loadTexture("Textures/Terrain/splat/dirt_normal.png");
         normalMap1.setWrap(WrapMode.Repeat);
-        Texture normalMap2 = assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
+        Texture normalMap2 = _assetManager.loadTexture("Textures/Terrain/splat/road_normal.png");
         normalMap2.setWrap(WrapMode.Repeat);
         matRock.setTexture("NormalMap", normalMap0);
         matRock.setTexture("NormalMap_1", normalMap2);

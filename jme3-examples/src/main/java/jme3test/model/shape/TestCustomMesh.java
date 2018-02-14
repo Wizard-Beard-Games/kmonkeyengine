@@ -89,7 +89,7 @@ public class TestCustomMesh extends SimpleApplication {
 
         // Creating a geometry, and apply a single color material to it
         Geometry geom = new Geometry("OurMesh", m);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         geom.setMaterial(mat);
 
@@ -101,7 +101,7 @@ public class TestCustomMesh extends SimpleApplication {
         // *************************************************************************
         Mesh cMesh = m.clone();
         Geometry coloredMesh = new Geometry ("ColoredMesh", cMesh);
-        Material matVC = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material matVC = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matVC.setBoolean("VertexColor", true);
 
         //We have 4 vertices and 4 color values for each of them.
@@ -142,7 +142,7 @@ public class TestCustomMesh extends SimpleApplication {
         // *************************************************************************
         Mesh wfMesh = m.clone();
         Geometry wfGeom = new Geometry("wireframeGeometry", wfMesh);
-        Material matWireframe = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material matWireframe = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matWireframe.setColor("Color", ColorRGBA.Green);
         matWireframe.getAdditionalRenderState().setWireframe(true);
         wfGeom.setMaterial(matWireframe);

@@ -285,7 +285,7 @@ public class MotionPath implements Savable {
 
     /**
      * enable the display of the path and the waypoints
-     * @param manager the assetManager
+     * @param manager the _assetManager
      * @param rootNode the node where the debug shapes must be attached
      */
     public void enableDebugShape(AssetManager manager, Node rootNode) {

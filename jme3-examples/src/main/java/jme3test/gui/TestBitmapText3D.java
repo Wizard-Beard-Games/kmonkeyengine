@@ -55,10 +55,10 @@ public class TestBitmapText3D extends SimpleApplication {
         Quad q = new Quad(6, 3);
         Geometry g = new Geometry("quad", q);
         g.setLocalTranslation(0, -3, -0.0001f);
-        g.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        g.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         rootNode.attachChild(g);
 
-        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont fnt = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         BitmapText txt = new BitmapText(fnt, false);
         txt.setBox(new Rectangle(0, 0, 6, 3));
         txt.setQueueBucket(Bucket.Transparent);

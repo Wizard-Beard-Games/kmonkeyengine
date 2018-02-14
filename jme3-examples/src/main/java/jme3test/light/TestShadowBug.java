@@ -69,7 +69,7 @@ public class TestShadowBug extends SimpleApplication {
     characters.setShadowMode(ShadowMode.Cast);
     rootNode.attachChild(characters);
 
-    Spatial golem = assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+    Spatial golem = _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
     golem.scale(0.5f);
     golem.setLocalTranslation(200.0f, -6f, 200f);
     golem.setShadowMode(ShadowMode.CastAndReceive);
@@ -96,13 +96,13 @@ public class TestShadowBug extends SimpleApplication {
     lamp_light.setPosition(new Vector3f(210.0f, 0f, 210f));
     rootNode.addLight(lamp_light);
 
-    SpotLightShadowRenderer slsr = new SpotLightShadowRenderer(assetManager, 512);
+    SpotLightShadowRenderer slsr = new SpotLightShadowRenderer(_assetManager, 512);
     slsr.setLight(spot);
     slsr.setEdgeFilteringMode(EdgeFilteringMode.Nearest);
     slsr.setShadowIntensity(0.6f);
     viewPort.addProcessor(slsr);
 
-    PointLightShadowRenderer plsr = new PointLightShadowRenderer(assetManager, 512);
+    PointLightShadowRenderer plsr = new PointLightShadowRenderer(_assetManager, 512);
     plsr.setLight(lamp_light);
     plsr.setShadowIntensity(0.6f);
     plsr.setEdgeFilteringMode(EdgeFilteringMode.Nearest);
@@ -118,8 +118,8 @@ public class TestShadowBug extends SimpleApplication {
     box.scaleTextureCoordinates(new Vector2f(10, 10));
     Geometry floor = new Geometry("the Floor", box);
     floor.setLocalTranslation(200, -9, 200);
-    Material matGroundL = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-    Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+    Material matGroundL = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
+    Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
     grass.setWrap(WrapMode.Repeat);
     matGroundL.setTexture("DiffuseMap", grass);
     floor.setMaterial(matGroundL);

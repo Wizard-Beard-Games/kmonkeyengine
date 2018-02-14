@@ -83,7 +83,7 @@ public class TestVertexBufferSharing extends SimpleApplication {
         
         Box b = new Box(1, 1, 1); // create cube shape
         geom = new Geometry("Box", b);  // create cube geometry from the shape
-        Material mat = new Material(assetManager,
+        Material mat = new Material(_assetManager,
           "Common/MatDefs/Misc/Unshaded.j3md");  // create a simple material
         mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
         geom.setMaterial(mat);                   // set the cube's material

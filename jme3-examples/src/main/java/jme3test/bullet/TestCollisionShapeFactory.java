@@ -123,11 +123,11 @@ public class TestCollisionShapeFactory extends SimpleApplication {
     }
 
     private void createMaterial() {
-        mat1 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat1 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat1.setColor("Color", ColorRGBA.Green);
-        mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat2 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat2.setColor("Color", ColorRGBA.Red);
-        mat3 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat3 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat3.setColor("Color", ColorRGBA.Yellow);
     }
 

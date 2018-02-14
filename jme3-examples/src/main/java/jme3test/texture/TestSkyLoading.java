@@ -45,14 +45,14 @@ public class TestSkyLoading extends SimpleApplication {
     }
 
     public void simpleInitApp() {
-        Texture west = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_west.jpg");
-        Texture east = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_east.jpg");
-        Texture north = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_north.jpg");
-        Texture south = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_south.jpg");
-        Texture up = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_up.jpg");
-        Texture down = assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_down.jpg");
+        Texture west = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_west.jpg");
+        Texture east = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_east.jpg");
+        Texture north = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_north.jpg");
+        Texture south = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_south.jpg");
+        Texture up = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_up.jpg");
+        Texture down = _assetManager.loadTexture("Textures/Sky/Lagoon/lagoon_down.jpg");
 
-        Spatial sky = SkyFactory.createSky(assetManager, west, east, north, south, up, down);
+        Spatial sky = SkyFactory.createSky(_assetManager, west, east, north, south, up, down);
         rootNode.attachChild(sky);
     }
 

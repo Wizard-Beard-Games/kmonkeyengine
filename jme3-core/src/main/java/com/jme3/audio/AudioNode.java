@@ -767,12 +767,12 @@ public class AudioNode extends Node implements AudioSource {
 
         // Change in behavior: the filters were not cloned before meaning
         // that two cloned audio nodes would share the same filter instance.
-        // While settings will only be applied when the filter is actually
+        // While _settings will only be applied when the filter is actually
         // set, I think it's probably surprising to callers if the values of
         // a filter change from one AudioNode when a different AudioNode's
         // filter attributes are updated.
         // Plus if they disable and re-enable the thing using the filter then
-        // the settings get reapplied and it might be surprising to have them
+        // the _settings get reapplied and it might be surprising to have them
         // suddenly be strange.
         // ...so I'll clone them.  -pspeed
         this.dryFilter = cloner.clone(dryFilter);

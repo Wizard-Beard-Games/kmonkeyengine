@@ -65,7 +65,7 @@ public class HelloOpenCL extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont fnt = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         Context clContext = context.getOpenCLContext();
         if (clContext == null) {
             BitmapText txt = new BitmapText(fnt);
@@ -179,7 +179,7 @@ public class HelloOpenCL extends SimpleApplication {
         try {
             //create fill code
             String include = "#define TYPE float\n";
-            Program program = clContext.createProgramFromSourceFilesWithInclude(assetManager, include, "jme3test/opencl/Blas.cl");
+            Program program = clContext.createProgramFromSourceFilesWithInclude(_assetManager, include, "jme3test/opencl/Blas.cl");
             program.build();
             Kernel kernel = program.createKernel("Fill");
             System.out.println("number of args: "+kernel.getArgCount());

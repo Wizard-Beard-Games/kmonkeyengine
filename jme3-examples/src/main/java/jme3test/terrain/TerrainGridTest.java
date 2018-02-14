@@ -48,9 +48,9 @@ public class TerrainGridTest extends SimpleApplication {
     public void simpleInitApp() {
         File file = new File("TerrainGridTestData.zip");
         if (!file.exists()) {
-            assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/TerrainGridTestData.zip", HttpZipLocator.class);
+            _assetManager.registerLocator("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jmonkeyengine/TerrainGridTestData.zip", HttpZipLocator.class);
         } else {
-            assetManager.registerLocator("TerrainGridTestData.zip", ZipLocator.class);
+            _assetManager.registerLocator("TerrainGridTestData.zip", ZipLocator.class);
         }
 
         this.flyCam.setMoveSpeed(100f);
@@ -58,7 +58,7 @@ public class TerrainGridTest extends SimpleApplication {
         this.stateManager.attach(state);
 
         // TERRAIN TEXTURE material
-        this.mat_terrain = new Material(this.assetManager, "Common/MatDefs/Terrain/HeightBasedTerrain.j3md");
+        this.mat_terrain = new Material(this._assetManager, "Common/MatDefs/Terrain/HeightBasedTerrain.j3md");
 
         // Parameters to material:
         // regionXColorMap: X = 1..4 the texture that should be appliad to state X
@@ -71,19 +71,19 @@ public class TerrainGridTest extends SimpleApplication {
         // slopeTileFactor: the texture scale for slopes
         // terrainSize: the total size of the terrain (used for scaling the texture)
         // GRASS texture
-        Texture grass = this.assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+        Texture grass = this._assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
         grass.setWrap(WrapMode.Repeat);
         this.mat_terrain.setTexture("region1ColorMap", grass);
         this.mat_terrain.setVector3("region1", new Vector3f(88, 200, this.grassScale));
 
         // DIRT texture
-        Texture dirt = this.assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
+        Texture dirt = this._assetManager.loadTexture("Textures/Terrain/splat/dirt.jpg");
         dirt.setWrap(WrapMode.Repeat);
         this.mat_terrain.setTexture("region2ColorMap", dirt);
         this.mat_terrain.setVector3("region2", new Vector3f(0, 90, this.dirtScale));
 
         // ROCK texture
-        Texture rock = this.assetManager.loadTexture("Textures/Terrain/Rock2/rock.jpg");
+        Texture rock = this._assetManager.loadTexture("Textures/Terrain/Rock2/rock.jpg");
         rock.setWrap(WrapMode.Repeat);
         this.mat_terrain.setTexture("region3ColorMap", rock);
         this.mat_terrain.setVector3("region3", new Vector3f(198, 260, this.rockScale));
@@ -96,7 +96,7 @@ public class TerrainGridTest extends SimpleApplication {
 
         this.mat_terrain.setFloat("terrainSize", 129);
 
-        this.terrain = new TerrainGrid("terrain", 65, 257, new ImageTileLoader(assetManager, new Namer() {
+        this.terrain = new TerrainGrid("terrain", 65, 257, new ImageTileLoader(_assetManager, new Namer() {
 
             public String getName(int x, int y) {
                 return "Scenes/TerrainMountains/terrain_" + x + "_" + y + ".png";

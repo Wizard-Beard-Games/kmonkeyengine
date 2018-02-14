@@ -69,7 +69,7 @@ public class TestOgreComplexAnim extends SimpleApplication {
         dl.setColor(new ColorRGBA(1f, 1f, 1f, 1.0f));
         rootNode.addLight(dl);
 
-        Node model = (Node) assetManager.loadModel("Models/Oto/Oto.mesh.xml");
+        Node model = (Node) _assetManager.loadModel("Models/Oto/Oto.mesh.xml");
 
         control = model.getControl(AnimControl.class);
 
@@ -103,7 +103,7 @@ public class TestOgreComplexAnim extends SimpleApplication {
         rightHand.setAnim("push");
 
         SkeletonDebugger skeletonDebug = new SkeletonDebugger("skeleton", control.getSkeleton());
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.getAdditionalRenderState().setWireframe(true);
         mat.setColor("Color", ColorRGBA.Green);
         mat.setFloat("PointSize", 7f);

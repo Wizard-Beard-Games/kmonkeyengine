@@ -49,7 +49,6 @@ import com.jme3.scene.shape.Box;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext.Type;
 import com.jme3.texture.FrameBuffer;
-import com.jme3.texture.Image;
 import com.jme3.texture.Image.Format;
 import com.jme3.texture.Texture2D;
 import com.jme3.util.BufferUtils;
@@ -204,7 +203,7 @@ public class TestRenderToMemory extends SimpleApplication implements SceneProces
 
         // setup framebuffer's scene
         Box boxMesh = new Box(1, 1, 1);
-        Material material = assetManager.loadMaterial("Interface/Logo/Logo.j3m");
+        Material material = _assetManager.loadMaterial("Interface/Logo/Logo.j3m");
         offBox = new Geometry("box", boxMesh);
         offBox.setMaterial(material);
 

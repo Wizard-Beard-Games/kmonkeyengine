@@ -307,9 +307,9 @@ public class OGLESContext implements JmeContext, GLSurfaceView.Renderer, SoftTex
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         logger.log(Level.FINE, "GL Surface changed, width: {0} height: {1}", new Object[]{width, height});
-        // update the application settings with the new resolution
+        // update the application _settings with the new resolution
         settings.setResolution(width, height);
-        // reload settings in androidInput so the correct touch event scaling can be
+        // reload _settings in androidInput so the correct touch event scaling can be
         // calculated in case the surface resolution is different than the view
         androidInput.loadSettings(settings);
         // if the application has already been initialized (ie renderable is set)

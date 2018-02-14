@@ -49,9 +49,9 @@ public class TestCursor extends SimpleApplication {
          * The animated cursor has been made by Pointer Adic and can be found here:
          * http://www.rw-designer.com/cursor-set/monkey
          */
-        cursors.add((JmeCursor) assetManager.loadAsset("Textures/Cursors/meme.cur"));
-        cursors.add((JmeCursor) assetManager.loadAsset("Textures/Cursors/nyancat.ico"));
-        cursors.add((JmeCursor) assetManager.loadAsset("Textures/Cursors/monkey.ani"));
+        cursors.add((JmeCursor) _assetManager.loadAsset("Textures/Cursors/meme.cur"));
+        cursors.add((JmeCursor) _assetManager.loadAsset("Textures/Cursors/nyancat.ico"));
+        cursors.add((JmeCursor) _assetManager.loadAsset("Textures/Cursors/monkey.ani"));
 
         sysTime = System.currentTimeMillis();
         inputManager.setMouseCursor(cursors.get(count));

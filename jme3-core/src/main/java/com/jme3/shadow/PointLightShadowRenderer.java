@@ -65,7 +65,7 @@ public class PointLightShadowRenderer extends AbstractShadowRenderer {
     /**
      * Used for serialization.
      * Use PointLightShadowRenderer#PointLightShadowRenderer(AssetManager
-     * assetManager, int shadowMapSize)
+     * _assetManager, int shadowMapSize)
      * instead.
      */
     public PointLightShadowRenderer() {

@@ -99,9 +99,9 @@ public class TestPbrEnv extends SimpleApplication implements ActionListener {
         // Setup first view
 
         mat = new Material[2];
-        mat[0] = assetManager.loadMaterial("jme3test/light/pbr/pbrMat.j3m");
-        //mat[1] = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
-        mat[1] = assetManager.loadMaterial("jme3test/light/pbr/pbrMat2.j3m");
+        mat[0] = _assetManager.loadMaterial("jme3test/light/pbr/pbrMat.j3m");
+        //mat[1] = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        mat[1] = _assetManager.loadMaterial("jme3test/light/pbr/pbrMat2.j3m");
 //        mat[1].setBoolean("UseMaterialColors", true);
 //        mat[1].setColor("Ambient", ColorRGBA.White.mult(0.5f));
 //        mat[1].setColor("Diffuse", ColorRGBA.White.clone());
@@ -136,15 +136,15 @@ public class TestPbrEnv extends SimpleApplication implements ActionListener {
         ground = new Geometry("soil", b);
         TangentBinormalGenerator.generate(ground);
         ground.setLocalTranslation(0, 10, 550);
-        matGroundU = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        matGroundU = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matGroundU.setColor("Color", ColorRGBA.Green);
 
-//        matGroundL = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-//        Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+//        matGroundL = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
+//        Texture grass = _assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
 //        grass.setWrap(WrapMode.Repeat);
 //        matGroundL.setTexture("DiffuseMap", grass);
 
-        matGroundL = assetManager.loadMaterial("jme3test/light/pbr/pbrMat4.j3m");
+        matGroundL = _assetManager.loadMaterial("jme3test/light/pbr/pbrMat4.j3m");
         
         ground.setMaterial(matGroundL);
 
@@ -162,8 +162,8 @@ public class TestPbrEnv extends SimpleApplication implements ActionListener {
         al.setColor(ColorRGBA.White.mult(0.5f));
       //  rootNode.addLight(al);
 
-        //Spatial sky = SkyFactory.createSky(assetManager, "Scenes/Beach/FullskiesSunset0068.dds", SkyFactory.EnvMapType.CubeMap);
-        Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/Path.hdr", SkyFactory.EnvMapType.EquirectMap);
+        //Spatial sky = SkyFactory.createSky(_assetManager, "Scenes/Beach/FullskiesSunset0068.dds", SkyFactory.EnvMapType.CubeMap);
+        Spatial sky = SkyFactory.createSky(_assetManager, "Textures/Sky/Path.hdr", SkyFactory.EnvMapType.EquirectMap);
         sky.setLocalScale(350);
 
         rootNode.attachChild(sky);
@@ -172,7 +172,7 @@ public class TestPbrEnv extends SimpleApplication implements ActionListener {
 
     @Override
     public void simpleInitApp() {
-        assetManager.registerLoader(KTXLoader.class, "ktx");
+        _assetManager.registerLoader(KTXLoader.class, "ktx");
         
         
         // put the camera in a bad position
@@ -183,7 +183,7 @@ public class TestPbrEnv extends SimpleApplication implements ActionListener {
 
         loadScene();
 
-        dlsr = new DirectionalLightShadowRenderer(assetManager, SHADOWMAP_SIZE, 4);
+        dlsr = new DirectionalLightShadowRenderer(_assetManager, SHADOWMAP_SIZE, 4);
         dlsr.setLight(l);
         //dlsr.setLambda(0.55f);
         dlsr.setShadowIntensity(0.5f);
@@ -191,7 +191,7 @@ public class TestPbrEnv extends SimpleApplication implements ActionListener {
         //dlsr.displayDebug();
  //       viewPort.addProcessor(dlsr);
         
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         
         fpp.addFilter(new ToneMapFilter(Vector3f.UNIT_XYZ.mult(6.0f)));
         SSAOFilter ssao = new SSAOFilter();
@@ -217,9 +217,9 @@ public class TestPbrEnv extends SimpleApplication implements ActionListener {
         getStateManager().attach(debugState);
 
         camGeom = new Geometry("camGeom", new Sphere(16, 16, 2));
-//        Material m = new Material(assetManager, "Common/MatDefs/Misc/UnshadedNodes.j3md");
+//        Material m = new Material(_assetManager, "Common/MatDefs/Misc/UnshadedNodes.j3md");
 //        m.setColor("Color", ColorRGBA.Green);
-        Material m = assetManager.loadMaterial("jme3test/light/pbr/pbrMat3.j3m");
+        Material m = _assetManager.loadMaterial("jme3test/light/pbr/pbrMat3.j3m");
         camGeom.setMaterial(m);
         camGeom.setLocalTranslation(0, 20, 0);
         camGeom.setLocalScale(5);
@@ -311,7 +311,7 @@ public class TestPbrEnv extends SimpleApplication implements ActionListener {
         
         if (name.equals("debugTex") && keyPressed) {
             if(debugGui == null || debugGui.getParent() == null){
-                debugGui = lastProbe.getDebugGui(assetManager);
+                debugGui = lastProbe.getDebugGui(_assetManager);
                 debugGui.setLocalTranslation(10, 200, 0);
                 guiNode.attachChild(debugGui);
             } else if(debugGui != null){

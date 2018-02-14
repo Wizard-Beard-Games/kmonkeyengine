@@ -34,7 +34,6 @@ package jme3test.opencl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
-import com.jme3.font.Rectangle;
 import com.jme3.opencl.*;
 import com.jme3.system.AppSettings;
 import java.util.Collections;
@@ -145,7 +144,7 @@ public class TestMultipleApplications extends SimpleApplication {
         flyCam.setEnabled(false);
         inputManager.setCursorVisible(true);
         
-        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont fnt = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         infoText = new BitmapText(fnt, false);
         //infoText.setBox(new Rectangle(0, 0, settings.getWidth(), settings.getHeight()));
         infoText.setText("Device: "+clContext.getDevices());

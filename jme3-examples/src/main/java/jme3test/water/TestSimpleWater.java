@@ -72,7 +72,7 @@ public class TestSimpleWater extends SimpleApplication implements ActionListener
         initScene();
 
         //create processor
-        waterProcessor = new SimpleWaterProcessor(assetManager);
+        waterProcessor = new SimpleWaterProcessor(_assetManager);
         waterProcessor.setReflectionScene(sceneNode);
         waterProcessor.setDebug(true);
         viewPort.addProcessor(waterProcessor);
@@ -81,7 +81,7 @@ public class TestSimpleWater extends SimpleApplication implements ActionListener
 
         //create water quad
         //waterPlane = waterProcessor.createWaterGeometry(100, 100);
-        waterPlane=(Spatial)  assetManager.loadModel("Models/WaterTest/WaterTest.mesh.xml");
+        waterPlane=(Spatial)  _assetManager.loadModel("Models/WaterTest/WaterTest.mesh.xml");
         waterPlane.setMaterial(waterProcessor.getMaterial());
         waterPlane.setLocalScale(40);
         waterPlane.setLocalTranslation(-5, 0, 5);
@@ -95,15 +95,15 @@ public class TestSimpleWater extends SimpleApplication implements ActionListener
         cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
         //init scene
         sceneNode = new Node("Scene");
-        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setTexture("ColorMap", assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
+        mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setTexture("ColorMap", _assetManager.loadTexture("Interface/Logo/Monkey.jpg"));
         Box b = new Box(1, 1, 1);
         Geometry geom = new Geometry("Box", b);
         geom.setMaterial(mat);
         sceneNode.attachChild(geom);
 
         // load sky
-        sceneNode.attachChild(SkyFactory.createSky(assetManager, 
+        sceneNode.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/BrightSky.dds", 
                 SkyFactory.EnvMapType.CubeMap));
         rootNode.attachChild(sceneNode);

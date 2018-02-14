@@ -76,7 +76,7 @@ public class TestMultiRenderTarget extends SimpleApplication implements ScenePro
         cam.setLocation(new Vector3f(4.8037705f, 4.851632f, 10.789033f));
         cam.setRotation(new Quaternion(-0.05143692f, 0.9483723f, -0.21131563f, -0.230846f));
 
-        Node tank = (Node) assetManager.loadModel("Models/HoverTank/Tank2.mesh.xml");
+        Node tank = (Node) _assetManager.loadModel("Models/HoverTank/Tank2.mesh.xml");
         
         //tankMesh.getMaterial().setColor("Specular", ColorRGBA.Black);
         rootNode.attachChild(tank);
@@ -139,7 +139,7 @@ public class TestMultiRenderTarget extends SimpleApplication implements ScenePro
         specularData = new Texture2D(w, h, Format.RGBA8);
         depthData    = new Texture2D(w, h, Format.Depth);
 
-        mat = new Material(assetManager, "Common/MatDefs/Light/Deferred.j3md");
+        mat = new Material(_assetManager, "Common/MatDefs/Light/Deferred.j3md");
         mat.setTexture("DiffuseData",  diffuseData);
         mat.setTexture("SpecularData", specularData);
         mat.setTexture("NormalData",   normalData);
@@ -150,10 +150,10 @@ public class TestMultiRenderTarget extends SimpleApplication implements ScenePro
         display.setWidth(w);
         display.setHeight(h);
 
-        display1.setTexture(assetManager, diffuseData, false);
-        display2.setTexture(assetManager, normalData, false);
-        display3.setTexture(assetManager, specularData, false);
-        display4.setTexture(assetManager, depthData, false);
+        display1.setTexture(_assetManager, diffuseData, false);
+        display2.setTexture(_assetManager, normalData, false);
+        display3.setTexture(_assetManager, specularData, false);
+        display4.setTexture(_assetManager, depthData, false);
 
         display1.setPosition(0, 0);
         display2.setPosition(w/2, 0);

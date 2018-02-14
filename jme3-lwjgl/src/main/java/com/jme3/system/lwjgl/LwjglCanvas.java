@@ -91,7 +91,7 @@ public class LwjglCanvas extends LwjglAbstractDisplay implements JmeCanvasContex
             if (renderThread == null){
                 logger.log(Level.FINE, "EDT: Creating OGL thread.");
 
-                // Also set some settings on the canvas here.
+                // Also set some _settings on the canvas here.
                 // So we don't do it outside the AWT thread.
                 canvas.setFocusable(true);
                 canvas.setIgnoreRepaint(true);
@@ -433,7 +433,7 @@ public class LwjglCanvas extends LwjglAbstractDisplay implements JmeCanvasContex
     @Override
     protected void createContext(AppSettings settings) {
         // In case canvas is not visible, we still take framerate
-        // from settings to prevent "100% CPU usage"
+        // from _settings to prevent "100% CPU usage"
         frameRate = settings.getFrameRate();
         allowSwapBuffers = settings.isSwapBuffers();
         

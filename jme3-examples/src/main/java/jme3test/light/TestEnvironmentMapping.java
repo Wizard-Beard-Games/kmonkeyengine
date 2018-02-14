@@ -27,12 +27,12 @@ public class TestEnvironmentMapping extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        final Node buggy = (Node) assetManager.loadModel("Models/Buggy/Buggy.j3o");
+        final Node buggy = (Node) _assetManager.loadModel("Models/Buggy/Buggy.j3o");
 
         TextureKey key = new TextureKey("Textures/Sky/Bright/BrightSky.dds", true);
         key.setGenerateMips(true);
         key.setTextureTypeHint(Texture.Type.CubeMap);
-        final Texture tex = assetManager.loadTexture(key);
+        final Texture tex = _assetManager.loadTexture(key);
 
         for (Spatial geom : buggy.getChildren()) {
             if (geom instanceof Geometry) {
@@ -48,10 +48,10 @@ public class TestEnvironmentMapping extends SimpleApplication {
         chaseCam.setLookAtOffset(new Vector3f(0,0.5f,-1.0f));
         buggy.addControl(chaseCam);
         rootNode.attachChild(buggy);
-        rootNode.attachChild(SkyFactory.createSky(assetManager, tex,
+        rootNode.attachChild(SkyFactory.createSky(_assetManager, tex,
                 SkyFactory.EnvMapType.CubeMap));
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         BloomFilter bf = new BloomFilter(BloomFilter.GlowMode.Objects);
         bf.setBloomIntensity(2.3f);
         bf.setExposurePower(0.6f);

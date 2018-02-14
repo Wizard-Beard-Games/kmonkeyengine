@@ -35,7 +35,6 @@ package jme3test.opencl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Matrix4f;
@@ -43,7 +42,6 @@ import com.jme3.opencl.*;
 import com.jme3.system.AppSettings;
 import com.jme3.util.BufferUtils;
 import java.nio.*;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.logging.Level;
@@ -68,7 +66,7 @@ public class TestOpenCLLibraries extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        BitmapFont fnt = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         Context clContext = context.getOpenCLContext();
         if (clContext == null) {
             BitmapText txt = new BitmapText(fnt);
@@ -155,7 +153,7 @@ public class TestOpenCLLibraries extends SimpleApplication {
             if (supportsDoubles) {
                 code = "#define RANDOM_DOUBLES\n" + code;
             }
-            Program program = clContext.createProgramFromSourceCodeWithDependencies(code, assetManager);
+            Program program = clContext.createProgramFromSourceCodeWithDependencies(code, _assetManager);
             program.build();
             
             int count = 256;
@@ -280,7 +278,7 @@ public class TestOpenCLLibraries extends SimpleApplication {
                     + "  m = mat3Add(mat3Scale(m, a), m2);\n"
                     + "  result[0] = mat3Equals(mRes, m, 0.01f) ? 1 : 0;\n"
                     + "}\n";
-            Program program = clContext.createProgramFromSourceCodeWithDependencies(code, assetManager);
+            Program program = clContext.createProgramFromSourceCodeWithDependencies(code, _assetManager);
             program.build();
             com.jme3.opencl.Buffer buffer = clContext.createBuffer(1);
             
@@ -342,7 +340,7 @@ public class TestOpenCLLibraries extends SimpleApplication {
                     + "  res = mat4Adjoint(m1);\n"
                     + "  result[2] = mat4Equals(res, m3, 0.0001f) ? 1 : 0;\n"
                     + "}\n";
-            Program program = clContext.createProgramFromSourceCodeWithDependencies(code, assetManager);
+            Program program = clContext.createProgramFromSourceCodeWithDependencies(code, _assetManager);
             program.build();
             com.jme3.opencl.Buffer buffer = clContext.createBuffer(3);
             

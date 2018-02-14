@@ -99,7 +99,7 @@ public class HelloPhysics extends SimpleApplication {
     /** Set up Physics Game */
     bulletAppState = new BulletAppState();
     stateManager.attach(bulletAppState);
-    //bulletAppState.getPhysicsSpace().enableDebug(assetManager);
+    //bulletAppState.getPhysicsSpace().enableDebug(_assetManager);
     /** Configure cam to look at scene */
     cam.setLocation(new Vector3f(0, 4f, 6f));
     cam.lookAt(new Vector3f(2, 2, 0), Vector3f.UNIT_Y);
@@ -132,22 +132,22 @@ public class HelloPhysics extends SimpleApplication {
 
   /** Initialize the materials used in this scene. */
   public void initMaterials() {
-    wall_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    wall_mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     TextureKey key = new TextureKey("Textures/Terrain/BrickWall/BrickWall.jpg");
     key.setGenerateMips(true);
-    Texture tex = assetManager.loadTexture(key);
+    Texture tex = _assetManager.loadTexture(key);
     wall_mat.setTexture("ColorMap", tex);
 
-    stone_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    stone_mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     TextureKey key2 = new TextureKey("Textures/Terrain/Rock/Rock.PNG");
     key2.setGenerateMips(true);
-    Texture tex2 = assetManager.loadTexture(key2);
+    Texture tex2 = _assetManager.loadTexture(key2);
     stone_mat.setTexture("ColorMap", tex2);
 
-    floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    floor_mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
     key3.setGenerateMips(true);
-    Texture tex3 = assetManager.loadTexture(key3);
+    Texture tex3 = _assetManager.loadTexture(key3);
     tex3.setWrap(WrapMode.Repeat);
     floor_mat.setTexture("ColorMap", tex3);
   }
@@ -216,7 +216,7 @@ public class HelloPhysics extends SimpleApplication {
   /** A plus sign used as crosshairs to help the player with aiming.*/
   protected void initCrossHairs() {
     setDisplayStatView(false);
-    //guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+    //guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
     BitmapText ch = new BitmapText(guiFont, false);
     ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
     ch.setText("+");        // fake crosshairs :)

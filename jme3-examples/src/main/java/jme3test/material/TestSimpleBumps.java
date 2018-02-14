@@ -61,13 +61,13 @@ public class TestSimpleBumps extends SimpleApplication {
         Quad quadMesh = new Quad(1, 1);
 
         Geometry sphere = new Geometry("Rock Ball", quadMesh);
-        Material mat = assetManager.loadMaterial("Textures/BumpMapTest/SimpleBump.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/BumpMapTest/SimpleBump.j3m");
         sphere.setMaterial(mat);
         TangentBinormalGenerator.generate(sphere);
         rootNode.attachChild(sphere);
 
         lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         rootNode.attachChild(lightMdl);
 
         pl = new PointLight();

@@ -179,13 +179,13 @@ abstract class BaseAppState : AppState {
      * This implementation calls initialize(app) and then onEnable() if the
      * state is enabled.
      */
-    override fun initialize(stateManager: AppStateManager, app: Application) {
+    override fun initialize(stateManager: AppStateManager, app: Application?) {
         log.log(Level.FINEST, "initialize():{0}", this)
 
         this.application = app
 //        isInitialized = true
         setInitialized(true)
-        initialize(app)
+        initialize(app!!)
         when {
             isEnabled() -> {
                 log.log(Level.FINEST, "onEnable():{0}", this)

@@ -119,7 +119,7 @@ public class TestBrickWall extends SimpleApplication {
                 bulletg.setLocalTranslation(cam.getLocation());
                 
                 SphereCollisionShape bulletCollisionShape = new SphereCollisionShape(0.4f);
-                RigidBodyControl bulletNode = new BombControl(assetManager, bulletCollisionShape, 1);
+                RigidBodyControl bulletNode = new BombControl(_assetManager, bulletCollisionShape, 1);
 //                RigidBodyControl bulletNode = new RigidBodyControl(bulletCollisionShape, 1);
                 bulletNode.setLinearVelocity(cam.getDirection().mult(25));
                 bulletg.addControl(bulletNode);
@@ -159,22 +159,22 @@ public class TestBrickWall extends SimpleApplication {
     }
 
     public void initMaterial() {
-        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         TextureKey key = new TextureKey("Textures/Terrain/BrickWall/BrickWall.jpg");
         key.setGenerateMips(true);
-        Texture tex = assetManager.loadTexture(key);
+        Texture tex = _assetManager.loadTexture(key);
         mat.setTexture("ColorMap", tex);
 
-        mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat2 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         TextureKey key2 = new TextureKey("Textures/Terrain/Rock/Rock.PNG");
         key2.setGenerateMips(true);
-        Texture tex2 = assetManager.loadTexture(key2);
+        Texture tex2 = _assetManager.loadTexture(key2);
         mat2.setTexture("ColorMap", tex2);
 
-        mat3 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat3 = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
         key3.setGenerateMips(true);
-        Texture tex3 = assetManager.loadTexture(key3);
+        Texture tex3 = _assetManager.loadTexture(key3);
         tex3.setWrap(WrapMode.Repeat);
         mat3.setTexture("ColorMap", tex3);
     }
@@ -193,7 +193,7 @@ public class TestBrickWall extends SimpleApplication {
     }
 
     protected void initCrossHairs() {
-        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        guiFont = _assetManager.loadFont("Interface/Fonts/Default.fnt");
         BitmapText ch = new BitmapText(guiFont, false);
         ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
         ch.setText("+"); // crosshairs

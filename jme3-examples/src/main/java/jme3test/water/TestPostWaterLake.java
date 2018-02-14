@@ -62,7 +62,7 @@ public class TestPostWaterLake extends SimpleApplication {
       //  cam.setRotation(new Quaternion(0.03f, 0.9f, 0f, 0.4f));
 
         // load sky
-        rootNode.attachChild(SkyFactory.createSky(assetManager, 
+        rootNode.attachChild(SkyFactory.createSky(_assetManager,
                 "Textures/Sky/Bright/BrightSky.dds", 
                 SkyFactory.EnvMapType.CubeMap));
 
@@ -74,11 +74,11 @@ public class TestPostWaterLake extends SimpleApplication {
         // create the geometry and attach it
         // load the level from zip or http zip
         if (useHttp) {
-            assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/wildhouse.zip", HttpZipLocator.class);
+            _assetManager.registerLocator("http://jmonkeyengine.googlecode.com/files/wildhouse.zip", HttpZipLocator.class);
         } else {
-            assetManager.registerLocator("wildhouse.zip", ZipLocator.class);
+            _assetManager.registerLocator("wildhouse.zip", ZipLocator.class);
         }
-        Spatial scene = assetManager.loadModel("main.scene");
+        Spatial scene = _assetManager.loadModel("main.scene");
         rootNode.attachChild(scene);
 
         DirectionalLight sun = new DirectionalLight();
@@ -87,7 +87,7 @@ public class TestPostWaterLake extends SimpleApplication {
         sun.setColor(ColorRGBA.White.clone().multLocal(2));
         scene.addLight(sun);
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);        
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         final WaterFilter water = new WaterFilter(rootNode, lightDir);
         water.setWaterHeight(-20);
         water.setUseFoam(false);

@@ -78,7 +78,7 @@ public class TestBloomAlphaThreshold extends SimpleApplication
 		cam.setRotation(new Quaternion(0.23602544f, 0.11321983f, -0.027698677f, 0.96473104f));
 		// cam.setFrustumFar(1000);
 
-		Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+		Material mat = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
 
 		mat.setFloat("Shininess", 15f);
 		mat.setBoolean("UseMaterialColors", true);
@@ -87,14 +87,14 @@ public class TestBloomAlphaThreshold extends SimpleApplication
 		mat.setColor("Specular", ColorRGBA.Yellow.mult(0.8f));
 		mat.setColor("GlowColor", ColorRGBA.Green);
 
-		Material matSoil = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+		Material matSoil = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
 		matSoil.setFloat("Shininess", 15f);
 		matSoil.setBoolean("UseMaterialColors", true);
 		matSoil.setColor("Ambient", ColorRGBA.Gray);
 		matSoil.setColor("Diffuse", ColorRGBA.Black);
 		matSoil.setColor("Specular", ColorRGBA.Gray);
 
-		teapot = assetManager.loadModel("Models/Teapot/Teapot.obj");
+		teapot = _assetManager.loadModel("Models/Teapot/Teapot.obj");
 		teapot.setLocalTranslation(0, 0, 10);
 
 		teapot.setMaterial(mat);
@@ -110,8 +110,8 @@ public class TestBloomAlphaThreshold extends SimpleApplication
 		soil.setShadowMode(ShadowMode.CastAndReceive);
 		rootNode.attachChild(soil);
 
-		Material matBox = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		matBox.setTexture("ColorMap", assetManager.loadTexture("Textures/ColoredTex/Monkey.png"));
+		Material matBox = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+		matBox.setTexture("ColorMap", _assetManager.loadTexture("Textures/ColoredTex/Monkey.png"));
 		matBox.setFloat("AlphaDiscardThreshold", 0.5f);
     
                 Vector3f boxMin2 = new Vector3f(-5.5f, 8f, -4f);
@@ -129,13 +129,13 @@ public class TestBloomAlphaThreshold extends SimpleApplication
 		rootNode.addLight(light);
 
 		// load sky
-		Spatial sky = SkyFactory.createSky(assetManager, 
+		Spatial sky = SkyFactory.createSky(_assetManager,
                         "Textures/Sky/Bright/FullskiesBlueClear03.dds",
                         EnvMapType.CubeMap);
 		sky.setCullHint(Spatial.CullHint.Never);
 		rootNode.attachChild(sky);
 
-		fpp = new FilterPostProcessor(assetManager);
+		fpp = new FilterPostProcessor(_assetManager);
 		int numSamples = getContext().getSettings().getSamples();
 		if (numSamples > 0)
 		{

@@ -49,7 +49,7 @@ public class TestBlendEquations extends SimpleApplication {
     }
 
     public void simpleInitApp() {
-        Geometry teaGeom = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Geometry teaGeom = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
         teaGeom.scale(6);
         teaGeom.getMaterial().getAdditionalRenderState().setBlendEquation(RenderState.BlendEquation.Add);
         teaGeom.move(0, -2f, 0);
@@ -61,7 +61,7 @@ public class TestBlendEquations extends SimpleApplication {
         rootNode.addLight(dl);
         rootNode.attachChild(teaGeom);
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", new ColorRGBA(0.5f, 0f, 1f, 0.3f));
         mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Color);
         mat.getAdditionalRenderState().setBlendEquation(RenderState.BlendEquation.Subtract);
@@ -73,7 +73,7 @@ public class TestBlendEquations extends SimpleApplication {
 
         guiNode.attachChild(geo);
 
-        Material m = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material m = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         m.getAdditionalRenderState().setBlendEquation(RenderState.BlendEquation.ReverseSubtract);
         m.setColor("Color", new ColorRGBA(0.0f, 1f, 1.f, 1f));
         m.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.AlphaAdditive);
@@ -85,7 +85,7 @@ public class TestBlendEquations extends SimpleApplication {
         
         guiNode.attachChild(geo);
         
-        m = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        m = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         m.getAdditionalRenderState().setBlendEquation(RenderState.BlendEquation.Min);
         m.setColor("Color", new ColorRGBA(0.3f, 0f, 0.1f, 0.3f));
         m.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Additive);

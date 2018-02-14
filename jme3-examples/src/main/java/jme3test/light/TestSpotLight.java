@@ -78,7 +78,7 @@ public class TestSpotLight extends SimpleApplication {
 //      pl.setColor(ColorRGBA.White.mult(2));
 //      rootNode.addLight(pl);
        lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-      lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+      lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
       lightMdl.setLocalTranslation(new Vector3f(77.70334f, 34.013165f, 27.1017f));
       lightMdl.setLocalScale(5);
       rootNode.attachChild(lightMdl);
@@ -92,7 +92,7 @@ public class TestSpotLight extends SimpleApplication {
     }
 
     public void setupFloor(){
-        Material mat = assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
+        Material mat = _assetManager.loadMaterial("Textures/Terrain/Pond/Pond.j3m");
         mat.getTextureParam("DiffuseMap").getTextureValue().setWrap(WrapMode.Repeat);
         mat.getTextureParam("NormalMap").getTextureValue().setWrap(WrapMode.Repeat);
        // mat.getTextureParam("ParallaxMap").getTextureValue().setWrap(WrapMode.Repeat);
@@ -112,8 +112,8 @@ public class TestSpotLight extends SimpleApplication {
 
 
     public void setupSignpost(){
-        Spatial signpost = assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
-        Material mat = assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
+        Spatial signpost = _assetManager.loadModel("Models/Sign Post/Sign Post.mesh.xml");
+        Material mat = _assetManager.loadMaterial("Models/Sign Post/Sign Post.j3m");
       //   mat.setBoolean("VertexLighting", true);
         signpost.setMaterial(mat);
         signpost.rotate(0, FastMath.HALF_PI, 0);

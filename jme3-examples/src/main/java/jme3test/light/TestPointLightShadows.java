@@ -72,14 +72,14 @@ public class TestPointLightShadows extends SimpleApplication implements ActionLi
 
 
 
-        Node scene = (Node) assetManager.loadModel("Models/Test/CornellBox.j3o");
+        Node scene = (Node) _assetManager.loadModel("Models/Test/CornellBox.j3o");
         scene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         rootNode.attachChild(scene);
         rootNode.getChild("Cube").setShadowMode(RenderQueue.ShadowMode.Receive);
         lightNode = (Node) rootNode.getChild("Lamp");
         Geometry lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
         //Geometry  lightMdl = new Geometry("Light", new Box(.1f,.1f,.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         lightMdl.setShadowMode(RenderQueue.ShadowMode.Off);
         lightNode.attachChild(lightMdl);
         //lightMdl.setLocalTranslation(lightNode.getLocalTranslation());
@@ -87,13 +87,13 @@ public class TestPointLightShadows extends SimpleApplication implements ActionLi
 
         Geometry box = new Geometry("box", new Box(0.2f, 0.2f, 0.2f));
         //Geometry  lightMdl = new Geometry("Light", new Box(.1f,.1f,.1f));
-        box.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        box.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         box.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         rootNode.attachChild(box);
         box.setLocalTranslation(-1f, 0.5f, -2);
 
 
-        plsr = new PointLightShadowRenderer(assetManager, SHADOWMAP_SIZE);
+        plsr = new PointLightShadowRenderer(_assetManager, SHADOWMAP_SIZE);
         plsr.setLight((PointLight) scene.getLocalLightList().get(0));
         plsr.setEdgeFilteringMode(EdgeFilteringMode.PCF4);
         plsr.setShadowZExtend(15);
@@ -105,7 +105,7 @@ public class TestPointLightShadows extends SimpleApplication implements ActionLi
         viewPort.addProcessor(plsr);
 
 
-        plsf = new PointLightShadowFilter(assetManager, SHADOWMAP_SIZE);
+        plsf = new PointLightShadowFilter(_assetManager, SHADOWMAP_SIZE);
         plsf.setLight((PointLight) scene.getLocalLightList().get(0));    
         plsf.setShadowZExtend(15);
         plsf.setShadowZFadeLength(5);
@@ -113,11 +113,11 @@ public class TestPointLightShadows extends SimpleApplication implements ActionLi
         plsf.setEdgeFilteringMode(EdgeFilteringMode.PCF4);
         plsf.setEnabled(false);
 
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FilterPostProcessor fpp = new FilterPostProcessor(_assetManager);
         fpp.addFilter(plsf);
         viewPort.addProcessor(fpp);
         inputManager.addListener(this,"ShadowUp","ShadowDown");
-        ShadowTestUIManager uiMan = new ShadowTestUIManager(assetManager, plsr, plsf, guiNode, inputManager, viewPort);
+        ShadowTestUIManager uiMan = new ShadowTestUIManager(_assetManager, plsr, plsf, guiNode, inputManager, viewPort);
 
     }
 

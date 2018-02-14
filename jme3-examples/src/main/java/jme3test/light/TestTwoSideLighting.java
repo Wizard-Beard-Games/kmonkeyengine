@@ -33,7 +33,6 @@
 package jme3test.light;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.light.DirectionalLight;
 import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
@@ -45,7 +44,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
 import com.jme3.scene.shape.Sphere;
-import com.jme3.util.MaterialDebugAppState;
 import com.jme3.util.TangentBinormalGenerator;
 
 /**
@@ -75,7 +73,7 @@ public class TestTwoSideLighting extends SimpleApplication {
         
         Geometry quadGeom = new Geometry("quad", new Quad(1, 1));
         quadGeom.move(1, 0, 0);
-        Material mat1 = assetManager.loadMaterial("Textures/BumpMapTest/SimpleBump.j3m");
+        Material mat1 = _assetManager.loadMaterial("Textures/BumpMapTest/SimpleBump.j3m");
         
         // Display both front and back faces.
         mat1.getAdditionalRenderState().setFaceCullMode(RenderState.FaceCullMode.Off);
@@ -85,10 +83,10 @@ public class TestTwoSideLighting extends SimpleApplication {
         TangentBinormalGenerator.generate(quadGeom);
         rootNode.attachChild(quadGeom);
         
-        Geometry teapot = (Geometry) assetManager.loadModel("Models/Teapot/Teapot.obj");
+        Geometry teapot = (Geometry) _assetManager.loadModel("Models/Teapot/Teapot.obj");
         teapot.move(-1, 0, 0);
         teapot.setLocalScale(2f);
-        Material mat2 = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material mat2 = new Material(_assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat2.setFloat("Shininess", 25);
         mat2.setBoolean("UseMaterialColors", true);
         mat2.setColor("Ambient",  ColorRGBA.Black);
@@ -102,7 +100,7 @@ public class TestTwoSideLighting extends SimpleApplication {
         rootNode.attachChild(teapot);
 
         lightMdl = new Geometry("Light", new Sphere(10, 10, 0.1f));
-        lightMdl.setMaterial(assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
+        lightMdl.setMaterial(_assetManager.loadMaterial("Common/Materials/RedColor.j3m"));
         lightMdl.getMesh().setStatic();
         rootNode.attachChild(lightMdl);
 

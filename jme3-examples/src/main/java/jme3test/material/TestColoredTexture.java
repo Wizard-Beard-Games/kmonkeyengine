@@ -57,8 +57,8 @@ public class TestColoredTexture extends SimpleApplication {
         Geometry quad = new Geometry("Quad", quadMesh);
         quad.setQueueBucket(Bucket.Gui);
 
-        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setTexture("ColorMap", assetManager.loadTexture("Textures/ColoredTex/Monkey.png"));
+        mat = new Material(_assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setTexture("ColorMap", _assetManager.loadTexture("Textures/ColoredTex/Monkey.png"));
         quad.setMaterial(mat);
         guiNode.attachChildAt(quad, 0);
 
