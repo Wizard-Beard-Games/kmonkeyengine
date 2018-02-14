@@ -101,7 +101,7 @@ interface Application {
      * frame times.  By default, Application will use the Timer as returned
      * by the current JmeContext implementation.
      */
-    var timer: Timer
+    var timer: Timer?
 
     /**
      * @return The [asset manager][AssetManager] for this application.

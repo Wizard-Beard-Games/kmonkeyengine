@@ -70,7 +70,7 @@ class LegacyApplication
  * Create a new instance of `LegacyApplication`, preinitialized
  * with the specified set of app states.
  */
-@JvmOverloads constructor(vararg initialStates: AppState = null) : Application, SystemListener {
+@JvmOverloads constructor(vararg initialStates: AppState = arrayOf()) : Application, SystemListener {
 
     override var _assetManager: AssetManager? = null
         set(value) {
@@ -125,7 +125,17 @@ class LegacyApplication
             }
         }
 
-    protected var timer: Timer? = NanoTimer()
+    override var timer: Timer? = NanoTimer()
+        set(value) {
+            field = value
+
+            timer?.reset()
+
+            if (renderManager != null) {
+                renderManager!!.setTimer(timer)
+            }
+        }
+
     /**
      * @return The [camera][Camera] for the application
      */
@@ -314,19 +324,15 @@ class LegacyApplication
      * frame times.  By default, Application will use the Timer as returned
      * by the current JmeContext implementation.
      */
-    override fun setTimer(timer: Timer) {
-        this.timer = timer
-
-        timer?.reset()
-
-        if (renderManager != null) {
-            renderManager!!.setTimer(timer)
-        }
-    }
-
-    override fun getTimer(): Timer {
-        return timer
-    }
+//    override fun setTimer(timer: Timer) {
+//        this.timer = timer
+//
+//        timer?.reset()
+//
+//        if (renderManager != null) {
+//            renderManager!!.setTimer(timer)
+//        }
+//    }
 
     private fun initDisplay() {
         // aquire important objects
