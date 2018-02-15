@@ -111,12 +111,12 @@ interface Application {
     /**
      * @return the [input manager][InputManager].
      */
-    var inputManager: InputManager
+    var inputManager: InputManager?
 
     /**
      * @return the [app state manager][AppStateManager]
      */
-    var stateManager: AppStateManager
+    var stateManager: AppStateManager?
 
     /**
      * @return the [render manager][RenderManager]
@@ -136,7 +136,7 @@ interface Application {
     /**
      * @return The [listener][Listener] object for audio
      */
-    var listener: Listener
+    var listener: Listener?
 
     /**
      * @return The [display context][JmeContext] for the application
@@ -146,7 +146,7 @@ interface Application {
     /**
      * @return The main [camera][Camera] for the application
      */
-    var camera: Camera
+    var camera: Camera?
 
     /**
      * Returns the current AppProfiler hook, or null if none is set.
@@ -242,4 +242,7 @@ interface Application {
      * @param runnable The runnable to run in the main jME3 thread
      */
     fun enqueue(runnable: Runnable)
+
+    fun <T> enqueue(runnableWrapper: T) {}
+    fun getAssetManager(): AssetManager?
 }

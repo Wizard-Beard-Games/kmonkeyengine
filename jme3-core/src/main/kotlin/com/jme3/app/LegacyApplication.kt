@@ -65,7 +65,7 @@ import java.util.logging.Logger
  * jME3 applications *SHOULD NOT EXTEND* this class but extend [com.jme3.app.SimpleApplication] instead.
  *
  */
-class LegacyApplication
+open class LegacyApplication
 /**
  * Create a new instance of `LegacyApplication`, preinitialized
  * with the specified set of app states.
@@ -139,17 +139,12 @@ class LegacyApplication
     /**
      * @return The [camera][Camera] for the application
      */
-    override var camera: Camera
-        protected set(value: Camera) {
-            super.camera = value
-        }
+    override var camera: Camera? = null
+
     /**
      * @return The [listener][Listener] object for audio
      */
-    override var listener: Listener
-        protected set(value: Listener) {
-            super.listener = value
-        }
+    override var listener: Listener? = null
 
     protected var inputEnabled = true
     /**
@@ -180,16 +175,11 @@ class LegacyApplication
      * @return the [input manager][InputManager].
      */
     override var inputManager: InputManager? = null
-        protected set(value: InputManager?) {
-            super.inputManager = value
-        }
+
     /**
      * @return the [app state manager][AppStateManager]
      */
-    override var stateManager: AppStateManager
-        protected set(value: AppStateManager) {
-            super.stateManager = value
-        }
+    override var stateManager: AppStateManager? = null
 
     protected var prof: AppProfiler? = null
 
@@ -247,13 +237,7 @@ class LegacyApplication
     init {
         initStateManager()
 
-        if (initialStates != null) {
-            for (a in initialStates) {
-                if (a != null) {
-                    stateManager.attach(a)
-                }
-            }
-        }
+        initialStates.asSequence().filterNotNull().forEach { stateManager?.attach(it) }
     }
 
 //    @Deprecated("")
@@ -366,9 +350,9 @@ class LegacyApplication
     private fun initCamera() {
         camera = Camera(settings!!.width, settings!!.height)
 
-        camera.setFrustumPerspective(45f, camera.width.toFloat() / camera.height, 1f, 1000f)
-        camera.location = Vector3f(0f, 0f, 10f)
-        camera.lookAt(Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y)
+        camera?.setFrustumPerspective(45f, camera!!.width.toFloat() / camera!!.height, 1f, 1000f)
+        camera?.location = Vector3f(0f, 0f, 10f)
+        camera?.lookAt(Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y)
 
         renderManager = RenderManager(renderer)
         //Remy - 09/14/2010 setted the timer in the renderManager
@@ -379,12 +363,12 @@ class LegacyApplication
         }
 
         viewPort = renderManager!!.createMainView("Default", camera)
-        viewPort.setClearFlags(true, true, true)
+        viewPort?.setClearFlags(true, true, true)
 
         // Create a new cam for the gui
         val guiCam = Camera(settings!!.width, settings!!.height)
         guiViewPort = renderManager!!.createPostView("Gui Default", guiCam)
-        guiViewPort.setClearFlags(false, false, false)
+        guiViewPort?.setClearFlags(false, false, false)
     }
 
     /**
@@ -419,7 +403,7 @@ class LegacyApplication
 
         // Always register a ResetStatsState to make sure
         // that the stats are cleared every frame
-        stateManager.attach(ResetStatsState())
+        stateManager?.attach(ResetStatsState())
     }
 
     /**
@@ -673,15 +657,15 @@ class LegacyApplication
      * @param runnable The runnable to run in the main jME3 thread
      */
     override fun enqueue(runnable: Runnable) {
-        enqueue<Any>(RunnableWrapper(runnable))
+        this.enqueue<Any>(RunnableWrapper(runnable))
     }
 
     /**
      * Runs tasks enqueued via [.enqueue]
      */
     protected fun runQueuedTasks() {
-        var task: AppTask<*>
-        while ((task = taskQueue.poll()) != null) {
+        var task = taskQueue.poll()
+        while (task != null) {
             if (!task.isCancelled) {
                 task.invoke()
             }
@@ -738,7 +722,7 @@ class LegacyApplication
      * Callback from ContextListener.
      */
     override fun destroy() {
-        stateManager.cleanup()
+        stateManager!!.cleanup()
 
         destroyInput()
         if (audioRenderer != null)
@@ -747,7 +731,7 @@ class LegacyApplication
         timer!!.reset()
     }
 
-    private inner class RunnableWrapper(private val runnable: Runnable) : Callable<*> {
+    private inner class RunnableWrapper(private val runnable: Runnable) : Callable<Any> {
 
         override fun call(): Any? {
             runnable.run()
