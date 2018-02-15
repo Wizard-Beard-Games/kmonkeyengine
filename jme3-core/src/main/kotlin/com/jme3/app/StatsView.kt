@@ -59,6 +59,8 @@ import com.jme3.util.clone.JmeCloneable
  * StatsView statsView = new StatsView("MyStats", _assetManager, stats);<br></br>
  * rootNode.attachChild(statsView);<br></br>
 ` *
+ * @author (kme) Ray Long
+ * @author (jme)
  */
 open class StatsView(name: String, manager: AssetManager, private val statistics: Statistics) : Node(name), Control, JmeCloneable {
 
@@ -112,6 +114,14 @@ open class StatsView(name: String, manager: AssetManager, private val statistics
     }
 
     override fun setSpatial(spatial: Spatial) {}
+
+    override fun clone(cloneMaterials: Boolean): Node {
+        return super<Node>.clone(cloneMaterials)
+    }
+
+    override fun clone(): Spatial {
+        return super<Node>.clone()
+    }
 
     override fun render(rm: RenderManager, vp: ViewPort) {}
 

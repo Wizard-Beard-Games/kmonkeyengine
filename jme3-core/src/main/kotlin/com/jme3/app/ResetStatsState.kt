@@ -44,7 +44,8 @@ import com.jme3.renderer.RenderManager
  * stats reset no matter how many views it has or if it even
  * has views.
  *
- * @author    Paul Speed
+ * @author (kme) Ray Long
+ * @author (jme) Paul Speed
  */
 class ResetStatsState : AbstractAppState() {
 

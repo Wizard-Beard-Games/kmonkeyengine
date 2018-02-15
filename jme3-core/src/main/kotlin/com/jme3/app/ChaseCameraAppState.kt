@@ -137,16 +137,16 @@ open class ChaseCameraAppState : AbstractAppState(), ActionListener, AnalogListe
         camNode = CameraNode("ChaseCameraNode", CameraControl())
     }
 
-    override fun initialize(stateManager: AppStateManager, app: Application) {
+    override fun initialize(stateManager: AppStateManager, app: Application?) {
         super.initialize(stateManager, app)
-        this.inputManager = app.inputManager
+        this.inputManager = app?.inputManager
         target = Node("ChaseCamTarget")
-        camNode.camera = app.camera
+        camNode.camera = app?.camera
         camNode.controlDir = CameraControl.ControlDirection.SpatialToCamera
         target.attachChild(camNode)
         camNode.setLocalTranslation(0f, 0f, distance)
-        upVector = app.camera.up.clone()
-        leftVector = app.camera.left.clone()
+        upVector = app?.camera?.up!!.clone()
+        leftVector = app.camera?.left!!.clone()
         registerWithInput()
         rotateCamera()
     }

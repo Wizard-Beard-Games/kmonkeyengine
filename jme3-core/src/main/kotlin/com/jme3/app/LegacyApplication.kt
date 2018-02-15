@@ -64,6 +64,8 @@ import java.util.logging.Logger
  *
  * jME3 applications *SHOULD NOT EXTEND* this class but extend [com.jme3.app.SimpleApplication] instead.
  *
+ * @author (kme) Ray Long
+ * @author (jme)
  */
 open class LegacyApplication
 /**
@@ -71,6 +73,9 @@ open class LegacyApplication
  * with the specified set of app states.
  */
 @JvmOverloads constructor(vararg initialStates: AppState = arrayOf()) : Application, SystemListener {
+    override fun getAssetManager(): AssetManager? {
+        return _assetManager
+    }
 
     override var _assetManager: AssetManager? = null
         set(value) {

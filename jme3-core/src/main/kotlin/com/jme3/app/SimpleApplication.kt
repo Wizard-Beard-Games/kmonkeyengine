@@ -63,6 +63,9 @@ import com.jme3.system.JmeSystem
  *
  * A [com.jme3.app.FlyCamAppState] is by default attached as well and can
  * be removed by calling `stateManager.detach( stateManager.getState(FlyCamAppState.class) );`
+ *
+ * @author (kme) Ray Long
+ * @author (jme)
  */
 abstract class SimpleApplication(vararg initialStates: AppState) : LegacyApplication(*initialStates) {
 

@@ -18,7 +18,8 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 
 /**
- * Created by Nehon on 25/01/2017.
+ * @author (kme) Ray Long
+ * Created by (jme) Nehon on 25/01/2017.
  */
 open class DetailedProfilerState : BaseAppState() {
 
@@ -55,18 +56,18 @@ open class DetailedProfilerState : BaseAppState() {
     private val inputListener = ProfilerInputListener()
 
     override fun initialize(app: Application) {
-        val mat = Material(app.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
+        val mat = Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md")
         mat.setColor("Color", ColorRGBA(0f, 0f, 0f, 0.5f))
         mat.additionalRenderState.blendMode = RenderState.BlendMode.Alpha
-        val darkenStats = Geometry("StatsDarken", Quad(PANEL_WIDTH.toFloat(), app.camera.height.toFloat()))
+        val darkenStats = Geometry("StatsDarken", Quad(PANEL_WIDTH.toFloat(), app.camera?.height!!.toFloat()))
         darkenStats.material = mat
-        darkenStats.setLocalTranslation(0f, (-app.camera.height).toFloat(), -1f)
+        darkenStats.setLocalTranslation(0f, (-app.camera?.height!!).toFloat(), -1f)
 
         uiNode.attachChild(darkenStats)
-        uiNode.setLocalTranslation((app.camera.width - PANEL_WIDTH).toFloat(), app.camera.height.toFloat(), 0f)
-        font = app.assetManager.loadFont("Interface/Fonts/Console.fnt")
-        bigFont = app.assetManager.loadFont("Interface/Fonts/Default.fnt")
-        prof.setRenderer(app.renderer)
+        uiNode.setLocalTranslation((app.camera?.width!! - PANEL_WIDTH).toFloat(), app.camera?.height!!.toFloat(), 0f)
+        font = app.getAssetManager()?.loadFont("Interface/Fonts/Console.fnt")
+        bigFont = app.getAssetManager()?.loadFont("Interface/Fonts/Default.fnt")
+        prof.setRenderer(app.renderer!!)
         rootLine = StatLineView("Frame")
         rootLine!!.attachTo(uiNode)
 
@@ -95,28 +96,28 @@ open class DetailedProfilerState : BaseAppState() {
         selectedField!!.color = ColorRGBA.Yellow
 
 
-        uiNode.attachChild(frameTimeValue)
-        uiNode.attachChild(frameCpuTimeValue)
-        uiNode.attachChild(frameGpuTimeValue)
-        uiNode.attachChild(selectedField)
+        uiNode.attachChild(frameTimeValue!!)
+        uiNode.attachChild(frameCpuTimeValue!!)
+        uiNode.attachChild(frameGpuTimeValue!!)
+        uiNode.attachChild(selectedField!!)
 
         hideInsignificantField = BitmapText(font)
         hideInsignificantField!!.text = "O " + INSIGNIFICANT
         hideInsignificantField!!.setLocalTranslation(PADDING.toFloat(), (-PADDING - 75).toFloat(), 0f)
-        uiNode.attachChild(hideInsignificantField)
+        uiNode.attachChild(hideInsignificantField!!)
 
         val inputManager = app.inputManager
-        inputManager.addMapping(TOGGLE_KEY, KeyTrigger(KeyInput.KEY_F6))
-        inputManager.addMapping(CLICK_KEY, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
-        inputManager.addListener(inputListener, TOGGLE_KEY, CLICK_KEY)
+        inputManager?.addMapping(TOGGLE_KEY, KeyTrigger(KeyInput.KEY_F6))
+        inputManager?.addMapping(CLICK_KEY, MouseButtonTrigger(MouseInput.BUTTON_LEFT))
+        inputManager?.addListener(inputListener, TOGGLE_KEY, CLICK_KEY)
     }
 
     override fun cleanup(app: Application?) {
         uiNode.detachAllChildren()
         val manager = application!!.inputManager
-        manager.deleteMapping(TOGGLE_KEY)
-        manager.deleteMapping(CLICK_KEY)
-        manager.removeListener(inputListener)
+        manager?.deleteMapping(TOGGLE_KEY)
+        manager?.deleteMapping(CLICK_KEY)
+        manager?.removeListener(inputListener)
     }
 
     override fun update(tpf: Float) {
@@ -235,7 +236,7 @@ open class DetailedProfilerState : BaseAppState() {
 
     override fun onEnable() {
         application!!.appProfiler = prof
-        (application as SimpleApplication).getGuiNode().attachChild(uiNode)
+        (application as SimpleApplication).guiNode.attachChild(uiNode)
     }
 
     override fun onDisable() {
@@ -429,7 +430,7 @@ open class DetailedProfilerState : BaseAppState() {
                 name == TOGGLE_KEY && isPressed -> setEnabled(!isEnabled())
             }
             when {
-                isEnabled() && name == CLICK_KEY && isPressed -> handleClick(application!!.inputManager.cursorPosition)
+                isEnabled() && name == CLICK_KEY && isPressed -> handleClick(application!!.inputManager!!.cursorPosition)
             }
         }
     }

@@ -34,7 +34,8 @@ package com.jme3.app
 /**
  * Defines the behavior of an application when it is not in focus or minimized.
  *
- * @author Kirill Vainer
+ * @author (kme) Ray Long
+ * @author (jme) Kirill Vainer
  */
 enum class LostFocusBehavior {
 

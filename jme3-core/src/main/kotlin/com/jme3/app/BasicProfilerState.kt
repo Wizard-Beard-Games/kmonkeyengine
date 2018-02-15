@@ -137,7 +137,7 @@ class BasicProfilerState @JvmOverloads constructor(enabled: Boolean = false) : B
 
         graph = Geometry("profiler", profiler.mesh)
 
-        var mat = Material(app.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
+        var mat = Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md")
         mat.setBoolean("VertexColor", true)
         graph!!.material = mat
         graph!!.setLocalTranslation(0f, 300f, 0f)
@@ -145,7 +145,7 @@ class BasicProfilerState @JvmOverloads constructor(enabled: Boolean = false) : B
 
         val mesh = Mesh()
         background = Geometry("profiler.background", mesh)
-        mat = Material(app.assetManager, "Common/MatDefs/Misc/Unshaded.j3md")
+        mat = Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md")
         mat.setBoolean("VertexColor", true)
         mat.additionalRenderState.blendMode = BlendMode.Alpha
         background!!.material = mat
@@ -164,22 +164,22 @@ class BasicProfilerState @JvmOverloads constructor(enabled: Boolean = false) : B
     }
 
     override fun cleanup(app: Application?) {
-        val inputManager = app!!.inputManager
+        val inputManager = app?.inputManager
         when {
-            inputManager.hasMapping(INPUT_MAPPING_PROFILER_TOGGLE) -> inputManager.deleteMapping(INPUT_MAPPING_PROFILER_TOGGLE)
+            inputManager?.hasMapping(INPUT_MAPPING_PROFILER_TOGGLE)!! -> inputManager.deleteMapping(INPUT_MAPPING_PROFILER_TOGGLE)
         }
-        inputManager.removeListener(keyListener)
+        inputManager?.removeListener(keyListener)
     }
 
     override fun onEnable() {
 
         // Set the number of visible frames to the current width of the screen
-        frameCount = application!!.camera.width
+        frameCount = application!!.camera!!.width
 
         application!!.appProfiler = profiler
-        val gui = (application as SimpleApplication).getGuiNode()
-        gui.attachChild(graph)
-        gui.attachChild(background)
+        val gui = (application as SimpleApplication).guiNode
+        gui.attachChild(graph!!)
+        gui.attachChild(background!!)
     }
 
     override fun onDisable() {

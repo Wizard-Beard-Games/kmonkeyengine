@@ -54,9 +54,10 @@ import java.util.logging.Logger
  * into a single bound to allow for very fast culling of multiple nodes. Node
  * allows for any number of children to be attached.
  *
- * @author Mark Powell
- * @author Gregg Patton
- * @author Joshua Slack
+ * @author (kme) Ray Long
+ * @author (jme) Mark Powell
+ * @author (jme) Gregg Patton
+ * @author (jme) Joshua Slack
  */
 open class Node
 /**
@@ -71,7 +72,7 @@ open class Node
     /**
      * This node's children.
      */
-    protected var children: SafeArrayList<Spatial>? = SafeArrayList(Spatial::class.java)
+    var children: SafeArrayList<Spatial>? = SafeArrayList(Spatial::class.java)
 
     /**
      * If this node is a root, this list will contain the current

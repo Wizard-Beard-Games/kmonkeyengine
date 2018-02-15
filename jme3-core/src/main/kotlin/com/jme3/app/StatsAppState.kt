@@ -48,7 +48,8 @@ import com.jme3.scene.shape.Quad
  * Displays stats in SimpleApplication's GUI node or
  * using the node and font parameters provided.
  *
- * @author    Paul Speed
+ * @author (kme) Ray Long
+ * @author (jme) Paul Speed
  */
 class StatsAppState : AbstractAppState {
 
@@ -175,7 +176,7 @@ class StatsAppState : AbstractAppState {
         fpsText!!.setLocalTranslation(0f, fpsText!!.lineHeight, 0f)
         fpsText!!.text = "Frames per second"
         fpsText!!.cullHint = if (showFps) CullHint.Never else CullHint.Always
-        guiNode!!.attachChild(fpsText)
+        guiNode!!.attachChild(fpsText!!)
 
     }
 
@@ -186,13 +187,13 @@ class StatsAppState : AbstractAppState {
      */
     fun loadStatsView() {
         statsView = StatsView("Statistics View",
-                app!!.getAssetManager(),
+                app!!.getAssetManager()!!,
                 app!!.renderer!!.statistics)
         // move it up so it appears above fps text
         statsView!!.setLocalTranslation(0f, fpsText!!.lineHeight, 0f)
         statsView!!.isEnabled = showStats
         statsView!!.cullHint = if (showStats) CullHint.Never else CullHint.Always
-        guiNode!!.attachChild(statsView)
+        guiNode!!.attachChild(statsView!!)
     }
 
     fun loadDarken() {
@@ -204,13 +205,13 @@ class StatsAppState : AbstractAppState {
         darkenFps!!.material = mat
         darkenFps!!.setLocalTranslation(0f, 0f, -1f)
         darkenFps!!.cullHint = if (showFps && isDarkenBehind) CullHint.Never else CullHint.Always
-        guiNode!!.attachChild(darkenFps)
+        guiNode!!.attachChild(darkenFps!!)
 
         darkenStats = Geometry("StatsDarken", Quad(200f, statsView!!.height))
         darkenStats!!.material = mat
         darkenStats!!.setLocalTranslation(0f, fpsText!!.height, -1f)
         darkenStats!!.cullHint = if (showStats && isDarkenBehind) CullHint.Never else CullHint.Always
-        guiNode!!.attachChild(darkenStats)
+        guiNode!!.attachChild(darkenStats!!)
     }
 
     override fun setEnabled(enabled: Boolean) {
