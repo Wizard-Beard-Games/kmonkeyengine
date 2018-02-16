@@ -160,7 +160,7 @@ open class SafeArrayList<E> : List<E>, Cloneable {
 
     protected fun getBuffer(): MutableList<E> {
         if (buffer != null)
-            return buffer
+            return buffer as MutableList<E>
 
         if (backingArray == null) {
             buffer = ArrayList()
@@ -171,7 +171,7 @@ open class SafeArrayList<E> : List<E>, Cloneable {
             buffer = ArrayList(Arrays.asList(*backingArray!!))
             backingArray = null
         }
-        return buffer
+        return buffer as MutableList<E>
     }
 
     override fun size(): Int {
@@ -190,7 +190,7 @@ open class SafeArrayList<E> : List<E>, Cloneable {
         return listIterator()
     }
 
-    override fun toArray(): Array<Any> {
+    override fun toArray(): Array<E> {
         return array
     }
 
@@ -362,7 +362,7 @@ open class SafeArrayList<E> : List<E>, Cloneable {
     override fun toString(): String {
 
         val array = array
-        if (array.size == 0) {
+        if (array.isEmpty()) {
             return "[]"
         }
 
@@ -378,7 +378,7 @@ open class SafeArrayList<E> : List<E>, Cloneable {
         return sb.toString()
     }
 
-    protected inner class ArrayIterator<E> protected constructor(private val array: Array<E>, private var next: Int) : ListIterator<E> {
+    protected inner class ArrayIterator<E> constructor(private val array: Array<E>, private var next: Int) : ListIterator<E> {
         private var lastReturned: Int = 0
 
         init {
@@ -423,7 +423,7 @@ open class SafeArrayList<E> : List<E>, Cloneable {
             // correct.  If the list had earlier .equals() equivalent
             // elements then we'll remove one of those instead.  Either
             // way, none of those changes are reflected in this iterator.
-            this@SafeArrayList.remove(array[lastReturned])
+            this@SafeArrayList.remove(array[lastReturned] as Int)
         }
 
         override fun set(e: E) {
